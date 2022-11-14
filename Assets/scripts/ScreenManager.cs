@@ -17,6 +17,8 @@ public class ScreenManager : MonoBehaviour
     public GameObject mainCamera;
     public int cameraMoveSpeed = 10;
 
+    public GameObject mapUI;
+
     private bool _isLerping;
     private Vector3 _moveToVector;
 
@@ -44,8 +46,15 @@ public class ScreenManager : MonoBehaviour
         {
             Vector3 cameraPos = mainCamera.transform.position;
             mainCamera.transform.position = Vector3.Lerp(cameraPos, _moveToVector, Time.deltaTime * cameraMoveSpeed);
-                
-            if (Vector3.Distance(cameraPos, _moveToVector) < .1f) _isLerping = false;
+
+            if (Vector3.Distance(cameraPos, _moveToVector) < .1f)
+            {
+                Vector3 isMap = mapScreen.transform.position;
+                isMap.z = -10.0f;
+                if(_moveToVector == isMap)
+                    mapUI.SetActive(true);
+                _isLerping = false;
+            }
         }
     }
 
@@ -56,21 +65,27 @@ public class ScreenManager : MonoBehaviour
         {
             case ScreenType.BANK: 
                 moveToVector = bankScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             case ScreenType.PLAN:
                 moveToVector = planScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             case ScreenType.RANK:
                 moveToVector = rankScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             case ScreenType.SHOP:
                 moveToVector = shopScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             case ScreenType.INFRA:
                 moveToVector = infraScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             case ScreenType.OVERALL:
                 moveToVector = overallScreen.transform.position;
+                mapUI.SetActive(false);
                 break;
             default:
                 moveToVector = mapScreen.transform.position;

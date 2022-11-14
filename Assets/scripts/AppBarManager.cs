@@ -36,7 +36,7 @@ public class AppBarManager : MonoBehaviour
                 _month = 1;
             }
 
-            datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}. {_month:00}";
+            datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}. {_month:00}.";
         }
 
         remainDatePrint.GetComponent<TextMeshProUGUI>().text = $"{_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
@@ -54,5 +54,28 @@ public class AppBarManager : MonoBehaviour
     public void MoveHome()
     {
         screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.MAP);
+    }
+
+    public void MoveScreen(string type) {
+        switch(type) {
+            case "overall":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.OVERALL);
+                break;
+            case "infra":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.INFRA);
+                break;
+            case "plan":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.PLAN);
+                break;
+            case "shop":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.SHOP);
+                break;
+            case "bank":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.BANK);
+                break;
+            case "rank":
+                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.RANK);
+                break;
+        }
     }
 }
