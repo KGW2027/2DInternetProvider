@@ -44,6 +44,7 @@ public class ScreenManager : MonoBehaviour
         }
         
         CloseAllSubUI();
+        _screenSubUIs[ScreenType.MAP].SetActive(true);
 
         _isLerping = false;
     }
