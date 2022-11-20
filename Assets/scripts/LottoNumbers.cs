@@ -89,6 +89,7 @@ public class LottoNumbers : MonoBehaviour
 
     private void SetNumbers(int[] nums)
     {
+        if (nums == null || nums.Length < 6) return;
         _nums = nums;
         SetNumbers(nums[0], nums[1], nums[2], nums[3], nums[4], nums[5]);
     }
