@@ -12,7 +12,7 @@ public class AppBarManager : MonoBehaviour
     public GameObject companyNamePrint;
     public GameObject screenManager;
 
-    private int _year = 2022;
+    private int _year = 22;
     private int _month = 11;
     private int _remainNextMonth = 10;
     private int _money = 100;
@@ -22,6 +22,7 @@ public class AppBarManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        updateDateText(true); // Initial Set
         Timing.RunCoroutine(RunTimer());
     }
 
@@ -35,11 +36,13 @@ public class AppBarManager : MonoBehaviour
                 _year++;
                 _month = 1;
             }
-
-            datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}. {_month:00}.";
+            updateDateText(true);
+        }
+        else
+        {
+            updateDateText(false);
         }
 
-        remainDatePrint.GetComponent<TextMeshProUGUI>().text = $"{_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
 
         yield return Timing.WaitForSeconds(1.0f);
         Timing.RunCoroutine(RunTimer());
@@ -49,6 +52,12 @@ public class AppBarManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void updateDateText(bool dateChanged)
+    {
+        if(dateChanged) datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}Y {_month:00}M";
+        remainDatePrint.GetComponent<TextMeshProUGUI>().text = $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
     }
 
     public void MoveHome()
