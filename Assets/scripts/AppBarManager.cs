@@ -18,11 +18,14 @@ public class AppBarManager : MonoBehaviour
     private int _money = 100;
     private int _changeMoney = 0;
     private string _name;
+
+    private LottoManager _lottoManager;
     
     // Start is called before the first frame update
     void Start()
     {
         updateDateText(true); // Initial Set
+        _lottoManager = FindObjectOfType<LottoManager>();
         Timing.RunCoroutine(RunTimer());
     }
 
@@ -37,6 +40,7 @@ public class AppBarManager : MonoBehaviour
                 _month = 1;
             }
             updateDateText(true);
+            _lottoManager.NextMonth();
         }
         else
         {
