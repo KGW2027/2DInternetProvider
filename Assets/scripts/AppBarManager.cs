@@ -20,12 +20,14 @@ public class AppBarManager : MonoBehaviour
     private string _name;
 
     private LottoManager _lottoManager;
+    private ScreenManager _screenManager;
     
     // Start is called before the first frame update
     void Start()
     {
         updateDateText(true); // Initial Set
         _lottoManager = FindObjectOfType<LottoManager>();
+        _screenManager = screenManager.GetComponent<ScreenManager>();
         Timing.RunCoroutine(RunTimer());
     }
 
@@ -66,29 +68,10 @@ public class AppBarManager : MonoBehaviour
 
     public void MoveHome()
     {
-        screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.MAP);
+        screenManager.GetComponent<ScreenManager>().MoveCamara("MAP");
     }
 
     public void MoveScreen(string type) {
-        switch(type) {
-            case "overall":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.OVERALL);
-                break;
-            case "infra":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.INFRA);
-                break;
-            case "plan":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.PLAN);
-                break;
-            case "shop":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.SHOP);
-                break;
-            case "bank":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.BANK);
-                break;
-            case "rank":
-                screenManager.GetComponent<ScreenManager>().MoveCamara(ScreenManager.ScreenType.RANK);
-                break;
-        }
+        _screenManager.MoveCamara(type.ToUpper());
     }
 }

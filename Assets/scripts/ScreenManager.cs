@@ -4,47 +4,39 @@ using UnityEngine;
 
 public class ScreenManager : MonoBehaviour
 {
-    public enum ScreenType
-    {
-        MAP,
-        INFRA,
-        PLAN,
-        SHOP,
-        BANK,
-        RANK,
-        OVERALL
-    }
-    
+
     public GameObject mainCamera;
     public int cameraMoveSpeed = 10;
 
-    private Dictionary<ScreenType, Transform> _screens;
-    private Dictionary<ScreenType, GameObject> _screenSubUIs;
+    private Dictionary<string, Transform> _screens;
+    private Dictionary<string, GameObject> _screenSubUIs;
 
     private bool _isLerping;
     private Vector3 _moveToVector;
-    private ScreenType _movedScreenType;
+    private string _movedScreenType;
 
     // Start is called before the first frame update
     void Start()
     {
-        _screens = new Dictionary<ScreenType, Transform>();
-        _screenSubUIs = new Dictionary<ScreenType, GameObject>();
+        _screens = new Dictionary<string, Transform>();
+        _screenSubUIs = new Dictionary<string, GameObject>();
         
         foreach (Transform tf in transform)
         {
-            ScreenType st;
-            Enum.TryParse(tf.name, true, out st);
-            _screens[st] = tf;
-
-            foreach (Transform ctf in tf.transform)
+            if (tf.gameObject.CompareTag("Screen"))
             {
-                if (ctf.gameObject.CompareTag("SubUI")) _screenSubUIs[st] = ctf.gameObject;
+                string screenName = tf.name.ToUpper();
+                _screens[screenName] = tf;
+
+                foreach (Transform ctf in tf.transform)
+                {
+                    if (ctf.gameObject.CompareTag("SubUI")) _screenSubUIs[screenName] = ctf.gameObject;
+                }
             }
         }
         
         CloseAllSubUI();
-        _screenSubUIs[ScreenType.MAP].SetActive(true);
+        _screenSubUIs["MAP"].SetActive(true);
 
         _isLerping = false;
     }
@@ -66,17 +58,17 @@ public class ScreenManager : MonoBehaviour
         }
     }
 
-    public void MoveCamara(ScreenType type)
+    public void MoveCamara(String name)
     {
         CloseAllSubUI();
-        
-        Vector3 moveToVector = _screens.ContainsKey(type) 
-            ? _screens[type].transform.position 
-            : _screens[ScreenType.MAP].transform.position;
+
+        Vector3 moveToVector = _screens.ContainsKey(name) 
+            ? _screens[name].transform.position 
+            : _screens["MAP"].transform.position;
 
         moveToVector.z = -10;
         _moveToVector = moveToVector;
-        _movedScreenType = type;
+        _movedScreenType = name;
         _isLerping = true;
     }
 

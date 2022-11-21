@@ -1922,7 +1922,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: bank
+      value: BANK
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -2240,7 +2240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: shop
+      value: SHOP
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -5666,7 +5666,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: plan
+      value: PLAN
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -5872,7 +5872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1317744291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7735,7 +7735,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &1708773575
 MonoBehaviour:
@@ -8556,7 +8556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: rank
+      value: RANK
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -8992,7 +8992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: infra
+      value: Infra
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -9141,7 +9141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: overall
+      value: OVERALL
       objectReference: {fileID: 0}
     - target: {fileID: 4134498281380700599, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
