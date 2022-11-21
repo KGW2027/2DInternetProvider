@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SubUI
   - WorldMap
+  - Screen
   layers:
   - Default
   - TransparentFX

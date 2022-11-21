@@ -19,7 +19,7 @@ public class WorldMapCameraController : MonoBehaviour
     private float[] _camBorder;
     private float[] _camScale;
 
-    private const float MaxFocal = 15.0f;
+    private const float MaxFocal = 80.0f;
     private const float MinFocal = 3.0f;
 
     void Start()
