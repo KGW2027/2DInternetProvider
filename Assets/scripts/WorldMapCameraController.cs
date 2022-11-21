@@ -18,12 +18,16 @@ public class WorldMapCameraController : MonoBehaviour
     private bool _moveCameraMode;
     private float[] _camBorder;
     private float[] _camScale;
+    private WorldMapInteractor _wmi;
 
-    private const float MaxFocal = 80.0f;
+    private const float MaxFocal = 50.0f;
     private const float MinFocal = 3.0f;
 
     void Start()
     {
+        _wmi = FindObjectOfType<WorldMapInteractor>().GetComponent<WorldMapInteractor>();
+        _wmi.ChangeVisibleMode(true);
+        
         _mainCamera = Camera.main;
         Vector3 mapImageCenter = map.transform.position;
         mapImageCenter.z = -10;
@@ -70,8 +74,14 @@ public class WorldMapCameraController : MonoBehaviour
         float wheel = Input.GetAxis("Mouse ScrollWheel") * camZoomSpeed * -1;
         if (wheel != 0)
         {
-            if ((_camCamera.orthographicSize <= MinFocal && wheel < 0.0f) ||
-                (_camCamera.orthographicSize >= MaxFocal && wheel > 0.0f)) return;
+            float orthoSize = _camCamera.orthographicSize;
+            if ((orthoSize <= MinFocal && wheel < 0.0f) ||
+                (orthoSize >= MaxFocal && wheel > 0.0f)) return;
+            
+            // 화면 크기가 Min 일때 0.4, Max일때 8
+            float ratio = (orthoSize - MinFocal) / MaxFocal;
+            camMoveSpeed = Mathf.Lerp(0.4f, 8.0f, ratio);
+            _wmi.ChangeVisibleMode(orthoSize <= 20);
             _camCamera.orthographicSize += wheel;
             UpdateCamScale();
         }
