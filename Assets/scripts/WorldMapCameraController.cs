@@ -46,6 +46,15 @@ public class WorldMapCameraController : MonoBehaviour
     
     void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            string clickedObject = _wmi.ClickMap(_camCamera.ScreenToWorldPoint(Input.mousePosition));
+            if (clickedObject != null)
+            {
+                Debug.Log(clickedObject);
+            }
+        }
+        
         if (!_moveCameraMode && Input.GetMouseButtonDown(1))
         {
             _onClickedCamVector = mapCamera.transform.position;
