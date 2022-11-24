@@ -10,6 +10,7 @@ public class ScreenManager : MonoBehaviour
 
     private Dictionary<string, Transform> _screens;
     private Dictionary<string, GameObject> _screenSubUIs;
+    private GameObject _infraUI;
 
     private bool _isLerping;
     private Vector3 _moveToVector;
@@ -36,6 +37,11 @@ public class ScreenManager : MonoBehaviour
         }
         
         CloseAllSubUI();
+        
+        _infraUI = _screenSubUIs["INFRA"];
+        _screenSubUIs.Remove("INFRA");
+        _screens.Remove("INFRA");
+        
         _screenSubUIs["MAP"].SetActive(true);
 
         _isLerping = false;
@@ -61,6 +67,7 @@ public class ScreenManager : MonoBehaviour
     public void MoveCamara(String name)
     {
         CloseAllSubUI();
+        if(!name.Equals("MAP")) _infraUI.SetActive(false);
 
         Vector3 moveToVector = _screens.ContainsKey(name) 
             ? _screens[name].transform.position 
@@ -70,6 +77,12 @@ public class ScreenManager : MonoBehaviour
         _moveToVector = moveToVector;
         _movedScreenType = name;
         _isLerping = true;
+    }
+
+    public void ToggleInfraUI()
+    {
+        MoveCamara("MAP");
+        _infraUI.SetActive(!_infraUI.activeSelf);
     }
 
     private void OpenSubUI()
