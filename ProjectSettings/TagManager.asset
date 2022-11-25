@@ -9,6 +9,7 @@ TagManager:
   - Screen
   - WorldMapButton
   - WorldMapCountryButton
+  - CityParents
   layers:
   - Default
   - TransparentFX
