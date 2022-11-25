@@ -18,10 +18,12 @@ namespace IP.Screen
         private int _year = 22;
         private int _month = 11;
         private int _remainNextMonth = 10;
-        private int _money = 100;
         private int _changeMoney = 0;
-        private string _name;
 
+        private TextMeshProUGUI _moneyText;
+        private TextMeshProUGUI _changeMoneyText;
+        private TextMeshProUGUI _companyNameText;
+        
         private LottoManager _lottoManager;
         private ScreenManager _screenManager;
     
@@ -32,6 +34,14 @@ namespace IP.Screen
             _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
             Timing.RunCoroutine(RunTimer());
+
+            _moneyText = moneyPrint.GetComponent<TextMeshProUGUI>();
+            _changeMoneyText = changeMoneyPrint.GetComponent<TextMeshProUGUI>();
+            _companyNameText = companyNamePrint.GetComponent<TextMeshProUGUI>();
+
+            _companyNameText.text = GameManager.Instance.GetCompanyName();
+            _moneyText.text = GameManager.Instance.GetHaveMoney().ToString();
+            _changeMoneyText.text = _changeMoney.ToString();
         }
 
         IEnumerator<float> RunTimer()

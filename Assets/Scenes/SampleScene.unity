@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &19546972
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 19546974}
+  - component: {fileID: 19546973}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!114 &19546973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19546972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da937aa5834a7b4ebf7146219dbacf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &19546974
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19546972}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 910.6208, y: 574.0786, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +272,7 @@ GameObject:
   - component: {fileID: 619214131}
   - component: {fileID: 619214130}
   m_Layer: 5
-  m_Name: Input_CompanyName
+  m_Name: InputText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -523,7 +567,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: "Enter Company Name...\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 04de025b5311309428430b6216c56f21, type: 2}
   m_sharedMaterial: {fileID: -6424882853797341950, guid: 04de025b5311309428430b6216c56f21, type: 2}
@@ -751,7 +795,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1051111418}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1709595726}
+        m_TargetAssemblyTypeName: IP.Control.SceneManager, Assembly-CSharp
+        m_MethodName: StartGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1051111418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1041,6 +1097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3618d75f5f5edae43816dedba9675c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputName: {fileID: 1743370064}
 --- !u!1 &1743370064
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,7 +1110,7 @@ GameObject:
   - component: {fileID: 1743370067}
   - component: {fileID: 1743370066}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Input_CompanyName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
