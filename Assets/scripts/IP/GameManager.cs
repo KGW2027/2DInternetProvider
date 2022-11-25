@@ -1,40 +1,103 @@
+using System.Collections.Generic;
 using IP.Control;
+using IP.Objective;
 using UnityEngine;
 
 namespace IP
 {
     public class GameManager : MonoBehaviour
     {
+        
         public static GameManager Instance { get; private set; }
 
-        private string _cName;
-        private long _money;
-        
+        private readonly int _startYear = 22;
+        private readonly int _startMonth = 11;
+
+        private Company _company;
+        private List<Country> _countries;
+
         void Start()
         {
             Instance = this;
-            _money = 1000L;
-        }
-
-        void Update()
-        {
-            
         }
 
         public string GetCompanyName()
         {
-            return _cName;
+            return _company.GetName();
         }
 
         public void SetCompanyName(string name)
         {
-            _cName = name;
+            if(_company == null) _company = new Company(name, 1000L);
         }
 
         public long GetHaveMoney()
         {
-            return _money;
+            return _company.GetMoney();
         }
-        
+
+        public int[] GetStartDate()
+        {
+            return new[] {_startYear, _startMonth};
+        }
+
+        public void SetCountriesInfo(List<Country> countries)
+        {
+            _countries = countries;
+        }
+
+        public List<Country> GetCountries()
+        {
+            return _countries;
+        }
+
+        public int GetConnectCountries()
+        {
+            return _company.GetConnectedCountries();
+        }
+
+        public int GetConnectCities()
+        {
+            return _company.GetConnectedCities().Count;
+        }
+
+        public int GetBuilds()
+        {
+            int buildCount = 0;
+            _company.GetConnectedCities().ForEach(c =>
+            {
+                List<IBuild> count = _company.GetBuilds(c);
+                if (count != null) buildCount += count.Count;
+            });
+            return buildCount;
+        }
+
+        public long GetCustomers()
+        {
+            return _company.GetTotalCustomers();
+        }
+
+        public long GetDebt()
+        {
+            return _company.GetTotalDebtScale();
+        }
+
+        public long GetDebtInterest()
+        {
+            return _company.GetTotalDebtInterest();
+        }
+
+        public List<IBuild> GetUnderConstructBuilds()
+        {
+            List<IBuild> ucbList = new List<IBuild>();
+            _company.GetConnectedCities().ForEach(city =>
+            {
+                foreach (IBuild build in _company.GetBuilds(city))
+                {
+                    if(!build.IsComplete()) ucbList.Add(build);
+                }
+            });
+            return ucbList;
+        }
     }
 }

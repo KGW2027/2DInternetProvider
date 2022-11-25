@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using IP.UIFunc;
 using MEC;
@@ -15,8 +16,8 @@ namespace IP.Screen
         public GameObject companyNamePrint;
         public GameObject screenManager;
 
-        private int _year = 22;
-        private int _month = 11;
+        private int _year;
+        private int _month;
         private int _remainNextMonth = 10;
         private long _changeMoney = 0;
 
@@ -30,6 +31,9 @@ namespace IP.Screen
         // Start is called before the first frame update
         void Start()
         {
+            _year = GameManager.Instance.GetStartDate()[0];
+            _month = GameManager.Instance.GetStartDate()[1];
+            
             UpdateDateText(true); // Initial Set
             _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
