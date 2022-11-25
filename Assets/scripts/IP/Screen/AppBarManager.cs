@@ -18,7 +18,7 @@ namespace IP.Screen
         private int _year = 22;
         private int _month = 11;
         private int _remainNextMonth = 10;
-        private int _changeMoney = 0;
+        private long _changeMoney = 0;
 
         private TextMeshProUGUI _moneyText;
         private TextMeshProUGUI _changeMoneyText;
@@ -30,7 +30,7 @@ namespace IP.Screen
         // Start is called before the first frame update
         void Start()
         {
-            updateDateText(true); // Initial Set
+            UpdateDateText(true); // Initial Set
             _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
             Timing.RunCoroutine(RunTimer());
@@ -40,8 +40,7 @@ namespace IP.Screen
             _companyNameText = companyNamePrint.GetComponent<TextMeshProUGUI>();
 
             _companyNameText.text = GameManager.Instance.GetCompanyName();
-            _moneyText.text = GameManager.Instance.GetHaveMoney().ToString();
-            _changeMoneyText.text = _changeMoney.ToString();
+            UpdateMoneyText();
         }
 
         IEnumerator<float> RunTimer()
@@ -54,12 +53,12 @@ namespace IP.Screen
                     _year++;
                     _month = 1;
                 }
-                updateDateText(true);
+                UpdateDateText(true);
                 _lottoManager.NextMonth();
             }
             else
             {
-                updateDateText(false);
+                UpdateDateText(false);
             }
 
 
@@ -73,10 +72,18 @@ namespace IP.Screen
         
         }
 
-        private void updateDateText(bool dateChanged)
+        private void UpdateDateText(bool dateChanged)
         {
             if(dateChanged) datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}Y {_month:00}M";
             remainDatePrint.GetComponent<TextMeshProUGUI>().text = $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
+        }
+
+        private void UpdateMoneyText()
+        {
+            _moneyText.text = $"{GameManager.Instance.GetHaveMoney():C0}";
+            _changeMoneyText.text = $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:C0}";
+            if (_changeMoney < 0) _changeMoneyText.color = new Color(255, 0, 0);
+            else _changeMoneyText.color = new Color(0, 255, 0);
         }
 
         public void MoveHome()
