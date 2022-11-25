@@ -24,36 +24,27 @@ namespace IP.UIFunc
 
         void Start()
         {
-            _wmi = FindObjectOfType<WorldMapInteractor>().GetComponent<WorldMapInteractor>();
-            _wmi.ChangeVisibleMode(true);
         
             _mainCamera = Camera.main;
             Vector3 mapImageCenter = map.transform.position;
             mapImageCenter.z = -10;
             mapCamera.transform.position = mapImageCenter;
 
-            _camCamera = mapCamera.GetComponent<Camera>();
-            UpdateCamScale();
-        
             Bounds mapBounds = map.GetComponent<SpriteRenderer>().bounds;
             float centerX = mapBounds.center.x;
             float centerY = mapBounds.center.y;
             float extentX = mapBounds.extents.x;
             float extentY = mapBounds.extents.y;
             _camBorder = new[] {centerX + extentX, centerY + extentY, centerX - extentX, centerY - extentY};
+            
+            _camCamera = mapCamera.GetComponent<Camera>();
+            UpdateCamScale();
+            _wmi = FindObjectOfType<WorldMapInteractor>().GetComponent<WorldMapInteractor>();
+            _wmi.ChangeVisibleMode(true);
         }
     
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                string clickedObject = _wmi.ClickMap(_camCamera.ScreenToWorldPoint(Input.mousePosition));
-                if (clickedObject != null)
-                {
-                    Debug.Log(clickedObject);
-                }
-            }
-        
             if (!_moveCameraMode && Input.GetMouseButtonDown(1))
             {
                 _onClickedCamVector = mapCamera.transform.position;

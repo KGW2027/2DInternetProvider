@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IP.Objective;
 using TMPro;
 using UnityEngine;
 
@@ -6,52 +7,56 @@ namespace IP.UIFunc
 {
     public class WorldMapInteractor : MonoBehaviour
     {
-        public GameObject cities;
-        public GameObject countries;
-
-        private List<string> _cityNames;
-        private List<string> _countryNames;
+        private List<GameObject> _cityObjects;
+        private List<GameObject> _countryObjects;
+        private List<Country> _countries;
     
         // Start is called before the first frame update
         void Start()
         {
-            _cityNames = new List<string>();
-            _countryNames = new List<string>();
-        
-            foreach (Transform city in cities.transform)
-            {
-                if (city.CompareTag("WorldMapButton"))
-                {
-                    _cityNames.Add(city.transform.GetChild(0).GetComponent<TextMeshPro>().text);
-                }
-            }
-
-            foreach (Transform country in countries.transform)
-            {
-                if (country.CompareTag("WorldMapCountryButton"))
-                {
-                    _countryNames.Add(country.transform.GetChild(0).GetComponent<TextMeshPro>().text);
-                }
-            }
+            _cityObjects = new List<GameObject>();
+            _countryObjects = new List<GameObject>();
+            _countries = new List<Country>();
+            
+            RegisterCities();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void RegisterCities()
         {
+            foreach(Transform countries in transform)
+            {
+                Debug.Log(countries.name);
+                Country country = null;
+                if (countries.CompareTag("CityParents"))
+                {
+                    Transform countryTransform = countries.Find("CountryLogo");
+                    string countryName = countryTransform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    country = new Country(countryName, countryTransform.gameObject);
+                    
+                    _countryObjects.Add(country.Button);
+
+                    foreach (Transform cities in countries.transform)
+                    {
+                        if (cities.CompareTag("WorldMapButton"))
+                        {
+                            TextMeshPro cityText = cities.GetChild(0).GetComponent<TextMeshPro>();
+                            long people = City.GeneratePeople(cityText.name.Equals("Text_CityName"));
+                            City city = new City(cityText.text, people, cities.gameObject);
+                            country.AddCity(city);
+                            
+                            _cityObjects.Add(city.Button);
+                        }
+                    }
+                }
+                if(country != null) _countries.Add(country);
+            }
+            GameManager.Instance.SetCountriesInfo(_countries);
         }
 
         public void ChangeVisibleMode(bool visibleCity)
         {
-            if (visibleCity)
-            {
-                cities.SetActive(true);
-                countries.SetActive(false);
-            }
-            else
-            {
-                cities.SetActive(false);
-                countries.SetActive(true);
-            }
+            _cityObjects.ForEach(city => city.SetActive(visibleCity));
+            _countryObjects.ForEach(city => city.SetActive(!visibleCity));
         }
 
         public string ClickMap(Vector2 location)
