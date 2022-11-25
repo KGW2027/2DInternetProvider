@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IP.UIFunc;
 using UnityEngine;
 
 namespace IP.Screen
@@ -69,7 +70,10 @@ namespace IP.Screen
         public void MoveCamara(String name)
         {
             CloseAllSubUI();
-            if(!name.Equals("MAP")) _infraUI.SetActive(false);
+            if (!name.Equals("MAP"))
+            {
+                _infraUI.SetActive(false);
+            }
 
             Vector3 moveToVector = _screens.ContainsKey(name) 
                 ? _screens[name].transform.position 
@@ -85,11 +89,16 @@ namespace IP.Screen
         {
             MoveCamara("MAP");
             _infraUI.SetActive(!_infraUI.activeSelf);
+            _infraUI.GetComponent<ISubUI>()?.UpdateUI();
         }
 
         private void OpenSubUI()
         {
-            if(_screenSubUIs.ContainsKey(_movedScreenType)) _screenSubUIs[_movedScreenType].SetActive(true);
+            if (_screenSubUIs.ContainsKey(_movedScreenType))
+            {
+                _screenSubUIs[_movedScreenType].SetActive(true);
+                _screenSubUIs[_movedScreenType].GetComponent<ISubUI>()?.UpdateUI();
+            }
         }
 
         private void CloseAllSubUI()
