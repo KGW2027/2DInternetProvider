@@ -6,6 +6,7 @@
         public double Interest;
         public int StartYear;
         public int StartMonth;
-        public int Mature;
+        public Bank FromBank;
+
     }
 }

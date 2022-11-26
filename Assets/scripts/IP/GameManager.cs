@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
-using IP.Control;
 using IP.Objective;
+using IP.Screen;
 using UnityEngine;
 
 namespace IP
@@ -98,6 +99,23 @@ namespace IP
                 }
             });
             return ucbList;
+        }
+
+        public void AddLoan(Bank bank, long money)
+        {
+            Debt loan = new Debt();
+            loan.Interest = bank.Interest;
+            loan.Scale = money;
+            loan.FromBank = bank;
+
+            string[] date = AppBarManager.Instance.GetDate().Split("Y");
+            loan.StartYear = Int32.Parse(date[0]);
+            loan.StartMonth = Int32.Parse(date[1].Substring(0, date[1].Length - 1));
+            _company.AddLoan(loan);
+            
+            AppBarManager.Instance.Refresh();
+            
+            
         }
     }
 }

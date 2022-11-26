@@ -111,5 +111,11 @@ namespace IP.Objective
         {
             return "1GB";
         }
+
+        public void AddLoan(Debt debt)
+        {
+            _debts.Add(debt);
+            _money += debt.Scale;
+        }
     }
 }

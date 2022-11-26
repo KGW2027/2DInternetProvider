@@ -16,7 +16,6 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            Debug.Log($"TARGET BANK : {_targetBank.Name}");
             bankName.GetComponent<TextMeshProUGUI>().text = $"'{_targetBank.Name}'";
             bankMaxLoan.GetComponent<TextMeshProUGUI>().text = $"(한도 : {_targetBank.MaxLoanSize:n0})";
         }
@@ -28,7 +27,7 @@ namespace IP.UIFunc.Builder
             {
                 if (loanSize > _targetBank.MaxLoanSize) return;
                 
-                Debug.Log($"{loanSize} 대출에 성공");
+                GameManager.Instance.AddLoan(_targetBank, loanSize);
                 PopupManager.Instance.ClosePopup();
             }
         }
