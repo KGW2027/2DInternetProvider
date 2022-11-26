@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using IP.Control;
-using IP.UIFunc;
 using MEC;
 using TMPro;
 using UnityEngine;
@@ -10,6 +8,8 @@ namespace IP.Screen
 {
     public class AppBarManager : MonoBehaviour
     {
+        public static AppBarManager Instance;
+        
         public GameObject datePrint;
         public GameObject remainDatePrint;
         public GameObject moneyPrint;
@@ -32,6 +32,7 @@ namespace IP.Screen
         // Start is called before the first frame update
         void Start()
         {
+            Instance = this;
             _year = GameManager.Instance.GetStartDate()[0];
             _month = GameManager.Instance.GetStartDate()[1];
             
@@ -85,6 +86,7 @@ namespace IP.Screen
 
         private void UpdateMoneyText()
         {
+            _changeMoney = GameManager.Instance.GetDebtInterest();
             _moneyText.text = $"{GameManager.Instance.GetHaveMoney():C0}";
             _changeMoneyText.text = $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:C0}";
             if (_changeMoney < 0) _changeMoneyText.color = new Color(255, 0, 0);
@@ -98,6 +100,16 @@ namespace IP.Screen
 
         public void MoveScreen(string type) {
             _screenManager.MoveCamara(type.ToUpper());
+        }
+
+        public string GetDate()
+        {
+            return $"{_year}Y{_month}M";
+        }
+
+        public void Refresh()
+        {
+            UpdateMoneyText();
         }
     }
 }
