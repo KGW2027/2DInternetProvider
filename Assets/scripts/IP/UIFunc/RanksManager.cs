@@ -1,3 +1,5 @@
+using IP.Objective;
+using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
 
@@ -5,16 +7,6 @@ namespace IP.UIFunc
 {
     public class RanksManager : MonoBehaviour
     {
-        class CompanyInfo
-        {
-            public int Rank;
-            string _name;
-            float _marketShare;
-            private int _builds;
-            private int _connectedCountries;
-            private int _connectedCities;
-            private string _traffics;
-        }
     
         public GameObject panel;
     
@@ -47,9 +39,6 @@ namespace IP.UIFunc
             for (int panelKey = 0; panelKey < 15; panelKey++)
             {
                 GameObject newPanel = Instantiate(panel, transform, true);
-                CompanyInfo cInfo = new CompanyInfo();
-                cInfo.Rank = panelKey + 1;
-                UpdatePanelDisplay(newPanel, cInfo);
             }
         }
 
@@ -58,37 +47,11 @@ namespace IP.UIFunc
             textObject.GetComponent<TextMeshProUGUI>().text = text;
         }
 
-        private void UpdatePanelDisplay(GameObject target, CompanyInfo cInfo)
+        private void UpdatePanelDisplay(GameObject target, Company company)
         {
-            foreach (Transform textField in target.transform)
-            {
-                string newText = "";
-                switch (textField.name)
-                {
-                    case "Text_Rank":
-                        newText = $"{cInfo.Rank:00}";
-                        break;
-                    case "Text_CompanyName":
-                        newText = "CompName";
-                        break;
-                    case "Text_MarketShare":
-                        newText = $"{Random.Range(.0f, 99.99f):N2}%";
-                        break;
-                    case "Text_Buildings":
-                        newText = $"{Random.Range(0, 999)}";
-                        break;
-                    case "Text_Traffics":
-                        newText = $"99.99 GB";
-                        break;
-                    case "Text_Cities":
-                        newText = $"1 / 50";
-                        break;
-                    case "Text_Countries":
-                        newText = $"1 / 5";
-                        break;
-                }
-                if(!newText.Equals("")) SetText(textField, newText);
-            }
+            RankPanelInfo rpi = target.GetComponent<RankPanelInfo>();
+            rpi.SetCompany(company);
+            rpi.Build();
         }
     }
 }

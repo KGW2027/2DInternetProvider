@@ -60,6 +60,17 @@ namespace IP.Objective
             if (_builds.ContainsKey(city)) return _builds[city];
             return null;
         }
+        
+        public int GetTotalBuilds()
+        {
+            int buildCount = 0;
+            GetConnectedCities().ForEach(c =>
+            {
+                List<IBuild> count = GetBuilds(c);
+                if (count != null) buildCount += count.Count;
+            });
+            return buildCount;
+        }
 
         public long GetTotalDebtScale()
         {
@@ -94,6 +105,11 @@ namespace IP.Objective
                 }
             });
             return customers;
+        }
+
+        public string GetTotalTraffic()
+        {
+            return "1GB";
         }
     }
 }

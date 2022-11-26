@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using IP.Objective;
+using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -64,27 +65,9 @@ namespace IP.UIFunc
 
         private void BuildsInfoBuilder(GameObject obj, IBuild build)
         {
-            foreach (Transform tf in obj.transform)
-            {
-                switch (tf.name)
-                {
-                    case "Image_BuildingThumbnail":
-                        tf.GetComponent<RawImage>().texture = build.GetTexture();
-                        break;
-                    case "Text_Name":
-                        tf.GetComponent<TextMeshProUGUI>().text = build.GetName();
-                        break;
-                    case "Text_Spend":
-                        tf.GetComponent<TextMeshProUGUI>().text = $"1달 소비 비용 : {build.GetBudget() / build.GetBuildDate():n0F}k$";
-                        break;
-                    case "Text_Complete":
-                        tf.GetComponent<TextMeshProUGUI>().text = $"예정 완공일 : {build.GetBuildDate()}";
-                        break;
-                    case "Text_CityName":
-                        tf.GetComponent<TextMeshProUGUI>().text = $"건설중인 도시 명 : {build.GetCity().Name}";
-                        break;
-                }
-            }
+            OverallBuildingInfo obi = obj.GetComponent<OverallBuildingInfo>();
+            obi.SetBuildInfo(build);
+            obi.Build();
         }
     }
 }
