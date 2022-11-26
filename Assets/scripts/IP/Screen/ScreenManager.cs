@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IP.Control;
 using IP.UIFunc;
 using UnityEngine;
 
@@ -69,6 +70,7 @@ namespace IP.Screen
 
         public void MoveCamara(String name)
         {
+            PopupManager.Instance.ClosePopup();
             CloseAllSubUI();
             if (!name.Equals("MAP"))
             {
