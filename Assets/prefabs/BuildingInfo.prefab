@@ -354,6 +354,7 @@ GameObject:
   - component: {fileID: 2670426423098802047}
   - component: {fileID: 2670426423098802045}
   - component: {fileID: 2670426423098802046}
+  - component: {fileID: 5490603343413845317}
   m_Layer: 0
   m_Name: BuildingInfo
   m_TagString: Untagged
@@ -422,6 +423,23 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &5490603343413845317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2670426423098802040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8e308c3d6894da89292c807e37c6363, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thumbnail: {fileID: 2670426422487999870}
+  buildName: {fileID: 2670426422518755513}
+  spend: {fileID: 2670426421450060241}
+  complete: {fileID: 2670426423348466572}
+  cityName: {fileID: 2670426423291105440}
 --- !u!1 &2670426423283579094
 GameObject:
   m_ObjectHideFlags: 0
