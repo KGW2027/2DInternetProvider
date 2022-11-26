@@ -3,7 +3,7 @@ using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
 
-namespace IP.UIFunc
+namespace IP.Control
 {
     public class RanksManager : MonoBehaviour
     {

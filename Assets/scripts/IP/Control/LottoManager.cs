@@ -1,6 +1,7 @@
+using IP.UIFunc;
 using UnityEngine;
 
-namespace IP.UIFunc
+namespace IP.Control
 {
     public class LottoManager : MonoBehaviour
     {

@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using IP.Objective;
+using IP.UIFunc;
 using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace IP.UIFunc
+namespace IP.Control
 {
     public class OverallManager : MonoBehaviour, ISubUI
     {
