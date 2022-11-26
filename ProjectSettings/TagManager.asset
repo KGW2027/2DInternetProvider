@@ -10,6 +10,7 @@ TagManager:
   - WorldMapButton
   - WorldMapCountryButton
   - CityParents
+  - BankButton
   layers:
   - Default
   - TransparentFX
