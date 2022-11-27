@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using IP.Objective.Builds;
 using Unity.VisualScripting;
 
 namespace IP.Objective
@@ -8,14 +9,14 @@ namespace IP.Objective
     {
         private string _companyName;
         private long _money;
-        private Dictionary<City, List<IBuild>> _builds;
+        private Dictionary<City, List<BuildBase>> _builds;
         private List<Debt> _debts;
 
         public Company(string name, long startMoney)
         {
             _companyName = name;
             _money = startMoney;
-            _builds = new Dictionary<City, List<IBuild>>();
+            _builds = new Dictionary<City, List<BuildBase>>();
             _debts = new List<Debt>();
         }
 
@@ -55,7 +56,7 @@ namespace IP.Objective
             return connects.Count;
         }
 
-        public List<IBuild> GetBuilds(City city)
+        public List<BuildBase> GetBuilds(City city)
         {
             if (_builds.ContainsKey(city)) return _builds[city];
             return null;
@@ -66,7 +67,7 @@ namespace IP.Objective
             int buildCount = 0;
             GetConnectedCities().ForEach(c =>
             {
-                List<IBuild> count = GetBuilds(c);
+                List<BuildBase> count = GetBuilds(c);
                 if (count != null) buildCount += count.Count;
             });
             return buildCount;

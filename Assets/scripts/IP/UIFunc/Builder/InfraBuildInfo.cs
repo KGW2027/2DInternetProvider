@@ -1,4 +1,5 @@
 ﻿using IP.Objective;
+using IP.Objective.Builds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ namespace IP.UIFunc.Builder
         public GameObject spend;
         public GameObject complete;
         
-        private IBuild _buildInfo;
+        private BuildBase _buildInfo;
         
         public void Build()
         {
@@ -22,7 +23,7 @@ namespace IP.UIFunc.Builder
             complete.GetComponent<TextMeshProUGUI>().text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}";
         }
 
-        public void SetBuildInfo(IBuild build)
+        public void SetBuildInfo(BuildBase build)
         {
             _buildInfo = build;
         }

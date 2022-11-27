@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using IP.Objective;
+using IP.Objective.Builds;
 using IP.Screen;
 using UnityEngine;
 
@@ -67,7 +68,7 @@ namespace IP
             int buildCount = 0;
             _company.GetConnectedCities().ForEach(c =>
             {
-                List<IBuild> count = _company.GetBuilds(c);
+                List<BuildBase> count = _company.GetBuilds(c);
                 if (count != null) buildCount += count.Count;
             });
             return buildCount;
@@ -88,12 +89,12 @@ namespace IP
             return _company.GetTotalDebtInterest();
         }
 
-        public List<IBuild> GetUnderConstructBuilds()
+        public List<BuildBase> GetUnderConstructBuilds()
         {
-            List<IBuild> ucbList = new List<IBuild>();
+            List<BuildBase> ucbList = new List<BuildBase>();
             _company.GetConnectedCities().ForEach(city =>
             {
-                foreach (IBuild build in _company.GetBuilds(city))
+                foreach (BuildBase build in _company.GetBuilds(city))
                 {
                     if(!build.IsComplete()) ucbList.Add(build);
                 }

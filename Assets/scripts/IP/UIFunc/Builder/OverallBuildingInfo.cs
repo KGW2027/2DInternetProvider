@@ -1,4 +1,5 @@
 ﻿using IP.Objective;
+using IP.Objective.Builds;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ namespace IP.UIFunc.Builder
         public GameObject complete;
         public GameObject cityName;
         
-        private IBuild _buildInfo;
+        private BuildBase _buildInfo;
         
         public void Build()
         {
@@ -24,7 +25,7 @@ namespace IP.UIFunc.Builder
             cityName.GetComponent<TextMeshProUGUI>().text = $"건설중인 도시 명 : {_buildInfo.GetCity().Name}";
         }
 
-        public void SetBuildInfo(IBuild build)
+        public void SetBuildInfo(BuildBase build)
         {
             _buildInfo = build;
         }

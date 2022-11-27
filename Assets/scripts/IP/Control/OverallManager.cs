@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using IP.Objective;
+using IP.Objective.Builds;
 using IP.UIFunc;
 using IP.UIFunc.Builder;
 using TMPro;
@@ -56,14 +57,14 @@ namespace IP.Control
 
         private void UpdateBuildsInfo()
         {
-            foreach (IBuild build in GameManager.Instance.GetUnderConstructBuilds())
+            foreach (BuildBase build in GameManager.Instance.GetUnderConstructBuilds())
             {
                 GameObject info = Instantiate(buildInfoPrefab, buildsInfo.transform, true);
                 BuildsInfoBuilder(info, build);
             }
         }
 
-        private void BuildsInfoBuilder(GameObject obj, IBuild build)
+        private void BuildsInfoBuilder(GameObject obj, BuildBase build)
         {
             OverallBuildingInfo obi = obj.GetComponent<OverallBuildingInfo>();
             obi.SetBuildInfo(build);
