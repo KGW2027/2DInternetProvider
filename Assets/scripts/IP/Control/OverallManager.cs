@@ -14,17 +14,8 @@ namespace IP.Control
         public GameObject buildsInfo;
         public GameObject buildInfoPrefab;
 
-        private Dictionary<string, TextMeshProUGUI> _infoTexts;
-
         void Start()
         {
-            _infoTexts = new Dictionary<string, TextMeshProUGUI>();
-            
-            foreach(Transform tf in infoTextsParent.transform)
-            {
-                _infoTexts[tf.name.Split("_")[1].ToUpper()] = tf.GetComponent<TextMeshProUGUI>();
-            }
-            
             UpdateUI();
         }
 

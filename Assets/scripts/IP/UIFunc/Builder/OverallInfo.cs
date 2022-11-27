@@ -19,27 +19,22 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            SetText(companyName, GameManager.Instance.GetCompanyName());
-            SetText(startDate, $"창립 일자 : {GameManager.Instance.GetStartDate()[0]:000}Y {GameManager.Instance.GetStartDate()[1]:00}M");
-            SetText(connCountries, $"연결된 국가 : {GameManager.Instance.GetConnectCountries()} / 5");
-            SetText(connCities, $"연결된 도시 : {GameManager.Instance.GetConnectCities()} / 50");
-            SetText(qtyBuilds, $"설치한 건물 수 : {GameManager.Instance.GetBuilds():n0}");
-            SetText(qtyCustomers, $"총 소비자 수 : {GameManager.Instance.GetCustomers():n0}");
-            SetText(money, $"보유 자금 : {GameManager.Instance.GetHaveMoney():n0}");
-            SetText(monthMoney, $"월 수익 : -");
-            SetText(debt, $"총 부채 : {GameManager.Instance.GetDebt():n0}" );
-            SetText(useMoney, "월 지출 : -");
-            SetText(changeMoney, "총 변동 : -");
+            StaticFunctions.SetUIText(companyName, GameManager.Instance.GetCompanyName());
+            StaticFunctions.SetUIText(startDate, $"창립 일자 : {GameManager.Instance.GetStartDate()[0]:000}Y {GameManager.Instance.GetStartDate()[1]:00}M");
+            StaticFunctions.SetUIText(connCountries, $"연결된 국가 : {GameManager.Instance.GetConnectCountries()} / 5");
+            StaticFunctions.SetUIText(connCities, $"연결된 도시 : {GameManager.Instance.GetConnectCities()} / 50");
+            StaticFunctions.SetUIText(qtyBuilds, $"설치한 건물 수 : {GameManager.Instance.GetBuilds():n0}");
+            StaticFunctions.SetUIText(qtyCustomers, $"총 소비자 수 : {GameManager.Instance.GetCustomers():n0}");
+            StaticFunctions.SetUIText(money, $"보유 자금 : {GameManager.Instance.GetHaveMoney():n0}");
+            StaticFunctions.SetUIText(monthMoney, $"월 수익 : -");
+            StaticFunctions.SetUIText(debt, $"총 부채 : {GameManager.Instance.GetDebt():n0}" );
+            StaticFunctions.SetUIText(useMoney, "월 지출 : -");
+            StaticFunctions.SetUIText(changeMoney, "총 변동 : -");
         }
 
         public void SendData(params object[] datas)
         {
             
-        }
-
-        private void SetText(GameObject go, string text)
-        {
-            go.GetComponent<TextMeshProUGUI>().text = text;
         }
     }
 }

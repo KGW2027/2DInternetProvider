@@ -19,10 +19,10 @@ namespace IP.UIFunc.Builder
         public void Build()
         {
             thumbnail.GetComponent<RawImage>().texture = _buildInfo.GetTexture();
-            buildName.GetComponent<TextMeshProUGUI>().text = _buildInfo.GetName();
-            spend.GetComponent<TextMeshProUGUI>().text = $"1달 소비 비용 : {_buildInfo.GetBudget() / _buildInfo.GetBuildDate():n0F}k$";
-            complete.GetComponent<TextMeshProUGUI>().text = $"예정 완공일 : {_buildInfo.GetBuildDate()}";
-            cityName.GetComponent<TextMeshProUGUI>().text = $"건설중인 도시 명 : {_buildInfo.GetCity().Name}";
+            StaticFunctions.SetUIText(buildName, _buildInfo.GetName());
+            StaticFunctions.SetUIText(spend, $"1달 소비 비용 : {_buildInfo.GetBudget() / _buildInfo.GetBuildDate():n0F}k$");
+            StaticFunctions.SetUIText(complete, $"예정 완공일 : {_buildInfo.GetBuildDate()}");
+            StaticFunctions.SetUIText(cityName, $"건설중인 도시 명 : {_buildInfo.GetCity().Name}");
         }
 
         public void SendData(params object[] datas)

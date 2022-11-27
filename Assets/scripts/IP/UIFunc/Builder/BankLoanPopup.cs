@@ -17,8 +17,8 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            bankName.GetComponent<TextMeshProUGUI>().text = $"'{_targetBank.Name}'";
-            bankMaxLoan.GetComponent<TextMeshProUGUI>().text = $"(한도 : {_targetBank.MaxLoanSize:n0})";
+            StaticFunctions.SetUIText(bankName, $"'{_targetBank.Name}'");
+            StaticFunctions.SetUIText(bankMaxLoan, $"(한도 : {_targetBank.MaxLoanSize:n0})");
         }
 
         public void SendData(params object[] datas)

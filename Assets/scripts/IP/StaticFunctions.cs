@@ -14,5 +14,10 @@ namespace IP
         {
             obj.GetComponent<TextMeshPro>().text = text;
         }
+
+        public static void SetUITextColor(GameObject obj, Color color)
+        {
+            obj.GetComponent<TextMeshProUGUI>().color = color;
+        }
     }
 }

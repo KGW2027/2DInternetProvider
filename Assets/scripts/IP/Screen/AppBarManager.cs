@@ -22,10 +22,6 @@ namespace IP.Screen
         private int _remainNextMonth = 10;
         private long _changeMoney = 0;
 
-        private TextMeshProUGUI _moneyText;
-        private TextMeshProUGUI _changeMoneyText;
-        private TextMeshProUGUI _companyNameText;
-        
         private LottoManager _lottoManager;
         private ScreenManager _screenManager;
     
@@ -41,11 +37,7 @@ namespace IP.Screen
             _screenManager = screenManager.GetComponent<ScreenManager>();
             Timing.RunCoroutine(RunTimer());
 
-            _moneyText = moneyPrint.GetComponent<TextMeshProUGUI>();
-            _changeMoneyText = changeMoneyPrint.GetComponent<TextMeshProUGUI>();
-            _companyNameText = companyNamePrint.GetComponent<TextMeshProUGUI>();
-
-            _companyNameText.text = GameManager.Instance.GetCompanyName();
+            StaticFunctions.SetUIText(companyNamePrint, GameManager.Instance.GetCompanyName());
             UpdateMoneyText();
         }
 
@@ -72,25 +64,21 @@ namespace IP.Screen
             Timing.RunCoroutine(RunTimer());
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-
         private void UpdateDateText(bool dateChanged)
         {
-            if(dateChanged) datePrint.GetComponent<TextMeshProUGUI>().text = $"{_year}Y {_month:00}M";
-            remainDatePrint.GetComponent<TextMeshProUGUI>().text = $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
+            if(dateChanged) StaticFunctions.SetUIText(datePrint, $"{_year}Y {_month:00}M");
+            StaticFunctions.SetUIText(remainDatePrint, $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}");
         }
 
         private void UpdateMoneyText()
         {
             _changeMoney = GameManager.Instance.GetDebtInterest();
-            _moneyText.text = $"{GameManager.Instance.GetHaveMoney():n0}";
-            _changeMoneyText.text = $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}";
-            if (_changeMoney < 0) _changeMoneyText.color = new Color(255, 0, 0);
-            else _changeMoneyText.color = new Color(0, 255, 0);
+            StaticFunctions.SetUIText(moneyPrint, $"{GameManager.Instance.GetHaveMoney():n0}");
+            StaticFunctions.SetUIText(changeMoneyPrint, $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
+            Color textColor = _changeMoney < 0
+                ? new Color(255, 0, 0)
+                : new Color(0, 255, 0);
+            StaticFunctions.SetUITextColor(changeMoneyPrint, textColor);
         }
 
         public void MoveHome()

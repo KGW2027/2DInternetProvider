@@ -10,13 +10,10 @@ namespace IP.Control
     
         public GameObject panel;
     
-        // Start is called before the first frame update
         void Start()
         {
             UpdateRanks();
         }
-
-        // Update is called once per frame
 
         private void ClearChilds()
         {
@@ -35,12 +32,8 @@ namespace IP.Control
             for (int panelKey = 0; panelKey < 15; panelKey++)
             {
                 GameObject newPanel = Instantiate(panel, transform, true);
+                // UpdatePanelDisplay(newPanel, company)
             }
-        }
-
-        private void SetText(Transform textObject, string text)
-        {
-            textObject.GetComponent<TextMeshProUGUI>().text = text;
         }
 
         private void UpdatePanelDisplay(GameObject target, Company company)

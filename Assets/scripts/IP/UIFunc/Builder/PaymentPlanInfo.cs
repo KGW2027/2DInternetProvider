@@ -16,9 +16,9 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            planName.GetComponent<TextMeshProUGUI>().text = _plan.Name;
-            planInfo.GetComponent<TextMeshProUGUI>().text = $"서비스 중인 국가 : {GetCities()}\n한 달 요금 : {_plan.Budget}$\n판매 비중 : {GetShare():F2}%";
-            planDesc.GetComponent<TextMeshProUGUI>().text = $"{_plan.Bandwidth}GB 대역폭, {_plan.Upload} Mbps, {_plan.Download} Mbps";
+            StaticFunctions.SetUIText(planName, _plan.Name);
+            StaticFunctions.SetUIText(planInfo, $"서비스 중인 국가 : {GetCities()}\n한 달 요금 : {_plan.Budget}$\n판매 비중 : {GetShare():F2}%");
+            StaticFunctions.SetUIText(planDesc, $"{_plan.Bandwidth}GB 대역폭, {_plan.Upload} Mbps, {_plan.Download} Mbps");
         }
 
         public void SendData(params object[] datas)
