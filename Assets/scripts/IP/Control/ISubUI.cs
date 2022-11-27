@@ -1,4 +1,4 @@
-﻿namespace IP.UIFunc
+﻿namespace IP.Control
 {
     public interface ISubUI
     {
