@@ -12,12 +12,17 @@ namespace IP.Objective
         private Dictionary<City, List<BuildBase>> _builds;
         private List<Debt> _debts;
 
+        private int _useLoanTimes;
+        private int _repayLoanTimes;
+
         public Company(string name, long startMoney)
         {
             _companyName = name;
             _money = startMoney;
             _builds = new Dictionary<City, List<BuildBase>>();
             _debts = new List<Debt>();
+            _useLoanTimes = 0;
+            _repayLoanTimes = 0;
         }
 
         public string GetName()

@@ -19,9 +19,9 @@ namespace IP.Control
         {
             _bankInfos = new List<BankInfo>();
 
-            Bank bank1 = new Bank("밀 항회");
-            Bank bank2 = new Bank("어디든 대출");
-            Bank bank3 = new Bank("얼마든 OKash");
+            Bank bank1 = new Bank("밀 항회", 2.5f, 2.7f);
+            Bank bank2 = new Bank("어디든 대출", 4.0f, 4.3f);
+            Bank bank3 = new Bank("얼마든 OKash", 7.0f, 9.9f);
 
             Bank[] banks = {bank1, bank2, bank3};
             int used = 0;
