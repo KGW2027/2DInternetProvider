@@ -87,8 +87,8 @@ namespace IP.Screen
         private void UpdateMoneyText()
         {
             _changeMoney = GameManager.Instance.GetDebtInterest();
-            _moneyText.text = $"{GameManager.Instance.GetHaveMoney():C0}";
-            _changeMoneyText.text = $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:C0}";
+            _moneyText.text = $"{GameManager.Instance.GetHaveMoney():n0}";
+            _changeMoneyText.text = $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}";
             if (_changeMoney < 0) _changeMoneyText.color = new Color(255, 0, 0);
             else _changeMoneyText.color = new Color(0, 255, 0);
         }
