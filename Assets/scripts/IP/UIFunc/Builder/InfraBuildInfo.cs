@@ -19,8 +19,8 @@ namespace IP.UIFunc.Builder
         {
             thumbnail.GetComponent<RawImage>().texture = _buildInfo.GetTexture();
             buildName.GetComponent<TextMeshProUGUI>().text = _buildInfo.GetName();
-            spend.GetComponent<TextMeshProUGUI>().text = $"건설 예산 : {_buildInfo.GetBudget():n0F}k$";
-            complete.GetComponent<TextMeshProUGUI>().text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}";
+            spend.GetComponent<TextMeshProUGUI>().text = $"건설 예산 : {_buildInfo.GetBudget():n0}k$";
+            complete.GetComponent<TextMeshProUGUI>().text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}개월";
         }
 
         public void SetBuildInfo(BuildBase build)
