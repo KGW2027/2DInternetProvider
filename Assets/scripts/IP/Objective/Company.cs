@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using IP.Objective.Builds;
+using IP.Screen;
 using Unity.VisualScripting;
 
 namespace IP.Objective
@@ -122,6 +123,14 @@ namespace IP.Objective
         {
             _debts.Add(debt);
             _money += debt.Scale;
+        }
+
+        public bool UseMoney(long amount)
+        {
+            if (_money < amount) return false;
+            _money -= amount;
+            AppBarManager.Instance.Refresh();
+            return true;
         }
     }
 }

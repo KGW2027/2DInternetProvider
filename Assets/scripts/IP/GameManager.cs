@@ -118,5 +118,10 @@ namespace IP
             
             
         }
+
+        public bool UseMoney(long amount)
+        {
+            return _company.UseMoney(amount);
+        }
     }
 }

@@ -5,6 +5,10 @@ namespace IP
 {
     public static class StaticFunctions
     {
+        public static void SetUIText2(this GameObject obj, string text)
+        {
+            obj.GetComponent<TextMeshProUGUI>().text = text;
+        }
         public static void SetUIText(GameObject obj, string text)
         {
             obj.GetComponent<TextMeshProUGUI>().text = text;

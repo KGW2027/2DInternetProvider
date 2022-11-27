@@ -51,8 +51,9 @@ namespace IP.Screen
                     _year++;
                     _month = 1;
                 }
+
                 UpdateDateText(true);
-                _lottoManager.NextMonth();
+                _lottoManager.Next();
             }
             else
             {
