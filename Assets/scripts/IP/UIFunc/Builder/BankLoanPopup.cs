@@ -13,6 +13,7 @@ namespace IP.UIFunc.Builder
         public GameObject inputLoan;
         
         private Bank _targetBank;
+        private BankManager _bankManager;
         
         public void Build()
         {
@@ -28,6 +29,9 @@ namespace IP.UIFunc.Builder
                 if (loanSize > _targetBank.MaxLoanSize) return;
                 
                 GameManager.Instance.AddLoan(_targetBank, loanSize);
+                _targetBank.Loaned(loanSize);
+                if (_bankManager == null) _bankManager = FindObjectOfType<BankManager>();
+                _bankManager.UpdateUI();
                 PopupManager.Instance.ClosePopup();
             }
         }

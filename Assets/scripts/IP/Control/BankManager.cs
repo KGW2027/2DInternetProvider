@@ -14,7 +14,6 @@ namespace IP.Control
 
         private List<BankInfo> _bankInfos;
         
-        
         void Start()
         {
             _bankInfos = new List<BankInfo>();
