@@ -10,8 +10,8 @@ namespace IP.Control
     {
         public GameObject loanPopup;
 
-        private readonly string _loanPopupName = "Loan";
-        
+        private const string LoanPopupName = "Loan";
+
         private List<BankInfo> _bankInfos;
         
         
@@ -37,7 +37,7 @@ namespace IP.Control
                 }
             }
             
-            PopupManager.Instance.RegisterPopup(_loanPopupName, loanPopup);
+            PopupManager.Instance.RegisterPopup(LoanPopupName, loanPopup);
         }
 
         void Update()
@@ -49,7 +49,7 @@ namespace IP.Control
                 {
                     Bank bank = hit.transform.GetComponent<BankInfo>().GetBank();
                     loanPopup.GetComponent<BankLoanPopup>().SetBank(bank);
-                    PopupManager.Instance.OpenPopup(_loanPopupName);
+                    PopupManager.Instance.OpenPopup(LoanPopupName);
                 }
             }
         }
