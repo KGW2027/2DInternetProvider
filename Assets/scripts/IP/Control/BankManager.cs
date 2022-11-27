@@ -30,7 +30,7 @@ namespace IP.Control
                 if (tf.CompareTag("BankButton"))
                 {
                     BankInfo bi = tf.GetComponent<BankInfo>();
-                    bi.SetBank(banks[used++]);
+                    bi.SendData(banks[used++]);
                     _bankInfos.Add(bi);
                     
                 }
@@ -47,8 +47,7 @@ namespace IP.Control
                 if (hit.transform != null && hit.transform.CompareTag("BankButton"))
                 {
                     Bank bank = hit.transform.GetComponent<BankInfo>().GetBank();
-                    loanPopup.GetComponent<BankLoanPopup>().SetBank(bank);
-                    PopupManager.Instance.OpenPopup(LoanPopupName);
+                    PopupManager.Instance.OpenPopup(LoanPopupName, bank);
                 }
             }
         }

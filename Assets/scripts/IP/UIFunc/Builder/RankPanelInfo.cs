@@ -28,14 +28,10 @@ namespace IP.UIFunc.Builder
             countries.GetComponent<TextMeshProUGUI>().text = $"{_company.GetConnectedCountries()} / 5";
         }
 
-        public void SetCompany(Company company)
+        public void SendData(params object[] datas)
         {
-            _company = company;
-        }
-
-        public void SetRank(int rank)
-        {
-            _rank = rank;
+            _company = (Company) datas[0];
+            _rank = (int) datas[1];
         }
 
         private float GetShare()

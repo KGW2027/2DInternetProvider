@@ -21,6 +21,11 @@ namespace IP.UIFunc.Builder
             planDesc.GetComponent<TextMeshProUGUI>().text = $"{_plan.Bandwidth}GB 대역폭, {_plan.Upload} Mbps, {_plan.Download} Mbps";
         }
 
+        public void SendData(params object[] datas)
+        {
+            _plan = (PaymentPlan) datas[0];
+        }
+
         private string GetCities()
         {
             List<string> citiesName = new List<string>();
@@ -30,11 +35,6 @@ namespace IP.UIFunc.Builder
         private float GetShare()
         {
             return 0.235f;
-        }
-
-        public void SetPlan(PaymentPlan plan)
-        {
-            _plan = plan;
         }
     }
 }

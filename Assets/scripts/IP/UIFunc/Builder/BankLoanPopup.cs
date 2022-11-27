@@ -21,6 +21,11 @@ namespace IP.UIFunc.Builder
             bankMaxLoan.GetComponent<TextMeshProUGUI>().text = $"(한도 : {_targetBank.MaxLoanSize:n0})";
         }
 
+        public void SendData(params object[] datas)
+        {
+            _targetBank = (Bank) datas[0];
+        }
+
         public void ConfirmLoan()
         {
             int loanSize;
@@ -34,11 +39,6 @@ namespace IP.UIFunc.Builder
                 _bankManager.UpdateUI();
                 PopupManager.Instance.ClosePopup();
             }
-        }
-
-        public void SetBank(Bank bank)
-        {
-            _targetBank = bank;
         }
     }
 }

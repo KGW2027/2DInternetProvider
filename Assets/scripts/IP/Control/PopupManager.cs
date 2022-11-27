@@ -29,11 +29,25 @@ namespace IP.Control
 
         public void OpenPopup(string name)
         {
+            OpenPopup(name, null);
+        }
+
+        public void OpenPopup(string name, params object[] data)
+        {
             if (_openedPopups.Contains(name)) return;
             if (_openedPopups.Count == 0) gameObject.SetActive(true);
             _popups[name].SetActive(true);
-            _popups[name].GetComponent<IUIBuilder>()?.Build();
+            
+            Component component;
+            if (_popups[name].TryGetComponent(typeof(IUIBuilder), out component))
+            {
+                IUIBuilder uiBuilder = (IUIBuilder) component;
+                uiBuilder.SendData(data);
+                uiBuilder.Build();
+            }
+            
             _openedPopups.Add(name);
+            
         }
 
         public void ClosePopup()

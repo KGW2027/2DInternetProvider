@@ -46,7 +46,7 @@ namespace IP.Control
         private void UpdatePanelDisplay(GameObject target, Company company)
         {
             RankPanelInfo rpi = target.GetComponent<RankPanelInfo>();
-            rpi.SetCompany(company);
+            rpi.SendData(company, 1);
             rpi.Build();
         }
     }

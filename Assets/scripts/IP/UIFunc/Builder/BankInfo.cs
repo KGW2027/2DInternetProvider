@@ -11,11 +11,6 @@ namespace IP.UIFunc.Builder
 
         private Bank _bank;
 
-        public void SetBank(Bank bank)
-        {
-            _bank = bank;
-        }
-
         public Bank GetBank()
         {
             return _bank;
@@ -25,6 +20,11 @@ namespace IP.UIFunc.Builder
         {
             bankName.GetComponent<TextMeshPro>().text = $"{_bank.Name}";
             bankInfo.GetComponent<TextMeshPro>().text = $"금리 : 연 {_bank.Interest:F2}%\n 한도 : {_bank.MaxLoanSize:n0}";
+        }
+
+        public void SendData(params object[] datas)
+        {
+            _bank = (Bank) datas[0];
         }
     }
 }

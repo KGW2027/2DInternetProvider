@@ -25,6 +25,11 @@ namespace IP.UIFunc.Builder
             cityName.GetComponent<TextMeshProUGUI>().text = $"건설중인 도시 명 : {_buildInfo.GetCity().Name}";
         }
 
+        public void SendData(params object[] datas)
+        {
+            _buildInfo = (BuildBase) datas[0];
+        }
+
         public void SetBuildInfo(BuildBase build)
         {
             _buildInfo = build;

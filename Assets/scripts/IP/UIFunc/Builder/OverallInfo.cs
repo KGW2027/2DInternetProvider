@@ -32,6 +32,11 @@ namespace IP.UIFunc.Builder
             SetText(changeMoney, "총 변동 : -");
         }
 
+        public void SendData(params object[] datas)
+        {
+            
+        }
+
         private void SetText(GameObject go, string text)
         {
             go.GetComponent<TextMeshProUGUI>().text = text;
