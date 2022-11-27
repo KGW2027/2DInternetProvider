@@ -1,4 +1,5 @@
-﻿using IP.Objective;
+﻿using IP.Control;
+using IP.Objective;
 using IP.Objective.Builds;
 using TMPro;
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace IP.UIFunc.Builder
         public GameObject complete;
         
         private BuildBase _buildInfo;
+        private const string ConfirmPopup = "ConstructConfirm";
         
         public void Build()
         {
@@ -23,9 +25,19 @@ namespace IP.UIFunc.Builder
             complete.GetComponent<TextMeshProUGUI>().text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}개월";
         }
 
+        public void SendData(params object[] datas)
+        {
+            _buildInfo = (BuildBase) datas[0];
+        }
+
         public void SetBuildInfo(BuildBase build)
         {
             _buildInfo = build;
+        }
+
+        public void OpenConstructPopup()
+        {
+            PopupManager.Instance.OpenPopup(ConfirmPopup, _buildInfo);
         }
     }
 }

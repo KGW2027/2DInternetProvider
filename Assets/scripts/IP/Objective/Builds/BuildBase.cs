@@ -17,6 +17,7 @@ namespace IP.Objective.Builds
         public abstract string GetName();
         public abstract int GetBuildDate();
         public abstract long GetBudget();
+        public abstract void CompleteAction();
 
         public City GetCity()
         {
@@ -52,6 +53,7 @@ namespace IP.Objective.Builds
         public void Complete()
         {
             _isComplete = true;
+            CompleteAction();
         }
         
         // Static Methods

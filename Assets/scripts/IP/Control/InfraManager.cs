@@ -11,7 +11,13 @@ namespace IP.Control
         
         public GameObject scrollContent;
         public GameObject buildPrefab;
+        public GameObject infraConfirmPopup;
 
+        void Start()
+        {
+            PopupManager.Instance.RegisterPopup("ConstructConfirm", infraConfirmPopup);
+        }
+        
         public void UpdateUI()
         {
             if (_needUpdate)

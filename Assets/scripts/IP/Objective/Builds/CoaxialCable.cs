@@ -18,5 +18,10 @@ namespace IP.Objective.Builds
         {
             return 100;
         }
+
+        public override void CompleteAction()
+        {
+            Debug.Log($"{GetName()}이 완성되었어요!");
+        }
     }
 }
