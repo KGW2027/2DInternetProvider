@@ -7,18 +7,32 @@ namespace IP.Control
 {
     public class InfraManager : MonoBehaviour, ISubUI
     {
+        private static bool _needUpdate = true;
+        
         public GameObject scrollContent;
         public GameObject buildPrefab;
 
         public void UpdateUI()
         {
-            List<BuildBase> builds = BuildBase.GetBuildInfos();
-            foreach (BuildBase buildBase in builds)
+            if (_needUpdate)
             {
-                InfraBuildInfo uiBuilder = Instantiate(buildPrefab, scrollContent.transform).GetComponent<InfraBuildInfo>();
-                uiBuilder.SetBuildInfo(buildBase);
-                uiBuilder.Build();
+                foreach(Transform child in scrollContent.transform) Destroy(child);
+                _needUpdate = false;
+                
+                List<BuildBase> builds = BuildBase.GetBuildInfos();
+                foreach (BuildBase buildBase in builds)
+                {
+                    InfraBuildInfo uiBuilder = Instantiate(buildPrefab, scrollContent.transform)
+                        .GetComponent<InfraBuildInfo>();
+                    uiBuilder.SetBuildInfo(buildBase);
+                    uiBuilder.Build();
+                }
             }
+        }
+
+        public static void ReserveUpdate()
+        {
+            _needUpdate = true;
         }
     }
 }
