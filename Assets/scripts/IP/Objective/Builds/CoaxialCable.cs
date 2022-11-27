@@ -23,5 +23,10 @@ namespace IP.Objective.Builds
         {
             Debug.Log($"{GetName()}이 완성되었어요!");
         }
+
+        public override bool IsWire()
+        {
+            return true;
+        }
     }
 }

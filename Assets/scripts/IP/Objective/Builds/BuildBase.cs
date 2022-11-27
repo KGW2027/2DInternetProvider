@@ -18,6 +18,7 @@ namespace IP.Objective.Builds
         public abstract int GetBuildDate();
         public abstract long GetBudget();
         public abstract void CompleteAction();
+        public abstract bool IsWire();
 
         public City GetCity()
         {
