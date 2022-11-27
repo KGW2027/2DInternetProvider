@@ -17,10 +17,6 @@ namespace IP.Control
         }
 
         // Update is called once per frame
-        void Update()
-        {
-        
-        }
 
         private void ClearChilds()
         {
