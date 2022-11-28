@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using IP.Control;
 using MEC;
 using TMPro;
@@ -16,6 +18,7 @@ namespace IP.Screen
         public GameObject changeMoneyPrint;
         public GameObject companyNamePrint;
         public GameObject screenManager;
+        public GameObject realDatePrint;
 
         private int _year;
         private int _month;
@@ -24,6 +27,7 @@ namespace IP.Screen
 
         private LottoManager _lottoManager;
         private ScreenManager _screenManager;
+        private CoroutineHandle _timerHandle;
     
         // Start is called before the first frame update
         void Start()
@@ -35,51 +39,60 @@ namespace IP.Screen
             UpdateDateText(true); // Initial Set
             _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
-            Timing.RunCoroutine(RunTimer());
 
-            StaticFunctions.SetUIText(companyNamePrint, GameManager.Instance.GetCompanyName());
+            companyNamePrint.SetUIText(GameManager.Instance.GetCompanyName());
             UpdateMoneyText();
+            _timerHandle = Timing.RunCoroutine(RunTimer());
         }
 
-        IEnumerator<float> RunTimer()
+        private IEnumerator<float> RunTimer()
         {
             if (--_remainNextMonth == 0)
             {
-                _remainNextMonth = 10;
-                if (++_month == 13)
-                {
-                    _year++;
-                    _month = 1;
-                }
-
-                UpdateDateText(true);
-                _lottoManager.Next();
+                NextMonth();
             }
             else
             {
                 UpdateDateText(false);
             }
 
-
             yield return Timing.WaitForSeconds(1.0f);
-            Timing.RunCoroutine(RunTimer());
+            _timerHandle = Timing.RunCoroutine(RunTimer());
+        }
+
+        public void SkipMonth()
+        {
+            NextMonth();
+        }
+        
+        private void NextMonth()
+        {
+            _remainNextMonth = 10;
+            if (++_month == 13)
+            {
+                _year++;
+                _month = 1;
+            }
+
+            _lottoManager.Next();
+            UpdateDateText(true);
         }
 
         private void UpdateDateText(bool dateChanged)
         {
-            if(dateChanged) StaticFunctions.SetUIText(datePrint, $"{_year}Y {_month:00}M");
-            StaticFunctions.SetUIText(remainDatePrint, $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}");
+            if(dateChanged) datePrint.SetUIText($"{_year}Y {_month:00}M");
+            remainDatePrint.SetUIText($"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}");
         }
 
         private void UpdateMoneyText()
         {
             _changeMoney = GameManager.Instance.GetDebtInterest();
-            StaticFunctions.SetUIText(moneyPrint, $"{GameManager.Instance.GetHaveMoney():n0}");
-            StaticFunctions.SetUIText(changeMoneyPrint, $"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
+            moneyPrint.SetUIText($"{GameManager.Instance.GetHaveMoney():n0}");
+            changeMoneyPrint.SetUIText($"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
             Color textColor = _changeMoney < 0
                 ? new Color(255, 0, 0)
                 : new Color(0, 255, 0);
-            StaticFunctions.SetUITextColor(changeMoneyPrint, textColor);
+            changeMoneyPrint.SetUITextColor(textColor);
         }
 
         public void MoveHome()
