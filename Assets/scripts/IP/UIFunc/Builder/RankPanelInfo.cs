@@ -19,13 +19,13 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            StaticFunctions.SetUIText(rank, $"{_rank:00}");
-            StaticFunctions.SetUIText(companyName, _company.GetName());
-            StaticFunctions.SetUIText(marketShare, $"{GetShare():F2}%");
-            StaticFunctions.SetUIText(buildings, $"{_company.GetTotalBuilds()}");
-            StaticFunctions.SetUIText(traffics, $"{_company.GetTotalTraffic()}");
-            StaticFunctions.SetUIText(cities, $"{_company.GetConnectedCities().Count} / 50");
-            StaticFunctions.SetUIText(countries, $"{_company.GetConnectedCountries()} / 5");
+            rank.SetUIText($"{_rank:00}");
+            companyName.SetUIText(_company.GetName());
+            marketShare.SetUIText($"{GetShare():F2}%");
+            buildings.SetUIText($"{_company.GetTotalBuilds()}");
+            traffics.SetUIText($"{_company.GetTotalTraffic()}");
+            cities.SetUIText($"{_company.GetConnectedCities().Count} / 50");
+            countries.SetUIText($"{_company.GetConnectedCountries()} / 5");
         }
 
         public void SendData(params object[] datas)

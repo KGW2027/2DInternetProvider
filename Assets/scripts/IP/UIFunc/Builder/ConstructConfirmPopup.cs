@@ -22,8 +22,8 @@ namespace IP.UIFunc.Builder
         public void Build()
         {
             thumbnail.GetComponent<RawImage>().texture = _buildBase.GetTexture();
-            StaticFunctions.SetUIText(buildName, _buildBase.GetName());
-            StaticFunctions.SetUIText(buildInfo, $"예정 완공일 : {_buildBase.GetBuildDate()}\n예상 월 소비 비용 : {_buildBase.GetBudget() / _buildBase.GetBuildDate()}k$");
+            buildName.SetUIText(_buildBase.GetName());
+            buildInfo.SetUIText($"예정 완공일 : {_buildBase.GetBuildDate()}\n예상 월 소비 비용 : {_buildBase.GetBudget() / _buildBase.GetBuildDate()}k$");
         }
 
         public void SendData(params object[] datas)

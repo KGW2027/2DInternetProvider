@@ -63,9 +63,9 @@ namespace IP.Control
         public void ResetUI()
         {
             _bought = false;
-            StaticFunctions.SetUIText(title, $"복권 제{_attempt}회차 당첨 번호 / 마지막 복권 구매 회차 : {_lastBoughtAttempt}");
-            StaticFunctions.SetUIText(myNumbers, $"복권을 구매하세요.");
-            StaticFunctions.SetUIText(winNumbers, $"{ParseNumbers(_winNumbers)}");
+            title.SetUIText($"복권 제{_attempt}회차 당첨 번호 / 마지막 복권 구매 회차 : {_lastBoughtAttempt}");
+            myNumbers.SetUIText($"복권을 구매하세요.");
+            winNumbers.SetUIText($"{ParseNumbers(_winNumbers)}");
         }
 
         public void Buy()
@@ -74,7 +74,7 @@ namespace IP.Control
             {
                 _myNumbers = _lotto.BoughtNumbers();
                 _lastBoughtAttempt = _attempt;
-                StaticFunctions.SetUIText(myNumbers, $"{ParseNumbers(_myNumbers)}");
+                myNumbers.SetUIText($"{ParseNumbers(_myNumbers)}");
                 _bought = true;
             }
         }
@@ -98,7 +98,7 @@ namespace IP.Control
 
         private void UpdateTemptText()
         {
-            StaticFunctions.SetUIText(temptText, $"누적 금액 : {_cumulPrice:n0}$\n1등 상금 : 80% (지난 회차 당첨자 {_winners[0]}명)\n2등 상금 : 15% (지난 회차 당첨자 {_winners[1]}명)\n3등 상금 : 5% (지난 회차 당첨자 {_winners[2]}명)");
+            temptText.SetUIText($"누적 금액 : {_cumulPrice:n0}$\n1등 상금 : 80% (지난 회차 당첨자 {_winners[0]}명)\n2등 상금 : 15% (지난 회차 당첨자 {_winners[1]}명)\n3등 상금 : 5% (지난 회차 당첨자 {_winners[2]}명)");
         }
         
 
@@ -126,10 +126,10 @@ namespace IP.Control
             }
             else
             {
-                alertText.SetUIText2($"제 {_attempt}회 추첨 결과는 꽝입니다.");
+                alertText.SetUIText($"제 {_attempt}회 추첨 결과는 꽝입니다.");
                 return;
             }
-            alertText.SetUIText2($"제 {_attempt}회 추첨 결과는 {grade}등 입니다. 당첨금 : {winMoney:n0}\n이번 달이 끝나기 전에 반드시 왼쪽 아래 수령 버튼을 눌러주세요.");
+            alertText.SetUIText($"제 {_attempt}회 추첨 결과는 {grade}등 입니다. 당첨금 : {winMoney:n0}\n이번 달이 끝나기 전에 반드시 왼쪽 아래 수령 버튼을 눌러주세요.");
             _yourPrice = winMoney;
         }
 

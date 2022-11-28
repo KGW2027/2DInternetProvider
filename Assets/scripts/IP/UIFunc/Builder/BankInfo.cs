@@ -18,8 +18,8 @@ namespace IP.UIFunc.Builder
 
         public void Build()
         {
-            StaticFunctions.SetText(bankName, $"{_bank.Name}");
-            StaticFunctions.SetText(bankInfo, $"금리 : 연 {_bank.Interest:F2}%\n 한도 : {_bank.MaxLoanSize:n0}");
+            bankName.SetText($"{_bank.Name}");
+            bankInfo.SetText($"금리 : 연 {_bank.Interest:F2}%\n 한도 : {_bank.MaxLoanSize:n0}");
         }
 
         public void SendData(params object[] datas)

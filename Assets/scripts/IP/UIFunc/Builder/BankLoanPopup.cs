@@ -17,8 +17,8 @@ namespace IP.UIFunc.Builder
         
         public void Build()
         {
-            StaticFunctions.SetUIText(bankName, $"'{_targetBank.Name}'");
-            StaticFunctions.SetUIText(bankMaxLoan, $"(한도 : {_targetBank.MaxLoanSize:n0})");
+            bankName.SetUIText($"'{_targetBank.Name}'");
+            bankMaxLoan.SetUIText($"(한도 : {_targetBank.MaxLoanSize:n0})");
         }
 
         public void SendData(params object[] datas)
