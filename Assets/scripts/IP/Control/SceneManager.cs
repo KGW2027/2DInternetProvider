@@ -11,10 +11,10 @@ namespace IP.Control
 
         public void StartGame()
         {
-            string name = inputName.GetComponent<TextMeshProUGUI>().text.Trim();
+            string name = inputName.GetComponent<TMP_InputField>().text.Trim();
             string pattern = @"[^a-zA-Z0-9가-힣]";
             Regex regex = new Regex(pattern);
-            if (regex.Matches(name).Count > 1) return;
+            if (regex.IsMatch(name)) return;
             GameManager.Instance.SetCompanyName(name);
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
         }
