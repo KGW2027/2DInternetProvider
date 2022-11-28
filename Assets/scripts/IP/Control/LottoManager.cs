@@ -38,10 +38,11 @@ namespace IP.Control
         
         public void Next()
         {
-            _cumulPrice += (long) new Random().Next(People / 2, People) * Price;
+            long boughter = new Random().Next(People / 2, People);
+            _cumulPrice += boughter * Price;
             _winNumbers = _lotto.NewWinNumbers();
             _yourPrice = 0;
-            CalcWinners();
+            CalcWinners(boughter);
             
             if (_myNumbers != null)
             {
@@ -88,12 +89,12 @@ namespace IP.Control
             }
         }
 
-        private void CalcWinners()
+        private void CalcWinners(long boughter)
         {
             _winners = new byte[3];
-            while (Math.Round(new Random().NextDouble(), 13) == 0.0000000000001d) _winners[0]++;
-            while (Math.Round(new Random().NextDouble(), 11) == 0.00000000001d) _winners[1]++;
-            while (Math.Round(new Random().NextDouble(), 9) == 0.000000001d) _winners[2]++;
+            while (Math.Round(new Random().NextDouble(), 13) == 0.0000000000001d * boughter) _winners[0]++;
+            while (Math.Round(new Random().NextDouble(), 11) == 0.00000000001d * boughter) _winners[1]++;
+            while (Math.Round(new Random().NextDouble(), 9) == 0.000000001d * boughter) _winners[2]++;
         }
 
         private void UpdateTemptText()
