@@ -1,24 +1,83 @@
 using System.Collections.Generic;
+using System.Numerics;
 using IP.Objective;
 using TMPro;
 using UnityEngine;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace IP.UIFunc
 {
+
+    class Connection
+    {
+        public City EndCity;
+        public float Distance;
+        public LineRenderer Line;
+
+        public Connection(City a, float b, LineRenderer c)
+        {
+            EndCity = a;
+            Distance = b;
+            Line = c;
+        }
+    }
+    
     public class WorldMapInteractor : MonoBehaviour
     {
+        public GameObject lineDrawer;
+        
         private List<GameObject> _cityObjects;
         private List<GameObject> _countryObjects;
         private List<Country> _countries;
-    
+        private Dictionary<City, List<Connection>> _connections;
+        private const int MaxConnectDistance = 30;
+
         // Start is called before the first frame update
         void Start()
         {
             _cityObjects = new List<GameObject>();
             _countryObjects = new List<GameObject>();
             _countries = new List<Country>();
-            
+            _connections = new Dictionary<City, List<Connection>>();
+
             RegisterCities();
+            MakeTree();
+        }
+
+        private void MakeTree()
+        {
+            List<City> allCities = new List<City>();
+            _countries.ForEach(country =>
+            {
+                country.Cities.ForEach(city =>
+                {
+                    allCities.Add(city);
+                    _connections[city] = new List<Connection>();
+                });
+            });
+
+            for (int city = 0; city < allCities.Count; city++)
+            {
+                City startCity = allCities[city];
+                Vector3 scv = startCity.Button.transform.position;
+                for (int ecity = city + 1; ecity < allCities.Count; ecity++)
+                {
+                    City endCity = allCities[ecity];
+                    Vector3 ecv = endCity.Button.transform.position;
+                    float distance = Vector3.Distance(scv, ecv);
+                    if (distance < MaxConnectDistance)
+                    {
+                        LineRenderer line = Instantiate(lineDrawer).GetComponent<LineRenderer>();
+                        line.startWidth = 1.0f;
+                        line.endWidth = 1.0f;
+                        line.useWorldSpace = true;
+                        line.SetPositions(new []{scv, ecv});
+                        _connections[startCity].Add(new Connection(endCity, distance, line));
+                        _connections[endCity].Add(new Connection(startCity, distance, line));
+                    }
+                }
+            }
         }
 
         private void RegisterCities()
