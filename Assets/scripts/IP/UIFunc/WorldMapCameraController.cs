@@ -80,7 +80,7 @@ namespace IP.UIFunc
                 // 화면 크기가 Min 일때 0.4, Max일때 8
                 float ratio = (orthoSize - MinFocal) / MaxFocal;
                 camMoveSpeed = Mathf.Lerp(0.4f, 8.0f, ratio);
-                _wmi.ChangeVisibleMode(orthoSize <= 20);
+                _wmi.ChangeVisibleMode(orthoSize <= 23);
                 _camCamera.orthographicSize += wheel;
                 UpdateCamScale();
             }

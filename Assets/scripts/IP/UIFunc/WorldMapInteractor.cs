@@ -25,7 +25,6 @@ namespace IP.UIFunc
         {
             foreach(Transform countries in transform)
             {
-                Debug.Log(countries.name);
                 Country country = null;
                 if (countries.CompareTag("CityParents"))
                 {
@@ -55,8 +54,9 @@ namespace IP.UIFunc
 
         public void ChangeVisibleMode(bool visibleCity)
         {
+            if (_cityObjects == null || _countryObjects == null) return;
             _cityObjects.ForEach(city => city.SetActive(visibleCity));
-            _countryObjects.ForEach(city => city.SetActive(!visibleCity));
+            _countryObjects.ForEach(country => country.SetActive(!visibleCity));
         }
 
         public string ClickMap(Vector2 location)
