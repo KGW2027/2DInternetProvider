@@ -47,17 +47,19 @@ namespace IP.Screen
 
         private IEnumerator<float> RunTimer()
         {
-            if (--_remainNextMonth == 0)
+            while (true)
             {
-                NextMonth();
-            }
-            else
-            {
-                UpdateDateText(false);
-            }
+                if (--_remainNextMonth == 0)
+                {
+                    NextMonth();
+                }
+                else
+                {
+                    UpdateDateText(false);
+                }
 
-            yield return Timing.WaitForSeconds(1.0f);
-            _timerHandle = Timing.RunCoroutine(RunTimer());
+                yield return Timing.WaitForSeconds(1.0f);
+            }
         }
 
         public void SkipMonth()
