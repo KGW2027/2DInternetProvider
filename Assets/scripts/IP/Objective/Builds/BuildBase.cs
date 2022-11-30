@@ -7,7 +7,7 @@ namespace IP.Objective.Builds
 {
     public abstract class BuildBase : MonoBehaviour
     {
-        private bool _isComplete = false;
+        private bool _isComplete;
         private City _constructCity;
         private Dictionary<string, Texture> _textureMap;
 
@@ -17,7 +17,7 @@ namespace IP.Objective.Builds
         public abstract float GetMaintenance();
         public abstract float GetBuildDate();
         public abstract float GetBudget();
-        public abstract void CompleteAction();
+        protected abstract void CompleteAction();
         public abstract bool IsWire();
 
         public City GetCity()

@@ -24,7 +24,7 @@ namespace IP.Objective.Builds
             return 15;
         }
 
-        public override void CompleteAction()
+        protected override void CompleteAction()
         {
             Debug.Log("Complete " + GetName());
         }
