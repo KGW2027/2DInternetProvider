@@ -19,7 +19,7 @@ namespace IP.UIFunc
         private bool _moveCameraMode;
         private float[] _camBorder;
         private float[] _camScale;
-        private WorldMapInteractor _wmi;
+        private WorldMapInteraction _wmi;
 
         private const float MaxFocal = 50.0f;
         private const float MinFocal = 3.0f;
@@ -38,7 +38,7 @@ namespace IP.UIFunc
             
             _camCamera = mapCamera.GetComponent<Camera>();
             UpdateCamScale();
-            _wmi = FindObjectOfType<WorldMapInteractor>().GetComponent<WorldMapInteractor>();
+            _wmi = FindObjectOfType<WorldMapInteraction>().GetComponent<WorldMapInteraction>();
             _wmi.ChangeVisibleMode(true);
         }
     

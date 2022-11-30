@@ -21,7 +21,7 @@ namespace IP.UIFunc
         }
     }
     
-    public class WorldMapInteractor : MonoBehaviour
+    public class WorldMapInteraction : MonoBehaviour
     {
         [Header("월드맵 트리 간선")]
         public GameObject lineDrawer;
