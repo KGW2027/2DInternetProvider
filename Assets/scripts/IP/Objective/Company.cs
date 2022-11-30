@@ -16,11 +16,13 @@ namespace IP.Objective
         public long Money { get; private set; }
         public int UseLoanTimes { get; private set; }
         public int RepayLoanTimes { get; private set; }
+        public int Trust { get; private set; }
 
         public Company(string name, long startMoney)
         {
             Name = name;
             Money = startMoney;
+            Trust = 0;
             _builds = new Dictionary<City, List<BuildBase>>();
             _plans = new List<PaymentPlan>();
             _debts = new List<Debt>();
@@ -31,14 +33,21 @@ namespace IP.Objective
         public void AddBuild(City city, BuildBase build)
         {
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
+            build.Complete();
             _builds[city].Add(build);
         }
 
-        public long GetMoney()
+        public void AddPlan(PaymentPlan plan)
         {
-            return Money;
+            _plans.Add(plan);
         }
 
+        public void ConstructBuild(City city, BuildBase build)
+        {
+            if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
+            _builds[city].Add(build);
+        }
+        
         public List<City> GetConnectedCities()
         {
             return new List<City>(_builds.Keys);
@@ -122,10 +131,7 @@ namespace IP.Objective
             long customers = 0L;
             GetConnectedCities().ForEach(city =>
             {
-                foreach (PaymentPlan plan in city.PlanShares.Keys)
-                {
-                    if(plan.OwnerCompany == this) customers += city.PlanShares[plan];
-                }
+                customers += city.GetCustomer(this);
             });
             return customers;
         }

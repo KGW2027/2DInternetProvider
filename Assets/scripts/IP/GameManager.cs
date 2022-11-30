@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IP.Control;
 using IP.Objective;
 using IP.Objective.Builds;
 using IP.Screen;
@@ -16,13 +17,15 @@ namespace IP
     {
 
         public static GameManager Instance { get; private set; }
+        public static int PenaltyTrust = -50;
 
         private const int StartYear = 22;
         private const int StartMonth = 11;
         private const long StartMoney = 1000L;
 
-        private WorldMapInteractor _wmi;
+        private WorldMapInteraction _wmi;
         private WorldMapCameraController _wmcc;
+        private LottoManager _lotto;
         private bool _executedLateStart;
 
         public Company Company { get; private set; }
@@ -38,11 +41,34 @@ namespace IP
          */
         public void LateStart()
         {
-            _wmi = FindObjectOfType<WorldMapInteractor>();
+            _lotto = FindObjectOfType<LottoManager>();
+            _wmi = FindObjectOfType<WorldMapInteraction>();
             _wmcc = FindObjectOfType<WorldMapCameraController>();
+            
             City startCity = _wmi.Cities[Random.Range(0, _wmi.Cities.Count)];
+            PaymentPlan plan = new PaymentPlan(Company);
+            plan.Name = "Default plan";
+            plan.Bandwidth = 1000;
+            plan.Budget = 8;
+            plan.Upload = 100;
+            plan.Download = 100;
+            plan.Service(startCity);
+            
             Company.AddBuild(startCity, new HeadOffice());
+            Company.AddBuild(startCity, new IDCSmall());
+            Company.AddPlan(plan);
+            
             SetCameraFocus(startCity);
+            ExecuteMonthlyEvent();
+        }
+
+        /**
+         *
+         */
+        public void ExecuteMonthlyEvent()
+        {
+            _lotto.Next();
+            _wmi.Cities.ForEach(city => city.PlanSelect());
         }
         
         /**
