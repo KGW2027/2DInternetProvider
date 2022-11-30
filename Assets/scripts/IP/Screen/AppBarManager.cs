@@ -26,7 +26,6 @@ namespace IP.Screen
         private int _remainNextMonth = 10;
         private long _changeMoney = 0;
 
-        private LottoManager _lottoManager;
         private ScreenManager _screenManager;
         private CoroutineHandle _timerHandle;
     
@@ -38,7 +37,6 @@ namespace IP.Screen
             _month = GameManager.Instance.GetStartDate()[1];
             
             UpdateDateText(true); // Initial Set
-            _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
 
             companyNamePrint.SetUIText(GameManager.Instance.Company.Name);
@@ -72,7 +70,7 @@ namespace IP.Screen
                 _month = 1;
             }
 
-            _lottoManager.Next();
+            GameManager.Instance.ExecuteMonthlyEvent();
             UpdateDateText(true);
         }
 
@@ -85,7 +83,7 @@ namespace IP.Screen
         private void UpdateMoneyText()
         {
             _changeMoney = GameManager.Instance.Company.GetTotalDebtInterest();
-            moneyPrint.SetUIText($"{GameManager.Instance.Company.GetMoney():n0}");
+            moneyPrint.SetUIText($"{GameManager.Instance.Company.Money:n0}");
             changeMoneyPrint.SetUIText($"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
             Color textColor = _changeMoney < 0
                 ? new Color(255, 0, 0)
