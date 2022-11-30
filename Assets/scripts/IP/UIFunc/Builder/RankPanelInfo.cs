@@ -19,7 +19,7 @@ namespace IP.UIFunc.Builder
         public void Build()
         {
             rank.SetUIText($"{_rank:00}");
-            companyName.SetUIText(_company.GetName());
+            companyName.SetUIText(_company.Name);
             marketShare.SetUIText($"{GetShare():F2}%");
             buildings.SetUIText($"{_company.GetTotalBuilds()}");
             traffics.SetUIText($"{_company.GetTotalTraffic()}");

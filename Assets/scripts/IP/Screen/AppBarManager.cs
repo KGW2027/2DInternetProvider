@@ -37,7 +37,7 @@ namespace IP.Screen
             _lottoManager = FindObjectOfType<LottoManager>();
             _screenManager = screenManager.GetComponent<ScreenManager>();
 
-            companyNamePrint.SetUIText(GameManager.Instance.GetCompanyName());
+            companyNamePrint.SetUIText(GameManager.Instance.Company.Name);
             UpdateMoneyText();
             _timerHandle = Timing.RunCoroutine(RunTimer());
         }
@@ -85,8 +85,8 @@ namespace IP.Screen
 
         private void UpdateMoneyText()
         {
-            _changeMoney = GameManager.Instance.GetDebtInterest();
-            moneyPrint.SetUIText($"{GameManager.Instance.GetHaveMoney():n0}");
+            _changeMoney = GameManager.Instance.Company.GetTotalDebtInterest();
+            moneyPrint.SetUIText($"{GameManager.Instance.Company.GetMoney():n0}");
             changeMoneyPrint.SetUIText($"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
             Color textColor = _changeMoney < 0
                 ? new Color(255, 0, 0)

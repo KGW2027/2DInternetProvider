@@ -7,18 +7,19 @@ namespace IP.Objective
 {
     public class Company
     {
-        private string _companyName;
-        private long _money;
         private readonly Dictionary<City, List<BuildBase>> _builds;
         private List<Debt> _debts;
 
+        public readonly string Name;
+        
+        public long Money { get; private set; }
         public int UseLoanTimes { get; private set; }
         public int RepayLoanTimes { get; private set; }
 
         public Company(string name, long startMoney)
         {
-            _companyName = name;
-            _money = startMoney;
+            Name = name;
+            Money = startMoney;
             _builds = new Dictionary<City, List<BuildBase>>();
             _debts = new List<Debt>();
             UseLoanTimes = 0;
@@ -31,14 +32,9 @@ namespace IP.Objective
             _builds[city].Add(build);
         }
 
-        public string GetName()
-        {
-            return _companyName;
-        }
-
         public long GetMoney()
         {
-            return _money;
+            return Money;
         }
 
         public List<City> GetConnectedCities()
@@ -127,13 +123,13 @@ namespace IP.Objective
         public void AddLoan(Debt debt)
         {
             _debts.Add(debt);
-            _money += debt.Scale;
+            Money += debt.Scale;
         }
 
         public bool UseMoney(long amount)
         {
-            if (_money < amount) return false;
-            _money -= amount;
+            if (Money < amount) return false;
+            Money -= amount;
             AppBarManager.Instance.Refresh();
             return true;
         }

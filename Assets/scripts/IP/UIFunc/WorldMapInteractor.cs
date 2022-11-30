@@ -109,7 +109,6 @@ namespace IP.UIFunc
                 }
                 if(country != null) Countries.Add(country);
             }
-            GameManager.Instance.SetCountriesInfo(Countries);
         }
 
         public void ChangeVisibleMode(bool visibleCity)
