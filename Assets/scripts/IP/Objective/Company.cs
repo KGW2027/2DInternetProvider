@@ -64,10 +64,20 @@ namespace IP.Objective
         public long CalcInterest()
         {
             long interest = 0L;
+            List<Debt> repayed = new List<Debt>();
+            int[] date = AppBarManager.Instance.GetDate();
             foreach (Debt debt in _debts)
             {
                 interest += (long) (debt.Scale * (debt.Interest / (12 * 100)));
+                if (debt.StartYear + 3 <= date[0] && debt.StartMonth <= date[1])
+                {
+                    Debug.Log($"대출 {debt.Scale}상환");
+                    Money -= debt.Scale;
+                    RepayLoanTimes++;
+                    repayed.Add(debt);
+                }
             }
+            repayed.ForEach(debt => _debts.Remove(debt));
             return interest;
         }
 

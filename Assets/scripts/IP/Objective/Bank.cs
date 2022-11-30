@@ -45,6 +45,11 @@ namespace IP.Objective
             CalcNewLoanSize();
         }
 
+        public void Repayed(long amount)
+        {
+            Loaned(amount*-1);
+        }
+
         private long GetCompanyRevenue()
         {
             return GameManager.Instance.Company.RecentRevenue(12);

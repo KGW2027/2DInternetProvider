@@ -118,9 +118,9 @@ namespace IP.Screen
         /**
          * 현재 날짜를 반환하는 함수
          */
-        public string GetDate()
+        public int[] GetDate()
         {
-            return $"{_year}Y{_month}M";
+            return new[]{_year, _month};
         }
 
         /**

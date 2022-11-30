@@ -114,9 +114,9 @@ namespace IP
             loan.Scale = money;
             loan.FromBank = bank;
 
-            string[] date = AppBarManager.Instance.GetDate().Split("Y");
-            loan.StartYear = Int32.Parse(date[0]);
-            loan.StartMonth = Int32.Parse(date[1].Substring(0, date[1].Length - 1));
+            int[] date = AppBarManager.Instance.GetDate();
+            loan.StartYear = date[0];
+            loan.StartMonth = date[1];
             Company.AddLoan(loan);
 
             AppBarManager.Instance.Refresh();
