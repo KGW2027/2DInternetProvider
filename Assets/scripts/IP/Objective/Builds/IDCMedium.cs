@@ -2,36 +2,36 @@
 
 namespace IP.Objective.Builds
 {
-    public class CoaxialCable : BuildBase
+    public class IDCMedium : BuildBase
     {
         public override string GetName()
         {
-            return "동축 케이블";
+            return "중형 IDC";
         }
 
         public override float GetMaintenance()
         {
-            return 1;
+            return 6000;
         }
 
         public override float GetBuildDate()
         {
-            return 1/15f;
+            return 18;
         }
 
         public override float GetBudget()
         {
-            return 10;
+            return 4000;
         }
 
         public override void CompleteAction()
         {
-            Debug.Log($"{GetName()}이 완성되었어요!");
+            Debug.Log($"Complete {GetName()}");
         }
 
         public override bool IsWire()
         {
-            return true;
+            return false;
         }
     }
 }

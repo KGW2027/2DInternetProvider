@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using UnityEngine;
 
 namespace IP.Objective.Builds
@@ -15,8 +14,9 @@ namespace IP.Objective.Builds
         private static List<BuildBase> _buildBases;
 
         public abstract string GetName();
-        public abstract int GetBuildDate();
-        public abstract long GetBudget();
+        public abstract float GetMaintenance();
+        public abstract float GetBuildDate();
+        public abstract float GetBudget();
         public abstract void CompleteAction();
         public abstract bool IsWire();
 
@@ -35,10 +35,14 @@ namespace IP.Objective.Builds
             if (_textureMap == null)
             {
                 _textureMap = new Dictionary<string, Texture>();
-                Texture2D[] textures = Resources.LoadAll<Texture2D>("BuildsThumbnails");
-                foreach (var texture2D in textures)
+                Sprite[] sprites = Resources.LoadAll<Sprite>("BuildsThumbnails/Builds");
+                foreach (var sprite in sprites)
                 {
-                    _textureMap[texture2D.name] = texture2D;
+                    Rect rect = sprite.textureRect;
+                    Texture2D texture = new Texture2D((int) rect.width, (int) rect.height);
+                    texture.SetPixels(sprite.texture.GetPixels((int) rect.x, (int) rect.y, (int) rect.width, (int) rect.height));
+                    texture.Apply();
+                    _textureMap[sprite.name] = texture;
                 }
             }
 
@@ -64,9 +68,10 @@ namespace IP.Objective.Builds
             if (_buildBases == null)
             {
                 var type = typeof(BuildBase);
+                var headOffice = typeof(HeadOffice);
                 var infos = AppDomain.CurrentDomain.GetAssemblies()
                     .SelectMany(s => s.GetTypes())
-                    .Where(p => type.IsAssignableFrom(p) && p != type)
+                    .Where(p => type.IsAssignableFrom(p) && p != type && p != headOffice)
                     .ToList();
 
                 List<BuildBase> list = new List<BuildBase>();
