@@ -15,7 +15,7 @@ namespace IP.Control
             string pattern = @"[^a-zA-Z0-9가-힣]";
             Regex regex = new Regex(pattern);
             if (regex.IsMatch(name)) return;
-            GameManager.Instance.SetCompanyName(name);
+            GameManager.Instance.InitGame(name);
             UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
         }
     }

@@ -26,9 +26,6 @@ namespace IP.UIFunc
         {
         
             _mainCamera = Camera.main;
-            Vector3 mapImageCenter = map.transform.position;
-            mapImageCenter.z = -10;
-            mapCamera.transform.position = mapImageCenter;
 
             Bounds mapBounds = map.GetComponent<SpriteRenderer>().bounds;
             float centerX = mapBounds.center.x;
@@ -102,6 +99,11 @@ namespace IP.UIFunc
             float orthoSize = _camCamera.orthographicSize;
             float unitSize = _camCamera.pixelWidth / (float)_camCamera.pixelHeight;
             _camScale = new[] {unitSize * orthoSize, orthoSize};
+        }
+
+        public void SetCameraFocus(Vector2 vec)
+        {
+            mapCamera.transform.position = new Vector3(vec.x, vec.y, -10);
         }
     }
 }

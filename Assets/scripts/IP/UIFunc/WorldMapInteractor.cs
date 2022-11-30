@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Numerics;
 using IP.Objective;
 using TMPro;
 using UnityEngine;
@@ -8,8 +7,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace IP.UIFunc
 {
-
-    class Connection
+    public class Connection
     {
         public City EndCity;
         public float Distance;
@@ -29,8 +27,9 @@ namespace IP.UIFunc
         
         private List<GameObject> _cityObjects;
         private List<GameObject> _countryObjects;
-        private List<Country> _countries;
-        private Dictionary<City, List<Connection>> _connections;
+        public List<Country> Countries;
+        public List<City> Cities;
+        public Dictionary<City, List<Connection>> Connections;
         private const int MaxConnectDistance = 30;
 
         // Start is called before the first frame update
@@ -38,22 +37,24 @@ namespace IP.UIFunc
         {
             _cityObjects = new List<GameObject>();
             _countryObjects = new List<GameObject>();
-            _countries = new List<Country>();
-            _connections = new Dictionary<City, List<Connection>>();
+            Countries = new List<Country>();
+            Cities = new List<City>();
+            Connections = new Dictionary<City, List<Connection>>();
 
             RegisterCities();
             MakeTree();
+            GameManager.Instance.LateStart();
         }
 
         private void MakeTree()
         {
             List<City> allCities = new List<City>();
-            _countries.ForEach(country =>
+            Countries.ForEach(country =>
             {
                 country.Cities.ForEach(city =>
                 {
                     allCities.Add(city);
-                    _connections[city] = new List<Connection>();
+                    Connections[city] = new List<Connection>();
                 });
             });
 
@@ -73,8 +74,8 @@ namespace IP.UIFunc
                         line.endWidth = 1.0f;
                         line.useWorldSpace = true;
                         line.SetPositions(new []{scv, ecv});
-                        _connections[startCity].Add(new Connection(endCity, distance, line));
-                        _connections[endCity].Add(new Connection(startCity, distance, line));
+                        Connections[startCity].Add(new Connection(endCity, distance, line));
+                        Connections[endCity].Add(new Connection(startCity, distance, line));
                     }
                 }
             }
@@ -98,17 +99,17 @@ namespace IP.UIFunc
                         if (cities.CompareTag("WorldMapButton"))
                         {
                             TextMeshPro cityText = cities.GetChild(0).GetComponent<TextMeshPro>();
-                            long people = City.GeneratePeople(cityText.name.Equals("Text_CityName"));
-                            City city = new City(cityText.text, people, cities.gameObject);
+                            City city = new City(cityText.text, cityText.name.Equals("Text_CityName"), cities.gameObject);
                             country.AddCity(city);
                             
                             _cityObjects.Add(city.Button);
+                            Cities.Add(city);
                         }
                     }
                 }
-                if(country != null) _countries.Add(country);
+                if(country != null) Countries.Add(country);
             }
-            GameManager.Instance.SetCountriesInfo(_countries);
+            GameManager.Instance.SetCountriesInfo(Countries);
         }
 
         public void ChangeVisibleMode(bool visibleCity)

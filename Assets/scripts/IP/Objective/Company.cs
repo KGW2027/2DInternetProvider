@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using IP.Objective.Builds;
 using IP.Screen;
-using Unity.VisualScripting;
 
 namespace IP.Objective
 {
@@ -10,11 +9,11 @@ namespace IP.Objective
     {
         private string _companyName;
         private long _money;
-        private Dictionary<City, List<BuildBase>> _builds;
+        private readonly Dictionary<City, List<BuildBase>> _builds;
         private List<Debt> _debts;
 
-        private int _useLoanTimes;
-        private int _repayLoanTimes;
+        public int UseLoanTimes { get; private set; }
+        public int RepayLoanTimes { get; private set; }
 
         public Company(string name, long startMoney)
         {
@@ -22,8 +21,14 @@ namespace IP.Objective
             _money = startMoney;
             _builds = new Dictionary<City, List<BuildBase>>();
             _debts = new List<Debt>();
-            _useLoanTimes = 0;
-            _repayLoanTimes = 0;
+            UseLoanTimes = 0;
+            RepayLoanTimes = 0;
+        }
+
+        public void AddBuild(City city, BuildBase build)
+        {
+            if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
+            _builds[city].Add(build);
         }
 
         public string GetName()
