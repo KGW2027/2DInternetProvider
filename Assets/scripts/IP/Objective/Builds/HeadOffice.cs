@@ -16,12 +16,12 @@ namespace IP.Objective.Builds
 
         public override float GetBuildDate()
         {
-            return 999;
+            return 0;
         }
 
         public override float GetBudget()
         {
-            return 999;
+            return 0;
         }
 
         public override void CompleteAction()
