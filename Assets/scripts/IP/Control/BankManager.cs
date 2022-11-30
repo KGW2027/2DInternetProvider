@@ -13,16 +13,18 @@ namespace IP.Control
         private const string LoanPopupName = "Loan";
 
         private List<BankInfo> _bankInfos;
+        private Bank[] _banks;
         
         void Start()
         {
             _bankInfos = new List<BankInfo>();
 
-            Bank bank1 = new Bank("밀 항회", 2.5f, 2.7f);
-            Bank bank2 = new Bank("어디든 대출", 4.0f, 4.3f);
-            Bank bank3 = new Bank("얼마든 OKash", 7.0f, 9.9f);
+            Bank bank1 = new Bank("밀 항회", 0.3f, 2.7f);
+            Bank bank2 = new Bank("어디든 대출", 0.5f, 4.3f);
+            Bank bank3 = new Bank("얼마든 OKash", 0.7f, 9.9f);
 
             Bank[] banks = {bank1, bank2, bank3};
+            _banks = banks;
             int used = 0;
             
             foreach (Transform tf in transform)
@@ -54,6 +56,11 @@ namespace IP.Control
 
         public void UpdateUI()
         {
+            foreach (var bank in _banks)
+            {
+                bank.CalcNewLoanSize();
+            }
+
             _bankInfos.ForEach(bi => bi.Build());
         }
     }

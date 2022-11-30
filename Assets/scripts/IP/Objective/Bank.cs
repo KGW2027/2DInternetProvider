@@ -1,4 +1,6 @@
-﻿namespace IP.Objective
+﻿using UnityEngine;
+
+namespace IP.Objective
 {
     public class Bank
     {
@@ -7,18 +9,21 @@
         public long MaxLoanSize { get; private set; }
         
         private long _curLoanSize;
-        private float _buildWeight;
         private long _minLoanSize;
         private float _minInterest;
         
+        private float _multiply;
         
-        public Bank(string name, float bw, float mi)
+        
+        public Bank(string name, float multiply, float mi)
         {
             Name = name;
-            _buildWeight = bw;
+            
             _minInterest = mi;
             _minLoanSize = 5000L;
             _curLoanSize = 0L;
+            
+            _multiply = multiply;
             
             CalcNewInterest();
             CalcNewLoanSize();
@@ -26,7 +31,7 @@
 
         public void CalcNewLoanSize()
         {
-            MaxLoanSize = _minLoanSize - _curLoanSize;
+            MaxLoanSize = (long) (_minLoanSize + GetCompanyRevenue()*_multiply - _curLoanSize);
         }
 
         public void CalcNewInterest()
@@ -38,6 +43,11 @@
         {
             _curLoanSize += amount;
             CalcNewLoanSize();
+        }
+
+        private long GetCompanyRevenue()
+        {
+            return GameManager.Instance.Company.RecentRevenue(12);
         }
     }
 }

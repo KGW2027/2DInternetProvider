@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using IP.Objective.Builds;
 using IP.Screen;
+using UnityEngine;
 
 namespace IP.Objective
 {
@@ -10,6 +11,7 @@ namespace IP.Objective
         private readonly Dictionary<City, List<BuildBase>> _builds;
         private List<PaymentPlan> _plans;
         private List<Debt> _debts;
+        private List<long> _revenueLog;
 
         public readonly string Name;
         
@@ -23,6 +25,7 @@ namespace IP.Objective
             Name = name;
             Money = startMoney;
             Trust = 0;
+            _revenueLog = new List<long>();
             _builds = new Dictionary<City, List<BuildBase>>();
             _plans = new List<PaymentPlan>();
             _debts = new List<Debt>();
@@ -85,8 +88,21 @@ namespace IP.Objective
 
         public void Earn(long money)
         {
+            _revenueLog.Add(money);
             Money += money;
         }
+
+        public long RecentRevenue(int range)
+        {
+            long revenue = 0L;
+            for (int key = 1; key <= range && _revenueLog.Count - key > 0; key++)
+            {
+                revenue += _revenueLog[^key];
+            }
+            return revenue;
+        }
+        
+        
         
         public List<City> GetConnectedCities()
         {
@@ -150,17 +166,6 @@ namespace IP.Objective
             foreach (Debt debt in _debts)
             {
                 scale += debt.Scale;
-            }
-
-            return scale;
-        }
-
-        public long GetTotalDebtInterest()
-        {
-            long scale = 0;
-            foreach (Debt debt in _debts)
-            {
-                scale += (long) Math.Round(debt.Scale * (debt.Interest / 12));
             }
 
             return scale;
