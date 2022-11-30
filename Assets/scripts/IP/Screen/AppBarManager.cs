@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using IP.Control;
+using IP.Objective;
 using MEC;
 using UnityEngine;
 
@@ -82,9 +82,10 @@ namespace IP.Screen
 
         private void UpdateMoneyText()
         {
-            _changeMoney = GameManager.Instance.Company.GetTotalDebtInterest();
+            Company company = GameManager.Instance.Company;
+            _changeMoney = (company.CalcRevenue() / 1000) - (company.CalcMaintenance() + company.CalcInterest());
             moneyPrint.SetUIText($"{GameManager.Instance.Company.Money:n0}");
-            changeMoneyPrint.SetUIText($"{(_changeMoney < 0 ? "- " : "+ ")}{_changeMoney:n0}");
+            changeMoneyPrint.SetUIText($"{_changeMoney:n0}");
             Color textColor = _changeMoney < 0
                 ? new Color(255, 0, 0)
                 : new Color(0, 255, 0);

@@ -28,10 +28,12 @@ namespace IP.UIFunc.Builder
             qtyBuilds.SetUIText($"설치한 건물 수 : {GetBuilds(company):n0}");
             qtyCustomers.SetUIText($"총 소비자 수 : {company.GetTotalCustomers():n0}");
             money.SetUIText($"보유 자금 : {company.Money:n0}");
-            monthMoney.SetUIText($"월 수익 : -");
-            debt.SetUIText($"총 부채 : {company.GetTotalDebtScale():n0}" );
-            useMoney.SetUIText("월 지출 : -");
-            changeMoney.SetUIText("총 변동 : -");
+            long revenue = company.CalcRevenue();
+            long minus = (company.CalcInterest() + company.CalcMaintenance()) * 1000;
+            monthMoney.SetUIText($"월 수익 : {revenue:n0}");
+            debt.SetUIText($"총 부채 : {company.GetTotalDebtScale() * 1000:n0}" );
+            useMoney.SetUIText($"월 지출 : {minus:n0}");
+            changeMoney.SetUIText($"총 변동 : {(revenue - minus):n0}");
         }
 
         private int GetBuilds(Company comp)

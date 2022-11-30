@@ -73,6 +73,20 @@ namespace IP.Objective
             return customer;
         }
 
+        public long GetCustomer(PaymentPlan plan)
+        {
+            long customer = 0L;
+            foreach (KeyValuePair<CitizenCharacter, PaymentPlan> item in _selectedPlans)
+            {
+                if (item.Value == plan)
+                {
+                    customer += _peopleCharacters[item.Key];
+                }
+            }
+
+            return customer;
+        }
+
         public void Deservice(PaymentPlan plan)
         {
             if (ServicingPlans.Contains(plan))

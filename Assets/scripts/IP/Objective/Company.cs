@@ -47,6 +47,46 @@ namespace IP.Objective
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
             _builds[city].Add(build);
         }
+
+        public long CalcRevenue()
+        {
+            long revenue = 0L;
+            foreach (PaymentPlan plan in _plans)
+            {
+                revenue += plan.GetRevenue();
+            }
+            return revenue;
+        }
+
+        public long CalcInterest()
+        {
+            long interest = 0L;
+            foreach (Debt debt in _debts)
+            {
+                interest += (long) (debt.Scale * (debt.Interest / (12 * 100)));
+            }
+            return interest;
+        }
+
+        public long CalcMaintenance()
+        {
+            long maintenance = 0L;
+            foreach (List<BuildBase> builds in _builds.Values)
+            {
+                builds.ForEach(build =>
+                {
+                    if (build.IsComplete()) maintenance += (long) build.GetMaintenance();
+                    else maintenance += (long) (build.GetBudget() / build.GetBuildDate());
+                });
+            }
+
+            return maintenance;
+        }
+
+        public void Earn(long money)
+        {
+            Money += money;
+        }
         
         public List<City> GetConnectedCities()
         {

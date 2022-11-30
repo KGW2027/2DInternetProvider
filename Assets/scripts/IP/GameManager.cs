@@ -63,12 +63,21 @@ namespace IP
         }
 
         /**
-         *
+         * 월별 이벤트
          */
         public void ExecuteMonthlyEvent()
         {
             _lotto.Next();
+            UserEarn();
             _wmi.Cities.ForEach(city => city.PlanSelect());
+            AppBarManager.Instance.Refresh();
+        }
+
+        private void UserEarn()
+        {
+            long planRevenue = Company.CalcRevenue() / 1000;
+            long used = Company.CalcInterest() + Company.CalcMaintenance();
+            Company.Earn(planRevenue - used);
         }
         
         /**

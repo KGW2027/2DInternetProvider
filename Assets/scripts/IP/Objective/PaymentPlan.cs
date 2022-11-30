@@ -33,5 +33,15 @@ namespace IP.Objective
             }
         }
 
+        public long GetRevenue()
+        {
+            long revenue = 0L;
+            foreach (City city in _cities)
+            {
+                revenue += city.GetCustomer(this) * Budget;
+            }
+            return revenue;
+        }
+
     }
 }
