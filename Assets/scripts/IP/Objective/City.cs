@@ -5,7 +5,7 @@ namespace IP.Objective
 {
     public class City
     {
-        public static long GeneratePeople(bool isCity)
+        private long GeneratePeople(bool isCity)
         {
             return isCity ? Random.Range(1000000, 50000000) : Random.Range(10000, 500000);
         }
@@ -15,10 +15,10 @@ namespace IP.Objective
         public Dictionary<PaymentPlan, long> PlanShares;
         public GameObject Button;
 
-        public City(string cityName, long cityPeople, GameObject button)
+        public City(string cityName, bool isCity, GameObject button)
         {
             Name = cityName;
-            People = cityPeople;
+            People = GeneratePeople(isCity);
             Button = button;
             PlanShares = new Dictionary<PaymentPlan, long>();
         }
