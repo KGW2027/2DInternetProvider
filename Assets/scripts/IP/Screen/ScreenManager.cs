@@ -8,7 +8,9 @@ namespace IP.Screen
     public class ScreenManager : MonoBehaviour
     {
 
+        [Header("메인 카메라")]
         public GameObject mainCamera;
+        [Header("카메라 속성")]
         public int cameraMoveSpeed = 10;
 
         private Dictionary<string, Transform> _screens;
@@ -67,6 +69,23 @@ namespace IP.Screen
             }
         }
 
+        private void OpenSubUI()
+        {
+            if (_screenSubUIs.ContainsKey(_movedScreenType))
+            {
+                _screenSubUIs[_movedScreenType].SetActive(true);
+                _screenSubUIs[_movedScreenType].GetComponent<ISubUI>()?.UpdateUI();
+            }
+        }
+
+        private void CloseAllSubUI()
+        {
+            foreach(GameObject subUI in _screenSubUIs.Values) subUI.SetActive(false);
+        }
+
+        /**
+         * Control Screen들을 표시하기 위한 메인카메라를 조종하는 함수
+         */
         public void MoveCamara(String name)
         {
             PopupManager.Instance.ClosePopup();
@@ -86,25 +105,14 @@ namespace IP.Screen
             _isLerping = true;
         }
 
+        /**
+         * WorldMap에서 작동하는 InfraUI를 Toggle하는 함수
+         */
         public void ToggleInfraUI()
         {
             MoveCamara("MAP");
             _infraUI.SetActive(!_infraUI.activeSelf);
             _infraUI.GetComponent<ISubUI>()?.UpdateUI();
-        }
-
-        private void OpenSubUI()
-        {
-            if (_screenSubUIs.ContainsKey(_movedScreenType))
-            {
-                _screenSubUIs[_movedScreenType].SetActive(true);
-                _screenSubUIs[_movedScreenType].GetComponent<ISubUI>()?.UpdateUI();
-            }
-        }
-
-        private void CloseAllSubUI()
-        {
-            foreach(GameObject subUI in _screenSubUIs.Values) subUI.SetActive(false);
         }
 
     }

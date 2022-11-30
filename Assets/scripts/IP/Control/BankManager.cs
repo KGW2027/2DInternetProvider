@@ -7,6 +7,7 @@ namespace IP.Control
 {
     public class BankManager : MonoBehaviour, ISubUI
     {
+        [Header("대출 팝업")]
         public GameObject loanPopup;
 
         private const string LoanPopupName = "Loan";

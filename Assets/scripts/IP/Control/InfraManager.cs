@@ -9,8 +9,10 @@ namespace IP.Control
     {
         private static bool _needUpdate = true;
         
+        [Header("건물 목록")]
         public GameObject scrollContent;
         public GameObject buildPrefab;
+        [Header("건설 시작 확인 팝업")]
         public GameObject infraConfirmPopup;
 
         void Start()

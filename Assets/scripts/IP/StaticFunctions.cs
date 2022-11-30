@@ -9,6 +9,9 @@ namespace IP
         private static Dictionary<GameObject, TextMeshProUGUI> _uiTexts = new();
         private static Dictionary<GameObject, TextMeshPro> _texts = new();
 
+        /**
+         * TMP Text들을 일괄적으로 수정하기 위한 함수, Dictionary에 caching하여 접근 속도를 높임.
+         */
         public static void SetUIText(this GameObject obj, string text)
         {
             if (!_uiTexts.ContainsKey(obj)) _uiTexts[obj] = obj.GetComponent<TextMeshProUGUI>();

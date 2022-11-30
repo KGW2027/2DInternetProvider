@@ -6,7 +6,10 @@ namespace IP.Control
 {
     public class OverallManager : MonoBehaviour, ISubUI
     {
+        [Header("회사 정보 표시")]
         public GameObject infoTextsParent;
+        
+        [Header("건설중인 건물 목록")]
         public GameObject buildsInfo;
         public GameObject buildInfoPrefab;
 
@@ -14,8 +17,6 @@ namespace IP.Control
         {
             UpdateUI();
         }
-
-        // Update is called once per frame
 
         public void UpdateUI()
         {
@@ -30,8 +31,9 @@ namespace IP.Control
 
         private void UpdateBuildsInfo()
         {
-            foreach (BuildBase build in GameManager.Instance.GetUnderConstructBuilds())
+            foreach (BuildBase build in GameManager.Instance.Company.GetUnderConstructBuilds())
             {
+                if (build.GetType() == typeof(HeadOffice)) continue;
                 GameObject info = Instantiate(buildInfoPrefab, buildsInfo.transform, true);
                 BuildsInfoBuilder(info, build);
             }

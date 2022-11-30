@@ -8,6 +8,7 @@ namespace IP.Objective
     public class Company
     {
         private readonly Dictionary<City, List<BuildBase>> _builds;
+        private List<PaymentPlan> _plans;
         private List<Debt> _debts;
 
         public readonly string Name;
@@ -21,6 +22,7 @@ namespace IP.Objective
             Name = name;
             Money = startMoney;
             _builds = new Dictionary<City, List<BuildBase>>();
+            _plans = new List<PaymentPlan>();
             _debts = new List<Debt>();
             UseLoanTimes = 0;
             RepayLoanTimes = 0;
@@ -40,6 +42,19 @@ namespace IP.Objective
         public List<City> GetConnectedCities()
         {
             return new List<City>(_builds.Keys);
+        }       
+        
+        public List<BuildBase> GetUnderConstructBuilds()
+        {
+            List<BuildBase> ucbList = new List<BuildBase>();
+            GetConnectedCities().ForEach(city =>
+            {
+                foreach (BuildBase build in GetBuilds(city))
+                {
+                    if (!build.IsComplete()) ucbList.Add(build);
+                }
+            });
+            return ucbList;
         }
 
         public int GetConnectedCountries()
@@ -124,6 +139,7 @@ namespace IP.Objective
         {
             _debts.Add(debt);
             Money += debt.Scale;
+            UseLoanTimes++;
         }
 
         public bool UseMoney(long amount)

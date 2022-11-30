@@ -7,11 +7,14 @@ namespace IP.Control
 {
     public class LottoManager : MonoBehaviour
     {
+        [Header("복권 상태 설명")]
         public GameObject title;
-        public GameObject myNumbers;
-        public GameObject winNumbers;
         public GameObject temptText;
         public GameObject alertText;
+        
+        [Header("복권의 숫자 표시")]
+        public GameObject myNumbers;
+        public GameObject winNumbers;
 
         private Lotto _lotto;
         private long _cumulPrice;
@@ -70,7 +73,7 @@ namespace IP.Control
 
         public void Buy()
         {
-            if (!_bought && GameManager.Instance.UseMoney(3))
+            if (!_bought && GameManager.Instance.Company.UseMoney(3))
             {
                 _myNumbers = _lotto.BoughtNumbers();
                 _lastBoughtAttempt = _attempt;

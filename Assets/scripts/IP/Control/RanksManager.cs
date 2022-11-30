@@ -7,6 +7,7 @@ namespace IP.Control
     public class RanksManager : MonoBehaviour
     {
     
+        [Header("회사 정보 프리팹")]
         public GameObject panel;
     
         void Start()

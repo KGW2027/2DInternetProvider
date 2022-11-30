@@ -9,13 +9,17 @@ namespace IP.Screen
     {
         public static AppBarManager Instance;
         
+        [Header("게임 내 시간 표시")]
         public GameObject datePrint;
         public GameObject remainDatePrint;
+        public GameObject realDatePrint;
+        [Header("회사 자산 표시")]
         public GameObject moneyPrint;
         public GameObject changeMoneyPrint;
+        [Header("회사 이름 표시")]
         public GameObject companyNamePrint;
+        [Header("스크린 관리")]
         public GameObject screenManager;
-        public GameObject realDatePrint;
 
         private int _year;
         private int _month;
@@ -58,11 +62,6 @@ namespace IP.Screen
                 yield return Timing.WaitForSeconds(1.0f);
             }
         }
-
-        public void SkipMonth()
-        {
-            NextMonth();
-        }
         
         private void NextMonth()
         {
@@ -94,20 +93,40 @@ namespace IP.Screen
             changeMoneyPrint.SetUITextColor(textColor);
         }
 
+        /**
+         * 강제로 다음 달로 넘기기 위한 함수
+         */
+        public void SkipMonth()
+        {
+            NextMonth();
+        }
+
+        /**
+         * 월드맵 화면으로 복귀시키는 함수
+         */
         public void MoveHome()
         {
             screenManager.GetComponent<ScreenManager>().MoveCamara("MAP");
         }
 
+        /**
+         * 메인 UI에서 아래쪽 버튼을 눌러 화면을 전환시키는 함수
+         */
         public void MoveScreen(string type) {
             _screenManager.MoveCamara(type.ToUpper());
         }
 
+        /**
+         * 현재 날짜를 반환하는 함수
+         */
         public string GetDate()
         {
             return $"{_year}Y{_month}M";
         }
 
+        /**
+         * 외부 변경으로 인해 UI를 업데이트 해야할 때 사용하는 함수
+         */
         public void Refresh()
         {
             UpdateMoneyText();

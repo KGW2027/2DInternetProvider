@@ -4,8 +4,10 @@ namespace IP.UIFunc
 {
     public class WorldMapCameraController : MonoBehaviour
     {
+        [Header("월드맵")]
         public GameObject mapCamera;
         public GameObject map;
+        [Header("카메라 속성")]
         public float camMoveSpeed = 1.0f;
         public float camZoomSpeed = 3.0f;
 
@@ -28,10 +30,10 @@ namespace IP.UIFunc
             _mainCamera = Camera.main;
 
             Bounds mapBounds = map.GetComponent<SpriteRenderer>().bounds;
-            float centerX = mapBounds.center.x;
-            float centerY = mapBounds.center.y;
-            float extentX = mapBounds.extents.x;
-            float extentY = mapBounds.extents.y;
+            var centerX = mapBounds.center.x;
+            var centerY = mapBounds.center.y;
+            var extentX = mapBounds.extents.x;
+            var extentY = mapBounds.extents.y;
             _camBorder = new[] {centerX + extentX, centerY + extentY, centerX - extentX, centerY - extentY};
             
             _camCamera = mapCamera.GetComponent<Camera>();
@@ -101,6 +103,9 @@ namespace IP.UIFunc
             _camScale = new[] {unitSize * orthoSize, orthoSize};
         }
 
+        /**
+         * 카메라 포커스를 조정할 때 사용하는 함수
+         */
         public void SetCameraFocus(Vector2 vec)
         {
             mapCamera.transform.position = new Vector3(vec.x, vec.y, -10);

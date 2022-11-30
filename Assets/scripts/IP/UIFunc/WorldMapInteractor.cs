@@ -23,6 +23,7 @@ namespace IP.UIFunc
     
     public class WorldMapInteractor : MonoBehaviour
     {
+        [Header("월드맵 트리 간선")]
         public GameObject lineDrawer;
         
         private List<GameObject> _cityObjects;
@@ -46,6 +47,42 @@ namespace IP.UIFunc
             GameManager.Instance.LateStart();
         }
 
+        /**
+         * 월드맵에 존재하는 모든 도시와 국가들을 로드하는 함수
+         */
+        private void RegisterCities()
+        {
+            foreach(Transform countries in transform)
+            {
+                Country country = null;
+                if (countries.CompareTag("CityParents"))
+                {
+                    Transform countryTransform = countries.Find("CountryLogo");
+                    string countryName = countryTransform.GetChild(0).GetComponent<TextMeshPro>().text;
+                    country = new Country(countryName, countryTransform.gameObject);
+                    
+                    _countryObjects.Add(country.Button);
+
+                    foreach (Transform cities in countries.transform)
+                    {
+                        if (cities.CompareTag("WorldMapButton"))
+                        {
+                            TextMeshPro cityText = cities.GetChild(0).GetComponent<TextMeshPro>();
+                            City city = new City(cityText.text, cityText.name.Equals("Text_CityName"), cities.gameObject);
+                            country.AddCity(city);
+                            
+                            _cityObjects.Add(city.Button);
+                            Cities.Add(city);
+                        }
+                    }
+                }
+                if(country != null) Countries.Add(country);
+            }
+        }
+
+        /**
+         * 월드맵에서 연결을 지원하는 도시간 간선을 생성하는 함수
+         */
         private void MakeTree()
         {
             List<City> allCities = new List<City>();
@@ -81,36 +118,9 @@ namespace IP.UIFunc
             }
         }
 
-        private void RegisterCities()
-        {
-            foreach(Transform countries in transform)
-            {
-                Country country = null;
-                if (countries.CompareTag("CityParents"))
-                {
-                    Transform countryTransform = countries.Find("CountryLogo");
-                    string countryName = countryTransform.GetChild(0).GetComponent<TextMeshPro>().text;
-                    country = new Country(countryName, countryTransform.gameObject);
-                    
-                    _countryObjects.Add(country.Button);
-
-                    foreach (Transform cities in countries.transform)
-                    {
-                        if (cities.CompareTag("WorldMapButton"))
-                        {
-                            TextMeshPro cityText = cities.GetChild(0).GetComponent<TextMeshPro>();
-                            City city = new City(cityText.text, cityText.name.Equals("Text_CityName"), cities.gameObject);
-                            country.AddCity(city);
-                            
-                            _cityObjects.Add(city.Button);
-                            Cities.Add(city);
-                        }
-                    }
-                }
-                if(country != null) Countries.Add(country);
-            }
-        }
-
+        /**
+         * 월드맵에서 도시와 국가가 보이는 상태를 변경하는 함수
+         */
         public void ChangeVisibleMode(bool visibleCity)
         {
             if (_cityObjects == null || _countryObjects == null) return;
@@ -118,6 +128,9 @@ namespace IP.UIFunc
             _countryObjects.ForEach(country => country.SetActive(!visibleCity));
         }
 
+        /**
+         * 월드맵에서 도시나 국가를 클릭했을 때 기능을 수행하는 함수
+         */
         public string ClickMap(Vector2 location)
         {
             RaycastHit2D hit = Physics2D.Raycast(location, Vector2.zero, 0f);

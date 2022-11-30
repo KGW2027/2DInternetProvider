@@ -7,6 +7,7 @@ namespace IP.Control
     public class SceneManager : MonoBehaviour
     {
 
+        [Header("회사 이름 입력필드")]
         public GameObject inputName;
 
         public void StartGame()

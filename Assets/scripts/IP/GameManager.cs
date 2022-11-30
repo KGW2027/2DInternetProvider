@@ -9,6 +9,9 @@ using Random = UnityEngine.Random;
 
 namespace IP
 {
+    /**
+     * 게임의 전체적 흐름 및 주요 변수에 접근 가능한 클래스
+     */
     public class GameManager : MonoBehaviour
     {
 
@@ -29,6 +32,10 @@ namespace IP
             Instance = this;
         }
 
+        /**
+         * WorldMapInteractor에서 도시/국가 Load가 끝나면 실행되는 함수.
+         * 본사 건물 및 AI회사 생성
+         */
         public void LateStart()
         {
             _wmi = FindObjectOfType<WorldMapInteractor>();
@@ -38,34 +45,33 @@ namespace IP
             SetCameraFocus(startCity);
         }
         
+        /**
+         * TitleScene에서 회사 이름이 설정되면 유저 회사를 먼저 생성하는 함수
+         */
         public void InitGame(String name)
         {
             Company = new Company(name, StartMoney);
         }
 
+        /**
+         * WorldMapCamera가 특정 도시에게  초점을 맞추도록 하는 함수
+         */
         public void SetCameraFocus(City city)
         {
             _wmcc.SetCameraFocus(city.Button.transform.position);
         }
 
+        /**
+         * 회사 창립 연도/월을 알려주는 함수
+         */
         public int[] GetStartDate()
         {
             return new[] {StartYear, StartMonth};
         }
 
-        public List<BuildBase> GetUnderConstructBuilds()
-        {
-            List<BuildBase> ucbList = new List<BuildBase>();
-            Company.GetConnectedCities().ForEach(city =>
-            {
-                foreach (BuildBase build in Company.GetBuilds(city))
-                {
-                    if (!build.IsComplete()) ucbList.Add(build);
-                }
-            });
-            return ucbList;
-        }
-
+        /**
+         * 회사에 대출 이력을 추가하는 함수
+         */
         public void AddLoan(Bank bank, long money)
         {
             Debt loan = new Debt();
@@ -80,12 +86,10 @@ namespace IP
 
             AppBarManager.Instance.Refresh();
         }
-
-        public bool UseMoney(long amount)
-        {
-            return Company.UseMoney(amount);
-        }
-
+        
+        /**
+         * 현재 게임에 로드된 국가의 리스트를 반환하는 함수
+         */
         public List<Country> GetCountries()
         {
             return _wmi.Countries;
