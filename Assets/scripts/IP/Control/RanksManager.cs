@@ -1,6 +1,5 @@
 using IP.Objective;
 using IP.UIFunc.Builder;
-using TMPro;
 using UnityEngine;
 
 namespace IP.Control

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using IP.Objective;
-using IP.UIFunc;
 using IP.UIFunc.Builder;
 using UnityEngine;
 

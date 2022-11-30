@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Threading;
 using IP.Control;
 using MEC;
-using TMPro;
 using UnityEngine;
 
 namespace IP.Screen

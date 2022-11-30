@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using IP.Control;
-using IP.UIFunc;
 using UnityEngine;
 
 namespace IP.Screen

@@ -16,8 +16,8 @@ namespace IP.UIFunc.Builder
 
         private BuildBase _buildBase;
 
-        private static readonly Vector3 WiremodeVector = new Vector3(-130.9f, -8.2f, .0f);
-        private static readonly Vector3 DefaultVector = new Vector3(0, -8.2f, .0f);
+        private static readonly Vector3 WiremodeVector = new(-130.9f, -8.2f, .0f);
+        private static readonly Vector3 DefaultVector = new(0, -8.2f, .0f);
 
         public void Build()
         {

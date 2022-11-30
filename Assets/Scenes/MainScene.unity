@@ -20577,7 +20577,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74298c0e7063a324eafd6e02a5ad6d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lineDrawer: {fileID: 0}
+  lineDrawer: {fileID: 8699259550434186308, guid: 0cda2b0ef99397840b1e6f1e4db82889, type: 3}
 --- !u!224 &2031400969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3293994548541570963, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}

@@ -1,6 +1,4 @@
-﻿using IP.Objective;
-using IP.Objective.Builds;
-using TMPro;
+﻿using IP.Objective.Builds;
 using UnityEngine;
 using UnityEngine.UI;
 

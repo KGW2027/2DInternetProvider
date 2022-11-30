@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using IP.Objective;
 using IP.Objective.Builds;
-using IP.UIFunc;
 using IP.UIFunc.Builder;
-using TMPro;
 using UnityEngine;
 
 namespace IP.Control
