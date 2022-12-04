@@ -527,7 +527,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1815067897374169872}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7461745952135981833}
+        m_TargetAssemblyTypeName: IP.UIFunc.Builder.PaymentPlanInfo, Assembly-CSharp
+        m_MethodName: EditPlan
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1815067897465575076
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,7 +796,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1815067897703943592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7461745952135981833}
+        m_TargetAssemblyTypeName: IP.UIFunc.Builder.PaymentPlanInfo, Assembly-CSharp
+        m_MethodName: OpenStat
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1815067897812642812
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +930,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1815067897812642815}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7461745952135981833}
+        m_TargetAssemblyTypeName: IP.UIFunc.Builder.PaymentPlanInfo, Assembly-CSharp
+        m_MethodName: DeletePlan
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1815067897878542905
 GameObject:
   m_ObjectHideFlags: 0

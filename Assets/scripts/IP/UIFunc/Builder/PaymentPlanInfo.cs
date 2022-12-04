@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using IP.Control;
 using IP.Objective;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ namespace IP.UIFunc.Builder
         public GameObject planDesc;
 
         private PaymentPlan _plan;
+        private PlanManager _manager;
         
         public void Build()
         {
@@ -23,6 +25,23 @@ namespace IP.UIFunc.Builder
         public void SendData(params object[] datas)
         {
             _plan = (PaymentPlan) datas[0];
+            _manager = (PlanManager) datas[1];
+        }
+
+        public void EditPlan()
+        {
+            _manager.Edit(_plan);
+        }
+
+        public void OpenStat()
+        {
+            _manager.Open(_plan);
+        }
+
+        public void DeletePlan()
+        {
+            GameManager.Instance.Company.DeletePlan(_plan);
+            _manager.UpdateUI();
         }
 
         private string GetCities()

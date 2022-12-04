@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using IP.Objective.Builds;
 using IP.Screen;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace IP.Objective
@@ -49,6 +50,13 @@ namespace IP.Objective
         public void AddPlan(PaymentPlan plan)
         {
             _plans.Add(plan);
+        }
+
+        public void DeletePlan(PaymentPlan plan)
+        {
+            List<City> serviceCities = new List<City>(plan.Cities);
+            serviceCities.ForEach(plan.Deservice);
+            _plans.Remove(plan);
         }
 
         public void ConstructBuild(City city, BuildBase build)
@@ -133,7 +141,6 @@ namespace IP.Objective
             
             double bandwidthTrust = (usingBandwidth / BandwidthAllowance) - 1;
             double updownTrust = (usingUpDown / UpDownSpeed) - 1;
-            int beforeTrust = Trust;
 
             if (bandwidthTrust < 0 && updownTrust < 0)
             {
