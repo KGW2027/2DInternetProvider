@@ -46,9 +46,16 @@ namespace IP.Objective
             build.Complete(this);
             _builds[city].Add(build);
         }
-
-        public void AddPlan(PaymentPlan plan)
+        
+        public void AddPlan(PaymentPlan plan, City serviceCity)
         {
+            plan.Service(serviceCity);
+            _plans.Add(plan);
+        }
+
+        public void AddPlan(PaymentPlan plan, List<City> serviceCity)
+        {
+            serviceCity.ForEach(plan.Service);
             _plans.Add(plan);
         }
 
@@ -152,6 +159,13 @@ namespace IP.Objective
                 Trust -= (int) Math.Ceiling(updownTrust * 8);
             }
         }
+
+        public long GetTotalTraffic()
+        {
+            long total = 0L;
+            foreach (PaymentPlan plan in _plans) total += (long) plan.GetUsingBandwidth();
+            return total;
+        }
         
         
         
@@ -230,11 +244,6 @@ namespace IP.Objective
                 customers += city.GetCustomer(this);
             });
             return customers;
-        }
-
-        public string GetTotalTraffic()
-        {
-            return "1GB";
         }
 
         public void AddLoan(Debt debt)

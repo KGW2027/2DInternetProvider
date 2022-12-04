@@ -65,7 +65,7 @@ namespace IP
             Company.AddBuild(startCity, new HeadOffice());
             Company.AddBuild(startCity, new IDCSmall());
             Company.AddBuild(startCity, new CoaxialCable());
-            Company.AddPlan(plan);
+            Company.AddPlan(plan, startCity);
             
             SetCameraFocus(startCity);
             ExecuteMonthlyEvent();
@@ -149,6 +149,19 @@ namespace IP
         public List<Country> GetCountries()
         {
             return _wmi.Countries;
+        }
+
+        /**
+         * 게임 총 인구수
+         */
+        public long GetTotalPeopleCount()
+        {
+            long count = 0L;
+            _wmi.Cities.ForEach(city =>
+            {
+                count += city.People;
+            });
+            return count;
         }
     }
 }

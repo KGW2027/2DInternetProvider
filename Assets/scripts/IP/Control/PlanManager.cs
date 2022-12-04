@@ -105,7 +105,6 @@ namespace IP.Control
             plan.Bandwidth = Convert.ToInt64(planBandwidth.text) * StaticFunctions.Bytes.GB;
             plan.Upload = Convert.ToInt64(planUpload.text);
             plan.Download = Convert.ToInt64(planDownload.text);
-            GetSelectCities().ForEach(plan.Service);
             
             if (_isEditMode)
             {
@@ -115,7 +114,7 @@ namespace IP.Control
                 _editingPlan = null;
             }
             
-            GameManager.Instance.Company.AddPlan(plan);
+            GameManager.Instance.Company.AddPlan(plan, GetSelectCities());
 
             UpdateUI();
         }
