@@ -35,7 +35,7 @@ namespace IP.Objective
             RepayLoanTimes = 0;
             
             BandwidthAllowance = 0;
-            UpDownSpeed = 100;
+            UpDownSpeed = 0;
         }
 
         public void AddBuild(City city, BuildBase build)
