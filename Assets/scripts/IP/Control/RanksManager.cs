@@ -1,3 +1,4 @@
+using IP.AI;
 using IP.Objective;
 using IP.UIFunc.Builder;
 using UnityEngine;
@@ -29,10 +30,13 @@ namespace IP.Control
             float x = 960;
             float y = -60;
 
-            for (int panelKey = 0; panelKey < 15; panelKey++)
+            GameObject userPanel = Instantiate(panel, transform, true);
+            UpdatePanelDisplay(userPanel, GameManager.Instance.Company);
+
+            foreach (Company aiCompany in AIManager.Instance.Companies)
             {
-                GameObject newPanel = Instantiate(panel, transform, true);
-                // UpdatePanelDisplay(newPanel, company)
+                GameObject aiPanel = Instantiate(panel, transform, true);
+                UpdatePanelDisplay(aiPanel, aiCompany);
             }
         }
 
