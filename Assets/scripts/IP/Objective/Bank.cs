@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace IP.Objective
+﻿namespace IP.Objective
 {
     public class Bank
     {
