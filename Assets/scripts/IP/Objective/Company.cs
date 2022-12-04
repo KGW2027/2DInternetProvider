@@ -19,6 +19,8 @@ namespace IP.Objective
         public int UseLoanTimes { get; private set; }
         public int RepayLoanTimes { get; private set; }
         public int Trust { get; private set; }
+        public long BandwidthAllowance;
+        public long UpDownSpeed;
 
         public Company(string name, long startMoney)
         {
@@ -31,12 +33,15 @@ namespace IP.Objective
             _debts = new List<Debt>();
             UseLoanTimes = 0;
             RepayLoanTimes = 0;
+            
+            BandwidthAllowance = 0;
+            UpDownSpeed = 100;
         }
 
         public void AddBuild(City city, BuildBase build)
         {
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
-            build.Complete();
+            build.Complete(this);
             _builds[city].Add(build);
         }
 
@@ -110,6 +115,35 @@ namespace IP.Objective
                 revenue += _revenueLog[^key];
             }
             return revenue;
+        }
+
+        public void CalcTrust()
+        {
+            double usingBandwidth = 0.0d;
+            long usingUpDown = 0L;
+            foreach (PaymentPlan plan in _plans)
+            {
+                usingBandwidth += plan.GetUsingBandwidth() * 1024L;
+                usingUpDown += plan.GetUpDown();
+            }
+
+            // 서비스 중인 플랜이 없는 경우 신뢰도 계산 스킵
+            if (usingBandwidth == 0 || usingUpDown == 0) return;
+
+            double bandwidthTrust = (usingBandwidth / BandwidthAllowance) - 1;
+            double updownTrust = (usingUpDown / UpDownSpeed) - 1;
+            int beforeTrust = Trust;
+
+            if (bandwidthTrust < 0 && updownTrust < 0)
+            {
+                Trust += 1;
+            }
+            else if (bandwidthTrust > 0 || updownTrust > 0)
+            {
+                Trust -= (int) Math.Ceiling(bandwidthTrust * 5);
+                Trust -= (int) Math.Ceiling(updownTrust * 8);
+            }
+            Debug.Log($"신뢰도 변경 : {beforeTrust} -> {Trust}");
         }
         
         

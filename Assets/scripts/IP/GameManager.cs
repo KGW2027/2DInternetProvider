@@ -67,9 +67,19 @@ namespace IP
          */
         public void ExecuteMonthlyEvent()
         {
+            // 복권 회차 넘기기
             _lotto.Next();
+            
+            // 수익금 정산
             UserEarn();
+            
+            // 회사 신뢰도 평가
+            Company.CalcTrust();
+
+            // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
+            
+            // Appbar UI 새로고침
             AppBarManager.Instance.Refresh();
         }
 

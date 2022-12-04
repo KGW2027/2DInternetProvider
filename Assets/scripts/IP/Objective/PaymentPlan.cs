@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace IP.Objective
 {
@@ -31,6 +33,21 @@ namespace IP.Objective
                 _cities.Remove(c);
                 c.ServicingPlans.Remove(this);
             }
+        }
+
+        public double GetUsingBandwidth()
+        {
+            double sum = 0.0d;
+            _cities.ForEach(city =>
+            {
+                sum += city.GetCustomer(this) * city.ActiveRate;
+            });
+            return sum * Bandwidth;
+        }
+        
+        public long GetUpDown()
+        {
+            return Math.Max(Upload, Download);
         }
 
         public long GetRevenue()
