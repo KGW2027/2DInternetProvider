@@ -45,7 +45,7 @@ namespace IP.AI
             foreach (Country country in _wmi.Countries)
             {
                 byte cityCreated = 0, countrysideCreated = 0;
-                while (cityCreated < 2 && countrysideCreated < 1)
+                while (cityCreated < 2 || countrysideCreated < 1)
                 {
                     City select = country.Cities[Random.Range(0, country.Cities.Count)];
                     if (select.IsCity && cityCreated < 2)
