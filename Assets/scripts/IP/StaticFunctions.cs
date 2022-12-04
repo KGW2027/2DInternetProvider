@@ -4,8 +4,32 @@ using UnityEngine;
 
 namespace IP
 {
+    
     public static class StaticFunctions
     {
+        public struct Bytes
+        {
+            private long InternalValue { get; set; }
+
+            public static readonly long MB = 1L << 0;
+            public static readonly long GB = 1L << 10;
+            public static readonly long TB = 1L << 20;
+            public static readonly long PB = 1L << 30;
+            public static readonly long EB = 1L << 40;
+            public static readonly long ZB = 1L << 50;
+            public static readonly long YB = 1L << 60;
+
+            public static long operator *(Bytes b, long n)
+            {
+                return b.InternalValue * n;
+            }
+
+            public static implicit operator Bytes(long value)
+            {
+                return new Bytes {InternalValue = value};
+            }
+        }
+        
         private static Dictionary<GameObject, TextMeshProUGUI> _uiTexts = new();
         private static Dictionary<GameObject, TextMeshPro> _texts = new();
 
