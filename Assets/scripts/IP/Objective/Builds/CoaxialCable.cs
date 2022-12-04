@@ -24,9 +24,9 @@ namespace IP.Objective.Builds
             return 10;
         }
 
-        protected override void CompleteAction()
+        protected override void CompleteAction(Company owner)
         {
-            Debug.Log($"{GetName()}이 완성되었어요!");
+            owner.UpDownSpeed += 100 * StaticFunctions.Bytes.MB;
         }
 
         public override bool IsWire()

@@ -17,7 +17,7 @@ namespace IP.Objective.Builds
         public abstract float GetMaintenance();
         public abstract float GetBuildDate();
         public abstract float GetBudget();
-        protected abstract void CompleteAction();
+        protected abstract void CompleteAction(Company owner);
         public abstract bool IsWire();
 
         public City GetCity()
@@ -55,10 +55,10 @@ namespace IP.Objective.Builds
             return _isComplete;
         }
 
-        public void Complete()
+        public void Complete(Company owner)
         {
             _isComplete = true;
-            CompleteAction();
+            CompleteAction(owner);
         }
         
         // Static Methods

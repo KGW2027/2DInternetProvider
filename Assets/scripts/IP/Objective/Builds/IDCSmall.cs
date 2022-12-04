@@ -24,9 +24,9 @@ namespace IP.Objective.Builds
             return 500;
         }
 
-        protected override void CompleteAction()
+        protected override void CompleteAction(Company owner)
         {
-            Debug.Log($"Complete {GetName()}");
+            owner.BandwidthAllowance += 10 * StaticFunctions.Bytes.PB;
         }
 
         public override bool IsWire()

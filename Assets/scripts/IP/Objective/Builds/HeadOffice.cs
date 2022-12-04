@@ -24,7 +24,7 @@ namespace IP.Objective.Builds
             return 0;
         }
 
-        protected override void CompleteAction()
+        protected override void CompleteAction(Company owner)
         {
             Debug.Log($"{GetName()} Complete");
         }

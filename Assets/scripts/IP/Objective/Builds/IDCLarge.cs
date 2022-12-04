@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace IP.Objective.Builds
+﻿namespace IP.Objective.Builds
 {
     public class IDCLarge : BuildBase
     {
@@ -24,9 +22,9 @@ namespace IP.Objective.Builds
             return 15000;
         }
 
-        protected override void CompleteAction()
+        protected override void CompleteAction(Company owner)
         {
-            Debug.Log($"Complete {GetName()}");
+            owner.BandwidthAllowance += 10 * StaticFunctions.Bytes.EB;
         }
 
         public override bool IsWire()
