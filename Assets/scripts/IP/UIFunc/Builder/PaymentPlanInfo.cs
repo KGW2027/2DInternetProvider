@@ -51,6 +51,8 @@ namespace IP.UIFunc.Builder
 
             if (citiesName.Count == 0) return "서비스 지역 없음";
             if (citiesName.Count == 1) return citiesName[0];
+            if (citiesName.Count > 4)
+                return $"{citiesName[0]}, {citiesName[1]}, {citiesName[2]} 외 {citiesName.Count - 3}개";
             return citiesName.Aggregate((x, y) => $"{x}, {y}");
         }
 
