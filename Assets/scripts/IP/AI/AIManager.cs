@@ -144,7 +144,7 @@ namespace IP.AI
             plan.Upload = company.UpDownSpeed / connections.Count;
             plan.Download = company.UpDownSpeed / connections.Count;
             plan.Budget = 13;
-            foreach(City serviceCity in connections) plan.Service(serviceCity);
+            company.AddPlan(plan, connections);
             
             return company;
         }
