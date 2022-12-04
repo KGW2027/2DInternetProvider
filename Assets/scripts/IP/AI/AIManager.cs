@@ -60,8 +60,6 @@ namespace IP.AI
                     }
                 }
             }
-            
-            Debug.Log($"총 {Companies.Count}개의 회사를 만드는데 성공하였습니다.");
         }
 
         public void Earn()
@@ -95,6 +93,7 @@ namespace IP.AI
             company.AddBuild(startCity, startCity.IsCity ? new UndergroundCoaxialCable() : new CoaxialCable());
             
             // 근처 도시들과 확률적 연결
+            long totalCitizen = startCity.People;
             int maxConnect = startCity.IsCity ? 8 : 4;
             Queue<City> connectionFind = new Queue<City>();
             connectionFind.Enqueue(startCity);
@@ -107,6 +106,7 @@ namespace IP.AI
                 {
                     if (connections.Contains(conn.EndCity)) continue;
                     if (!ChanceTest(startCity.IsCity ? 40 : 75)) continue;
+                    totalCitizen += (long) (conn.EndCity.People * 0.002f);
                     
                     connections.Add(conn.EndCity);
                     connectionFind.Enqueue(conn.EndCity);
@@ -139,10 +139,11 @@ namespace IP.AI
             // 기본 플랜 생성
             // 전체 대역폭, 속도를 연결된 도시에 1/N한 균등 플랜을 만들어서 모든 도시에서 서비스한다.
             PaymentPlan plan = new PaymentPlan(company);
-            plan.Name = "Default Plan";
-            plan.Bandwidth = (int) (company.BandwidthAllowance / connections.Count);
-            plan.Upload = (int) (company.UpDownSpeed / connections.Count);
-            plan.Download = (int) (company.UpDownSpeed / connections.Count);
+            plan.Name = $"{company.Name}-Default Plan";
+            plan.Bandwidth = company.BandwidthAllowance / totalCitizen;
+            plan.Upload = company.UpDownSpeed / connections.Count;
+            plan.Download = company.UpDownSpeed / connections.Count;
+            plan.Budget = 13;
             foreach(City serviceCity in connections) plan.Service(serviceCity);
             
             return company;
