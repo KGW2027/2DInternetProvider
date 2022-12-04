@@ -10,9 +10,9 @@ namespace IP.Objective
         private readonly List<City> _cities;
         public string Name;
         public long Budget;
-        public int Bandwidth;
-        public int Upload;
-        public int Download;
+        public long Bandwidth;
+        public long Upload;
+        public long Download;
 
         public PaymentPlan(Company comp)
         {
