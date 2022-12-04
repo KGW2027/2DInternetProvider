@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IP.Objective;
 using IP.UIFunc.Builder;
 using TMPro;
@@ -16,14 +17,22 @@ namespace IP.Control
         public TMP_InputField planBandwidth;
         public TMP_InputField planUpload;
         public TMP_InputField planDownload;
+        [Header("요금제 수정 - 도시 선택")]
+        public GameObject serviceCities;
+        public GameObject togglePrefab;
+
+        private Dictionary<City, ToggleCityInfo> _cityToggles;
 
         private bool _isEditMode;
         private PaymentPlan _editingPlan;
         
         public void UpdateUI()
         {
-            ClearChild();
+            if(_cityToggles == null) InitializeCities();
+            
+            ClearChild(planList.transform);
             ResetPlan();
+            RefreshToggles();
             foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList)
             {
                 var planPanel = Instantiate(planPrefab, planList.transform, true);
@@ -33,12 +42,59 @@ namespace IP.Control
             }
         }
 
-        private void ClearChild()
+        private void ClearChild(Transform parent)
         {
-            foreach (Transform child in planList.transform)
+            foreach (Transform child in parent)
             {
                 Destroy(child.gameObject);
             }
+        }
+
+        private void InitializeCities()
+        {
+            _cityToggles = new Dictionary<City, ToggleCityInfo>();
+            GameManager.Instance.GetCountries().ForEach(country =>
+            {
+                country.GetCities().ForEach(city =>
+                {
+                    GameObject toggle = Instantiate(togglePrefab, serviceCities.transform, true);
+                    _cityToggles[city] = toggle.GetComponent<ToggleCityInfo>();
+                    _cityToggles[city].SendData(city);
+                    _cityToggles[city].Build();
+                });
+            });
+            
+        }
+
+        private void RefreshToggles()
+        {
+            foreach (City city in GameManager.Instance.Company.GetConnectedCities())
+            {
+                if (!_cityToggles.ContainsKey(city)) continue;
+                _cityToggles[city].SetEnabled();
+            }
+        }
+
+        private List<City> GetSelectCities()
+        {
+            List<City> cities = new List<City>();
+
+            foreach (KeyValuePair<City, ToggleCityInfo> pair in _cityToggles)
+            {
+                if(pair.Value.toggle.isOn) cities.Add(pair.Key);
+            }
+            
+            return cities;
+        }
+
+        private void ResetChecks()
+        {
+            foreach (ToggleCityInfo tci in _cityToggles.Values) tci.toggle.isOn = false;
+        }
+
+        private void EnableChecks(List<City> cities)
+        {
+            cities.ForEach(city => _cityToggles[city].toggle.isOn = true);
         }
 
         public void CreatePlan()
@@ -49,10 +105,10 @@ namespace IP.Control
             plan.Bandwidth = Convert.ToInt64(planBandwidth.text) * StaticFunctions.Bytes.GB;
             plan.Upload = Convert.ToInt64(planUpload.text);
             plan.Download = Convert.ToInt64(planDownload.text);
+            GetSelectCities().ForEach(plan.Service);
             
             if (_isEditMode)
             {
-                _editingPlan.Cities.ForEach(city => plan.Service(city));
                 GameManager.Instance.Company.DeletePlan(_editingPlan);
                 
                 _isEditMode = false;
@@ -71,6 +127,8 @@ namespace IP.Control
             planBandwidth.text = (plan.Bandwidth / StaticFunctions.Bytes.GB).ToString();
             planUpload.text = plan.Upload.ToString();
             planDownload.text = plan.Download.ToString();
+            ResetChecks();
+            EnableChecks(plan.Cities);
             _isEditMode = true;
             _editingPlan = plan;
         }
@@ -84,6 +142,7 @@ namespace IP.Control
         {
             _isEditMode = false;
             _editingPlan = null;
+            ResetChecks();
             planName.text = "";
             planBudget.text = "";
             planBandwidth.text = "";
