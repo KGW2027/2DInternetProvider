@@ -28,6 +28,17 @@ namespace IP
             {
                 return new Bytes {InternalValue = value};
             }
+
+            public static string ToByteString(long data)
+            {
+                if (data / YB > 0) return $"{(double) data / YB:F} YB";
+                if (data / ZB > 0) return $"{(double) data / ZB:F} ZB";
+                if (data / EB > 0) return $"{(double) data / EB:F} EB";
+                if (data / PB > 0) return $"{(double) data / PB:F} PB";
+                if (data / TB > 0) return $"{(double) data / TB:F} TB";
+                if (data / GB > 0) return $"{(double) data / GB:F} GB";
+                return $"{(double) data / MB:F} MB";
+            }
         }
         
         private static Dictionary<GameObject, TextMeshProUGUI> _uiTexts = new();
