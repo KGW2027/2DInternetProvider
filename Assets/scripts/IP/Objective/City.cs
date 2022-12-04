@@ -26,6 +26,7 @@ namespace IP.Objective
         public List<PaymentPlan> ServicingPlans;
         public GameObject Button;
         public float ActiveRate;
+        public bool IsCity;
 
         private readonly Dictionary<CitizenCharacter, PaymentPlan> _selectedPlans;
         private readonly Dictionary<CitizenCharacter, long> _peopleCharacters;
@@ -40,6 +41,7 @@ namespace IP.Objective
             People = GeneratePeople(isCity);
             Button = button;
             ActiveRate = Random.Range(0.001f, 0.002f);
+            IsCity = isCity;
 
             ServicingPlans = new List<PaymentPlan>();
             _selectedPlans = new Dictionary<CitizenCharacter, PaymentPlan>();
