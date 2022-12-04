@@ -58,7 +58,9 @@ namespace IP.UIFunc.Builder
 
         private float GetShare()
         {
-            return 0.235f;
+            long planCustomers = 0;
+            _plan.Cities.ForEach(city => planCustomers += city.GetCustomer(_plan));
+            return (float) ((double) planCustomers / GameManager.Instance.Company.GetTotalCustomers() * 100);
         }
     }
 }
