@@ -13,6 +13,7 @@ namespace IP.Objective
         public long Bandwidth;
         public long Upload;
         public long Download;
+        public List<City> Cities => _cities;
 
         public PaymentPlan(Company comp)
         {

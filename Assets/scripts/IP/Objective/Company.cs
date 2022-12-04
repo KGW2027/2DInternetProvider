@@ -21,6 +21,7 @@ namespace IP.Objective
         public int Trust { get; private set; }
         public long BandwidthAllowance;
         public long UpDownSpeed;
+        public List<PaymentPlan> PlanList => _plans;
 
         public Company(string name, long startMoney)
         {
