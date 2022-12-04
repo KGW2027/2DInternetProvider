@@ -24,7 +24,7 @@ namespace IP.Control
         {
             if (_needUpdate)
             {
-                foreach(Transform child in scrollContent.transform) Destroy(child);
+                foreach(Transform child in scrollContent.transform) Destroy(child.gameObject);
                 _needUpdate = false;
                 
                 List<BuildBase> builds = BuildBase.GetBuildInfos();

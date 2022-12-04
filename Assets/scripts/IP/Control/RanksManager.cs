@@ -20,7 +20,7 @@ namespace IP.Control
         {
             foreach (Transform child in transform)
             {
-                Destroy(child);
+                Destroy(child.gameObject);
             }
         }
 

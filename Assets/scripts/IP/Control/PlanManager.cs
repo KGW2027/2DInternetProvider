@@ -23,7 +23,7 @@ namespace IP.Control
             {
                 var planPanel = Instantiate(planPrefab, planList.transform, true);
                 IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
-                builder.SendData(plan);
+                builder.SendData(plan, this);
                 builder.Build();
             }
         }
@@ -32,11 +32,21 @@ namespace IP.Control
         {
             foreach (Transform child in planList.transform)
             {
-                Destroy(child);
+                Destroy(child.gameObject);
             }
         }
 
         public void CreatePlan()
+        {
+            
+        }
+
+        public void Edit(PaymentPlan plan)
+        {
+            
+        }
+
+        public void Open(PaymentPlan plan)
         {
             
         }
