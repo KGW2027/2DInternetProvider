@@ -28,6 +28,7 @@ namespace IP.UIFunc
         
         private List<GameObject> _cityObjects;
         private List<GameObject> _countryObjects;
+        private Dictionary<GameObject, City> _mapCityDictionary;
         public List<Country> Countries;
         public List<City> Cities;
         public Dictionary<City, List<Connection>> Connections;
@@ -38,6 +39,8 @@ namespace IP.UIFunc
         {
             _cityObjects = new List<GameObject>();
             _countryObjects = new List<GameObject>();
+            _mapCityDictionary = new Dictionary<GameObject, City>();
+            
             Countries = new List<Country>();
             Cities = new List<City>();
             Connections = new Dictionary<City, List<Connection>>();
@@ -70,7 +73,8 @@ namespace IP.UIFunc
                             TextMeshPro cityText = cities.GetChild(0).GetComponent<TextMeshPro>();
                             City city = new City(cityText.text, cityText.name.Equals("Text_CityName"), cities.gameObject);
                             country.AddCity(city);
-                            
+
+                            _mapCityDictionary[city.Button] = city;
                             _cityObjects.Add(city.Button);
                             Cities.Add(city);
                         }
@@ -131,24 +135,14 @@ namespace IP.UIFunc
         /**
          * 월드맵에서 도시나 국가를 클릭했을 때 기능을 수행하는 함수
          */
-        public string ClickMap(Vector2 location)
+        public City ClickMap(Vector2 location)
         {
             RaycastHit2D hit = Physics2D.Raycast(location, Vector2.zero, 0f);
             if (hit.collider != null)
             {
                 GameObject clicked = hit.transform.gameObject;
-                if (clicked.CompareTag("WorldMapButton"))
-                {
-                    string cityName = clicked.transform.GetChild(0).GetComponent<TextMeshPro>().text;
-                    return $"City {cityName}";
-                }
-                else if (clicked.CompareTag("WorldMapCountryButton"))
-                {
-                    string countryName = clicked.transform.GetChild(0).GetComponent<TextMeshPro>().text;
-                    return $"Country {countryName}";
-                }
+                if (clicked.CompareTag("WorldMapButton")) return _mapCityDictionary[clicked];
             }
-
             return null;
         }
     }
