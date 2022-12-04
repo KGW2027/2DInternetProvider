@@ -1,30 +1,31 @@
 ﻿using IP.Objective;
+using TMPro;
 using UnityEngine;
 
 namespace IP.UIFunc.Builder
 {
     public class RankPanelInfo : MonoBehaviour, IUIBuilder
     {
-        public GameObject rank;
-        public GameObject companyName;
-        public GameObject marketShare;
-        public GameObject buildings;
-        public GameObject traffics;
-        public GameObject cities;
-        public GameObject countries;
+        public TextMeshProUGUI rank;
+        public TextMeshProUGUI companyName;
+        public TextMeshProUGUI marketShare;
+        public TextMeshProUGUI buildings;
+        public TextMeshProUGUI traffics;
+        public TextMeshProUGUI cities;
+        public TextMeshProUGUI countries;
         
         private Company _company;
         private int _rank;
         
         public void Build()
         {
-            rank.SetUIText($"{_rank:00}");
-            companyName.SetUIText(_company.Name);
-            marketShare.SetUIText($"{GetShare():F2}%");
-            buildings.SetUIText($"{_company.GetTotalBuilds()}");
-            traffics.SetUIText($"{_company.GetTotalTraffic()}");
-            cities.SetUIText($"{_company.GetConnectedCities().Count} / 50");
-            countries.SetUIText($"{_company.GetConnectedCountries()} / 5");
+            rank.text = $"{_rank:00}";
+            companyName.text = _company.Name;
+            marketShare.text = $"{GetShare():F2}%";
+            buildings.text = $"{_company.GetTotalBuilds()}";
+            traffics.text = $"{StaticFunctions.Bytes.ToByteString(_company.GetTotalTraffic())}";
+            cities.text = $"{_company.GetConnectedCities().Count} / 50";
+            countries.text = $"{_company.GetConnectedCountries()} / 5";
         }
 
         public void SendData(params object[] datas)
@@ -33,9 +34,10 @@ namespace IP.UIFunc.Builder
             _rank = (int) datas[1];
         }
 
-        private float GetShare()
+        private double GetShare()
         {
-            return 0.234f;
+            Debug.Log($"{_company.GetTotalCustomers()} / {GameManager.Instance.GetTotalPeopleCount()}");
+            return (double) _company.GetTotalCustomers() / GameManager.Instance.GetTotalPeopleCount()*100;
         }
     }
 }

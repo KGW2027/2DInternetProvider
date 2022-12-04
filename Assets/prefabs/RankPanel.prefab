@@ -905,13 +905,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff1d113ba5d4b8c9ce3f98a6311b68b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rank: {fileID: 1672694667800252733}
-  companyName: {fileID: 1672694668640383910}
-  marketShare: {fileID: 1672694669279716890}
-  buildings: {fileID: 1672694667736669307}
-  traffics: {fileID: 1672694667256580398}
-  cities: {fileID: 1672694667369384831}
-  countries: {fileID: 1672694667448170409}
+  rank: {fileID: 1672694667800252731}
+  companyName: {fileID: 1672694668640383908}
+  marketShare: {fileID: 1672694669279716888}
+  buildings: {fileID: 1672694667736669305}
+  traffics: {fileID: 1672694667256580396}
+  cities: {fileID: 1672694667369384829}
+  countries: {fileID: 1672694667448170423}
 --- !u!1 &1672694669279716890
 GameObject:
   m_ObjectHideFlags: 0
