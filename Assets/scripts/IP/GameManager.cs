@@ -45,14 +45,19 @@ namespace IP
             _lotto = FindObjectOfType<LottoManager>();
             _wmi = FindObjectOfType<WorldMapInteraction>();
             _wmcc = FindObjectOfType<WorldMapCameraController>();
-            
-            City startCity = _wmi.Cities[Random.Range(0, _wmi.Cities.Count)];
+
+            City startCity;
+            do
+            {
+                startCity = _wmi.Cities[Random.Range(0, _wmi.Cities.Count)];
+            } while (startCity.IsCity);
+
             PaymentPlan plan = new PaymentPlan(Company);
             plan.Name = "Default plan";
-            plan.Bandwidth = 1000;
+            plan.Bandwidth = 1000 * StaticFunctions.Bytes.GB;
             plan.Budget = 8;
-            plan.Upload = 100;
-            plan.Download = 100;
+            plan.Upload = 100 * StaticFunctions.Bytes.MB;
+            plan.Download = 100 * StaticFunctions.Bytes.MB;
             plan.Service(startCity);
 
             AIManager.Instance.Initialize(_wmi);
