@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using IP.AI;
 using IP.Control;
 using IP.Objective;
 using IP.Objective.Builds;
@@ -53,9 +54,12 @@ namespace IP
             plan.Upload = 100;
             plan.Download = 100;
             plan.Service(startCity);
+
+            AIManager.Instance.Initialize(_wmi);
             
             Company.AddBuild(startCity, new HeadOffice());
             Company.AddBuild(startCity, new IDCSmall());
+            Company.AddBuild(startCity, new CoaxialCable());
             Company.AddPlan(plan);
             
             SetCameraFocus(startCity);
@@ -72,9 +76,11 @@ namespace IP
             
             // 수익금 정산
             UserEarn();
+            AIManager.Instance.Earn();
             
             // 회사 신뢰도 평가
             Company.CalcTrust();
+            AIManager.Instance.CheckTrust();
 
             // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
