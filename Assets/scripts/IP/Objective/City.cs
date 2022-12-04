@@ -18,13 +18,14 @@ namespace IP.Objective
         
         private long GeneratePeople(bool isCity)
         {
-            return isCity ? Random.Range(1000000, 50000000) : Random.Range(10000, 500000);
+            return isCity ? Random.Range(1_000_000, 5_000_000) : Random.Range(10_000, 500_000);
         }
         
         public string Name;
         public long People;
         public List<PaymentPlan> ServicingPlans;
         public GameObject Button;
+        public float ActiveRate;
 
         private readonly Dictionary<CitizenCharacter, PaymentPlan> _selectedPlans;
         private readonly Dictionary<CitizenCharacter, long> _peopleCharacters;
@@ -38,6 +39,7 @@ namespace IP.Objective
             Name = cityName;
             People = GeneratePeople(isCity);
             Button = button;
+            ActiveRate = Random.Range(0.001f, 0.002f);
 
             ServicingPlans = new List<PaymentPlan>();
             _selectedPlans = new Dictionary<CitizenCharacter, PaymentPlan>();
