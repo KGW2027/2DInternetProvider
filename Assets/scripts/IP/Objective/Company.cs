@@ -123,13 +123,13 @@ namespace IP.Objective
             long usingUpDown = 0L;
             foreach (PaymentPlan plan in _plans)
             {
-                usingBandwidth += plan.GetUsingBandwidth() * 1024L;
+                usingBandwidth += plan.GetUsingBandwidth();
                 usingUpDown += plan.GetUpDown();
             }
 
             // 서비스 중인 플랜이 없는 경우 신뢰도 계산 스킵
             if (usingBandwidth == 0 || usingUpDown == 0) return;
-
+            
             double bandwidthTrust = (usingBandwidth / BandwidthAllowance) - 1;
             double updownTrust = (usingUpDown / UpDownSpeed) - 1;
             int beforeTrust = Trust;
@@ -143,7 +143,6 @@ namespace IP.Objective
                 Trust -= (int) Math.Ceiling(bandwidthTrust * 5);
                 Trust -= (int) Math.Ceiling(updownTrust * 8);
             }
-            Debug.Log($"신뢰도 변경 : {beforeTrust} -> {Trust}");
         }
         
         
