@@ -99,21 +99,26 @@ namespace IP.UIFunc.Builder
         {
             List<string> builds = new List<string>();
             Company my = GameManager.Instance.Company;
-            my.GetBuilds(_city).ForEach(build => builds.Add(build.GetName()));
-
-            switch (builds.Count)
+            if (my.GetBuilds(_city) != null)
             {
-                case 0:
-                    return "없음";
-                case 1:
-                    return builds[0];
-                case 2:
-                case 3:
-                case 4:
-                    return builds.Aggregate((x, y) => $"{x}, {y}");
-                default:
-                    return $"{builds[0]}, {builds[1]}, {builds[2]} 외 {builds.Count - 3}개";
+                my.GetBuilds(_city).ForEach(build => builds.Add(build.GetName()));
+
+                switch (builds.Count)
+                {
+                    case 0:
+                        return "없음";
+                    case 1:
+                        return builds[0];
+                    case 2:
+                    case 3:
+                    case 4:
+                        return builds.Aggregate((x, y) => $"{x}, {y}");
+                    default:
+                        return $"{builds[0]}, {builds[1]}, {builds[2]} 외 {builds.Count - 3}개";
+                }
             }
+
+            return "없음";
 
         }
     }
