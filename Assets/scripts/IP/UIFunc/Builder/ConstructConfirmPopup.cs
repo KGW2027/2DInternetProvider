@@ -25,6 +25,7 @@ namespace IP.UIFunc.Builder
 
         private int[] _endDate;
         private float _budget;
+        private City _wireStartCity;
 
         public void Build()
         {
@@ -66,19 +67,38 @@ namespace IP.UIFunc.Builder
         {
             if (_buildBase.IsWire())
             {
-                if (dropdown1.options.Count == 0 || dropdown2.options.Count == 0)
+                if (dropdown1.options.Count == 0)
                 {
                     buildInfo.text = "건설이 불가능합니다.";
                     return;
                 }
 
                 City fromCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
-                City toCity = GameManager.Instance.FindCity(GetSelected(dropdown2));
                 if (fromCity == null)
                 {
                     buildInfo.text = "시작도시를 선택해주세요.";
                     return;
                 }
+
+                if (_wireStartCity == null || _wireStartCity != fromCity || dropdown2.options.Count == 0)
+                {
+                    _wireStartCity = fromCity;
+                    dropdown2.options.Clear();
+                    foreach (Connection conn in GameManager.Instance.GetConnections(fromCity))
+                    {
+                        // [전선, 사무실, 서비스센터, 소형IDC, 중형IDC, 대형IDC, 캐시서버, 스타링크]
+                        bool[] buildExists = GetBuildExists(conn.EndCity);
+                        if(buildExists[1]) dropdown2.options.Add(new TMP_Dropdown.OptionData(conn.EndCity.Name));
+                    }
+
+                    if (dropdown2.options.Count == 0)
+                    {
+                        buildInfo.text = "건설이 불가능합니다.";
+                        return;
+                    }
+                    dropdown2.interactable = dropdown2.options.Count > 0;
+                }
+                City toCity = GameManager.Instance.FindCity(GetSelected(dropdown2));
 
                 if (toCity == null)
                 {
@@ -194,13 +214,6 @@ namespace IP.UIFunc.Builder
                             {
                                 dropdown1.options.Add(new TMP_Dropdown.OptionData(city.Name));
                                 dd1Added = true;
-                            }
-
-                            if (!dd2Added && build.IsComplete() &&
-                                (build.GetName().Equals("사무실") || build.GetName().Equals("본사")))
-                            {
-                                dropdown2.options.Add(new TMP_Dropdown.OptionData(city.Name));
-                                dd2Added = true;
                             }
                         }
                     }
