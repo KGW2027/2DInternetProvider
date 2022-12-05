@@ -163,5 +163,10 @@ namespace IP
             });
             return count;
         }
+
+        public List<Connection> GetConnections(City city)
+        {
+            return _wmi.Connections[city];
+        }
     }
 }
