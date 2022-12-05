@@ -37,7 +37,6 @@ namespace IP.UIFunc.Builder
             cityPlans.text = $"선택가능한 요금제 개수 : {_city.ServicingPlans.Count:N0}개";
 
             cityBuilds.text = $"설치한 건물 : {GetMyBuildsText()}";
-            
             cityTrafficAllows.text = $"허용 트래픽 : {StaticFunctions.Bytes.ToByteString(GameManager.Instance.Company.BandwidthAllowance)}";
             citySpeedAllows.text = $"허용 대역 : {GameManager.Instance.Company.UpDownSpeed:N0}Mbps";
         }
@@ -50,6 +49,11 @@ namespace IP.UIFunc.Builder
         public void SendData(params object[] datas)
         {
             _city = (City) datas[0];
+        }
+
+        public City GetCity()
+        {
+            return _city;
         }
 
         private string GetUsingPlanText()

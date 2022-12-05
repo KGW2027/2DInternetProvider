@@ -33,6 +33,8 @@ namespace IP.UIFunc
         private List<GameObject> _countryObjects;
         private Dictionary<GameObject, City> _mapCityDictionary;
         private Dictionary<Collider2D, GameObject> _cityInfoPopups;
+        private Dictionary<City, bool> _cityInfoPopupsOpen;
+
         public List<Country> Countries;
         public List<City> Cities;
         public Dictionary<City, List<Connection>> Connections;
@@ -45,6 +47,7 @@ namespace IP.UIFunc
             _countryObjects = new List<GameObject>();
             _mapCityDictionary = new Dictionary<GameObject, City>();
             _cityInfoPopups = new Dictionary<Collider2D, GameObject>();
+            _cityInfoPopupsOpen = new Dictionary<City, bool>();
             
             Countries = new List<Country>();
             Cities = new List<City>();
@@ -81,6 +84,7 @@ namespace IP.UIFunc
 
                             _mapCityDictionary[city.Button] = city;
                             _cityObjects.Add(city.Button);
+                            _cityInfoPopupsOpen[city] = false;
                             Cities.Add(city);
                         }
                     }
@@ -148,12 +152,18 @@ namespace IP.UIFunc
                 GameObject clicked = hit.transform.gameObject;
                 if (_cityInfoPopups.ContainsKey(hit.collider))
                 {
+                    City city = _cityInfoPopups[hit.collider].GetComponent<CityInfoPopup>().GetCity();
+                    _cityInfoPopupsOpen[city] = false;
+                    
                     Destroy(_cityInfoPopups[hit.collider]);
                     _cityInfoPopups.Remove(hit.collider);
                 }
                 else if (clicked.CompareTag("WorldMapButton"))
                 {
                     City city = _mapCityDictionary[clicked];
+                    if (_cityInfoPopupsOpen[city]) return;
+                    _cityInfoPopupsOpen[city] = true;
+                    
                     Vector3 hudVec = clicked.transform.position;
                     hudVec.y += 5;
                     GameObject info = Instantiate(cityInfoPrefab, hudVec, Quaternion.identity);
