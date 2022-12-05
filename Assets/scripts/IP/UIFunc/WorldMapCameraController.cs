@@ -47,15 +47,7 @@ namespace IP.UIFunc
         {
             if (Input.GetMouseButtonDown(0))
             {
-                City clickedCity  = _wmi.ClickMap(_camCamera.ScreenToWorldPoint(Input.mousePosition));
-                if (clickedCity != null)
-                {
-                    Debug.Log($"{clickedCity.Name} - 인구 수 {clickedCity.People}");
-                    clickedCity.ServicingPlans.ForEach(plan =>
-                    {
-                        Debug.Log($"[{plan.Name}] Bandwidth : {plan.Bandwidth}, Updown : {plan.Upload}, 이용자 수 : {clickedCity.GetCustomer(plan)}명");
-                    });
-                }
+                _wmi.ClickMap(_camCamera.ScreenToWorldPoint(Input.mousePosition));
             }
             
             if (!_moveCameraMode && Input.GetMouseButtonDown(1))

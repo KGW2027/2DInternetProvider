@@ -24307,6 +24307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineDrawer: {fileID: 8699259550434186308, guid: 0cda2b0ef99397840b1e6f1e4db82889, type: 3}
+  cityInfoPrefab: {fileID: 7661275130962710454, guid: db22d95512d8f0c46b9d1f0019681bbd, type: 3}
 --- !u!224 &2031400969 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3293994548541570963, guid: de10ad5e729394a4aa04397022ee0d70, type: 3}
@@ -25081,6 +25082,10 @@ PrefabInstance:
     - target: {fileID: 4824804069482109281, guid: d6b9b4cc59072584d8d0f5aaf47fc3c7, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4824804069482109282, guid: d6b9b4cc59072584d8d0f5aaf47fc3c7, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 9.06
       objectReference: {fileID: 0}
     - target: {fileID: 4824804069482109283, guid: d6b9b4cc59072584d8d0f5aaf47fc3c7, type: 3}
       propertyPath: m_Sprite

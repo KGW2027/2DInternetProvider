@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using IP.Objective;
+using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
@@ -25,10 +26,13 @@ namespace IP.UIFunc
     {
         [Header("월드맵 트리 간선")]
         public GameObject lineDrawer;
+
+        [Header("도시 정보 팝업")] public GameObject cityInfoPrefab;
         
         private List<GameObject> _cityObjects;
         private List<GameObject> _countryObjects;
         private Dictionary<GameObject, City> _mapCityDictionary;
+        private Dictionary<Collider2D, GameObject> _cityInfoPopups;
         public List<Country> Countries;
         public List<City> Cities;
         public Dictionary<City, List<Connection>> Connections;
@@ -40,6 +44,7 @@ namespace IP.UIFunc
             _cityObjects = new List<GameObject>();
             _countryObjects = new List<GameObject>();
             _mapCityDictionary = new Dictionary<GameObject, City>();
+            _cityInfoPopups = new Dictionary<Collider2D, GameObject>();
             
             Countries = new List<Country>();
             Cities = new List<City>();
@@ -135,15 +140,29 @@ namespace IP.UIFunc
         /**
          * 월드맵에서 도시나 국가를 클릭했을 때 기능을 수행하는 함수
          */
-        public City ClickMap(Vector2 location)
+        public void ClickMap(Vector2 location)
         {
             RaycastHit2D hit = Physics2D.Raycast(location, Vector2.zero, 0f);
             if (hit.collider != null)
             {
                 GameObject clicked = hit.transform.gameObject;
-                if (clicked.CompareTag("WorldMapButton")) return _mapCityDictionary[clicked];
+                if (_cityInfoPopups.ContainsKey(hit.collider))
+                {
+                    Destroy(_cityInfoPopups[hit.collider]);
+                    _cityInfoPopups.Remove(hit.collider);
+                }
+                else if (clicked.CompareTag("WorldMapButton"))
+                {
+                    City city = _mapCityDictionary[clicked];
+                    Vector3 hudVec = clicked.transform.position;
+                    hudVec.y += 5;
+                    GameObject info = Instantiate(cityInfoPrefab, hudVec, Quaternion.identity);
+                    CityInfoPopup cip = info.GetComponent<CityInfoPopup>();
+                    cip.SendData(city);
+                    cip.Build();
+                    _cityInfoPopups[cip.GetCloseButton()] = info;
+                }
             }
-            return null;
         }
     }
 }
