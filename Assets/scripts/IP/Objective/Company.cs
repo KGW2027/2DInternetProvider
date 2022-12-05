@@ -135,7 +135,7 @@ namespace IP.Objective
                 if (build.GetEndDate() != null)
                 {
                     use += (long) build.GetUseBudget();
-                    if (build.GetEndDate()[0] >= nowDate[0] && build.GetEndDate()[1] >= nowDate[1])
+                    if (nowDate[0] >= build.GetEndDate()[0] && nowDate[1] >= build.GetEndDate()[1])
                     {
                         build.Complete(this);
                     }
