@@ -12,10 +12,13 @@ namespace IP.Objective.Builds
         private City _wireStartCity;
         private City _constructCity;
         private Dictionary<string, Texture> _textureMap;
+        
+        private int[] _endDate;
+        private float _budget;
+        private bool _overridden;
 
         private static List<BuildBase> _buildBases;
-
-        private readonly Color _wireConnectedColor = new(250, 248, 143);
+        private static readonly Color WireConnectedColor = new(250, 248, 143);
 
         public abstract string GetName();
         public abstract float GetMaintenance();
@@ -72,18 +75,44 @@ namespace IP.Objective.Builds
             _constructCity = to;
         }
 
+        public BuildBase Clone()
+        {
+            BuildBase clone = (BuildBase) Activator.CreateInstance(GetType());
+            clone._constructCity = _constructCity;
+            clone._wireStartCity = _wireStartCity;
+            clone._isComplete = _isComplete;
+            return clone;
+        }
+
+        public void OverrideValues(int[] endDate, float budget)
+        {
+            _overridden = true;
+            _endDate = endDate;
+            _budget = budget;
+        }
+
+        public int[] GetEndDate()
+        {
+            return _overridden ? _endDate : null;
+        }
+
+        public float GetUseBudget()
+        {
+            return _overridden ? _budget : -1f;
+        }
+
         private void CompleteWireAction()
         {
             foreach (Connection conn in GameManager.Instance.GetConnections(_wireStartCity))
             {
                 if (conn.EndCity == _constructCity)
                 {
-                    conn.Line.startColor = _wireConnectedColor;
-                    conn.Line.endColor = _wireConnectedColor;
+                    conn.Line.startColor = WireConnectedColor;
+                    conn.Line.endColor = WireConnectedColor;
                 }
             }
         }
-        
+
         // Static Methods
 
         public static List<BuildBase> GetBuildInfos()

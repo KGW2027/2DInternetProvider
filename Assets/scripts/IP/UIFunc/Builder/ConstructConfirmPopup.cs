@@ -23,6 +23,9 @@ namespace IP.UIFunc.Builder
         private static readonly Vector3 WiremodeVector = new(-130.9f, -8.2f, .0f);
         private static readonly Vector3 DefaultVector = new(0, -8.2f, .0f);
 
+        private int[] _endDate;
+        private float _budget;
+
         public void Build()
         {
             thumbnail.texture = _buildBase.GetTexture();
@@ -43,16 +46,18 @@ namespace IP.UIFunc.Builder
             {
                 // 전선 설치에서 설치할 도시가 없는 경우는 진행하지 않는다.
                 if (dropdown1.options.Count == 0 || dropdown2.options.Count == 0) return;
-                GameManager.Instance.Company.ConstructWire(GameManager.Instance.FindCity(GetSelected(dropdown1)), GameManager.Instance.FindCity(GetSelected(dropdown2)), _buildBase);
+                BuildBase construct = _buildBase.Clone();
+                construct.OverrideValues(_endDate, _budget);
+                GameManager.Instance.Company.ConstructWire(GameManager.Instance.FindCity(GetSelected(dropdown1)), GameManager.Instance.FindCity(GetSelected(dropdown2)), construct);
             }
             else
             {
                 // 건물 설치에서 설치할 도시가 없는 경우는 진행하지 않는다.
                 if (dropdown1.options.Count == 0) return;
-                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), _buildBase);
+                BuildBase construct = _buildBase.Clone();
+                construct.OverrideValues(_endDate, _budget);
+                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), _buildBase.Clone());
             }
-            
-            Debug.Log($"{_buildBase.GetName()} 건축 시작 => {GetSelected(dropdown1)}, {GetSelected(dropdown2)}");
         }
 
         public void MakeBuildInfo()
@@ -148,16 +153,18 @@ namespace IP.UIFunc.Builder
         {
             int completeDate = (int) Math.Round(date);
             int year = completeDate / 12, month = completeDate % 12;
-            int[] nowDate = AppBarManager.Instance.GetDate();
-            nowDate[0] += year;
-            nowDate[1] += month;
-            if (nowDate[1] > 12)
+            int[] endDate = AppBarManager.Instance.GetDate();
+            endDate[0] += year;
+            endDate[1] += month;
+            if (endDate[1] > 12)
             {
-                nowDate[0]++;
-                nowDate[1] -= 12;
+                endDate[0]++;
+                endDate[1] -= 12;
             }
-            
-            buildInfo.text = $"예정 완공일 : {nowDate[0]:00}년 {nowDate[1]:00}월\n예상 월 소비 비용 : {budget/completeDate:F2}k$";
+
+            _endDate = endDate;
+            _budget = budget / completeDate;
+            buildInfo.text = $"예정 완공일 : {endDate[0]:00}년 {endDate[1]:00}월\n예상 월 소비 비용 : {budget/completeDate:F2}k$";
         }
 
         private string GetSelected(TMP_Dropdown obj)
