@@ -99,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f96cfa5aeae46288e28b0f5c5f17af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bankName: {fileID: 7036825009027207050}
-  bankInfo: {fileID: 8865698695688798690}
+  bankName: {fileID: 2855094670162369724}
+  bankInfo: {fileID: 2099785990287788533}
 --- !u!1 &7036825009027207050
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,11 +8,11 @@ namespace IP.UIFunc.Builder
 {
     public class ConstructConfirmPopup : MonoBehaviour, IUIBuilder
     {
-        public GameObject thumbnail;
-        public GameObject buildName;
-        public GameObject buildInfo;
-        public GameObject dropdown1;
-        public GameObject dropdown2;
+        public RawImage thumbnail;
+        public TextMeshProUGUI buildName;
+        public TextMeshProUGUI buildInfo;
+        public TMP_Dropdown dropdown1;
+        public TMP_Dropdown dropdown2;
 
         private BuildBase _buildBase;
 
@@ -21,9 +21,9 @@ namespace IP.UIFunc.Builder
 
         public void Build()
         {
-            thumbnail.GetComponent<RawImage>().texture = _buildBase.GetTexture();
-            buildName.SetUIText(_buildBase.GetName());
-            buildInfo.SetUIText($"예정 완공일 : {_buildBase.GetBuildDate()}\n예상 월 소비 비용 : {_buildBase.GetBudget() / _buildBase.GetBuildDate()}k$");
+            thumbnail.texture = _buildBase.GetTexture();
+            buildName.text = _buildBase.GetName();
+            buildInfo.text = $"예정 완공일 : {_buildBase.GetBuildDate()}\n예상 월 소비 비용 : {_buildBase.GetBudget() / _buildBase.GetBuildDate()}k$";
         }
 
         public void SendData(params object[] datas)
@@ -38,10 +38,9 @@ namespace IP.UIFunc.Builder
             PopupManager.Instance.ClosePopup();
         }
 
-        private string GetSelected(GameObject obj)
+        private string GetSelected(TMP_Dropdown obj)
         {
-            TMP_Dropdown dropdown = obj.GetComponent<TMP_Dropdown>();
-            return dropdown.options[dropdown.value].text;
+            return obj.options[obj.value].text;
         }
 
         private void SetDropdownMode(bool isWire)
@@ -49,11 +48,11 @@ namespace IP.UIFunc.Builder
             if (isWire)
             {
                 dropdown1.transform.SetLocalPositionAndRotation(WiremodeVector, Quaternion.identity);
-                dropdown2.SetActive(true);
+                dropdown2.gameObject.SetActive(true);
             }
             else
             {
-                dropdown2.SetActive(false);
+                dropdown2.gameObject.SetActive(false);
                 dropdown1.transform.SetLocalPositionAndRotation(DefaultVector, Quaternion.identity);
             }
         }

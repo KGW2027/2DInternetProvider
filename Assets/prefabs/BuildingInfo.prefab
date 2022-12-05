@@ -435,11 +435,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e308c3d6894da89292c807e37c6363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thumbnail: {fileID: 2670426422487999870}
-  buildName: {fileID: 2670426422518755513}
-  spend: {fileID: 2670426421450060241}
-  complete: {fileID: 2670426423348466572}
-  cityName: {fileID: 2670426423291105440}
+  thumbnail: {fileID: 2670426422487999868}
+  buildName: {fileID: 2670426422518755519}
+  spend: {fileID: 2670426421450060247}
+  complete: {fileID: 2670426423348466562}
+  cityName: {fileID: 2670426423291105446}
 --- !u!1 &2670426423283579094
 GameObject:
   m_ObjectHideFlags: 0

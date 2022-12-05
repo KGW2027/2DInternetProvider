@@ -1,12 +1,14 @@
 ﻿using IP.Objective;
+using TMPro;
 using UnityEngine;
 
 namespace IP.UIFunc.Builder
 {
     public class BankInfo : MonoBehaviour, IUIBuilder
     {
-        public GameObject bankName;
-        public GameObject bankInfo;
+        [Header("은행 정보")]
+        public TextMeshPro bankName;
+        public TextMeshPro bankInfo;
 
         private Bank _bank;
 
@@ -17,8 +19,8 @@ namespace IP.UIFunc.Builder
 
         public void Build()
         {
-            bankName.SetText($"{_bank.Name}");
-            bankInfo.SetText($"금리 : 연 {_bank.Interest:F2}%\n 한도 : {_bank.MaxLoanSize:n0}");
+            bankName.text = $"{_bank.Name}";
+            bankInfo.text = $"금리 : 연 {_bank.Interest:F2}%\n 한도 : {_bank.MaxLoanSize:n0}";
         }
 
         public void SendData(params object[] datas)

@@ -702,7 +702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873689df95084b8f82d7c9ee60f58947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thumbnail: {fileID: 5812926274029945362}
-  buildName: {fileID: 5812926274025188165}
-  spend: {fileID: 5812926273645834035}
-  complete: {fileID: 5812926273769422933}
+  thumbnail: {fileID: 5812926274029945360}
+  buildName: {fileID: 5812926274025188163}
+  spend: {fileID: 5812926273645834033}
+  complete: {fileID: 5812926273769422931}
