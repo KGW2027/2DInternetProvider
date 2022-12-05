@@ -28,6 +28,8 @@ namespace IP.UIFunc.Builder
 
         public void Build()
         {
+            dropdown1.value = -1;
+            dropdown2.value = -1;
             thumbnail.texture = _buildBase.GetTexture();
             buildName.text = _buildBase.GetName();
             MakeBuildInfo();
@@ -56,7 +58,7 @@ namespace IP.UIFunc.Builder
                 if (dropdown1.options.Count == 0) return;
                 BuildBase construct = _buildBase.Clone();
                 construct.OverrideValues(_endDate, _budget);
-                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), _buildBase.Clone());
+                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), construct);
             }
         }
 
@@ -169,7 +171,7 @@ namespace IP.UIFunc.Builder
 
         private string GetSelected(TMP_Dropdown obj)
         {
-            if (obj.value < 0) return null;
+            if (obj.value < 0 || obj.options[obj.value].text is null or "") return null;
             return obj.options[obj.value].text.Split(" ")[0];
         }
 

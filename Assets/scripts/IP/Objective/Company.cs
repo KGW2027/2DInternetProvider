@@ -132,10 +132,13 @@ namespace IP.Objective
             int[] nowDate = AppBarManager.Instance.GetDate();
             GetUnderConstructBuilds().ForEach(build =>
             {
-                use += (long) build.GetUseBudget();
-                if (build.GetEndDate()[0] >= nowDate[0] && build.GetEndDate()[1] >= nowDate[1])
+                if (build.GetEndDate() != null)
                 {
-                    build.Complete(this);
+                    use += (long) build.GetUseBudget();
+                    if (build.GetEndDate()[0] >= nowDate[0] && build.GetEndDate()[1] >= nowDate[1])
+                    {
+                        build.Complete(this);
+                    }
                 }
             });
             return use;

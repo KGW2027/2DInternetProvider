@@ -103,6 +103,8 @@ namespace IP.Objective.Builds
 
         private void CompleteWireAction()
         {
+            if (_wireStartCity == null || _constructCity == null) return; // AddBuild로 강제로 주는 경우엔 작동 X
+            
             foreach (Connection conn in GameManager.Instance.GetConnections(_wireStartCity))
             {
                 if (conn.EndCity == _constructCity)
