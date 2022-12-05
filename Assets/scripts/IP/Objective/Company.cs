@@ -66,9 +66,18 @@ namespace IP.Objective
             _plans.Remove(plan);
         }
 
+        public void ConstructWire(City fromCity, City toCity, BuildBase build)
+        {
+            if (!_builds.ContainsKey(fromCity)) _builds[fromCity] = new List<BuildBase>();
+            if (!_builds.ContainsKey(toCity)) _builds[toCity] = new List<BuildBase>();
+            build.SetWireCities(fromCity, toCity);
+            _builds[toCity].Add(build);
+        }
+
         public void ConstructBuild(City city, BuildBase build)
         {
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
+            build.SetCity(city);
             _builds[city].Add(build);
         }
 
@@ -210,6 +219,7 @@ namespace IP.Objective
 
         public List<BuildBase> GetBuilds(City city)
         {
+            if (city == null) return null;
             if (_builds.ContainsKey(city)) return _builds[city];
             return null;
         }

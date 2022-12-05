@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IP.UIFunc;
 using UnityEngine;
 
 namespace IP.Objective.Builds
@@ -8,10 +9,13 @@ namespace IP.Objective.Builds
     public abstract class BuildBase : MonoBehaviour
     {
         private bool _isComplete;
+        private City _wireStartCity;
         private City _constructCity;
         private Dictionary<string, Texture> _textureMap;
 
         private static List<BuildBase> _buildBases;
+
+        private readonly Color _wireConnectedColor = new(250, 248, 143);
 
         public abstract string GetName();
         public abstract float GetMaintenance();
@@ -58,7 +62,26 @@ namespace IP.Objective.Builds
         public void Complete(Company owner)
         {
             _isComplete = true;
+            if (IsWire()) CompleteWireAction();
             CompleteAction(owner);
+        }
+
+        public void SetWireCities(City from, City to)
+        {
+            _wireStartCity = from;
+            _constructCity = to;
+        }
+
+        private void CompleteWireAction()
+        {
+            foreach (Connection conn in GameManager.Instance.GetConnections(_wireStartCity))
+            {
+                if (conn.EndCity == _constructCity)
+                {
+                    conn.Line.startColor = _wireConnectedColor;
+                    conn.Line.endColor = _wireConnectedColor;
+                }
+            }
         }
         
         // Static Methods
