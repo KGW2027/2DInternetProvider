@@ -67,6 +67,7 @@ namespace IP
             Company.AddBuild(startCity, new CoaxialCable());
             Company.AddPlan(plan, startCity);
             
+            _wmi.ChangeVisibleMode(true);
             SetCameraFocus(startCity);
             ExecuteMonthlyEvent();
         }
