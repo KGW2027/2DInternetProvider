@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IP.Control;
 using IP.Objective;
 using IP.UIFunc.Builder;
 using TMPro;
@@ -146,6 +147,8 @@ namespace IP.UIFunc
          */
         public void ClickMap(Vector2 location)
         {
+            if (PopupManager.Instance.IsPopupOpen()) return; // 팝업이 열려있는 동안에는 상호작용하지 않는다.
+            
             RaycastHit2D hit = Physics2D.Raycast(location, Vector2.zero, 0f);
             if (hit.collider != null)
             {
