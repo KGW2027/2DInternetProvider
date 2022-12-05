@@ -40,7 +40,7 @@ namespace IP.Objective
             Name = cityName;
             People = GeneratePeople(isCity);
             Button = button;
-            ActiveRate = Random.Range(0.001f, 0.002f);
+            ActiveRate = Random.Range(0.001f, 0.020f);
             IsCity = isCity;
 
             ServicingPlans = new List<PaymentPlan>();
