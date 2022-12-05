@@ -50,7 +50,7 @@ namespace IP
             do
             {
                 startCity = _wmi.Cities[Random.Range(0, _wmi.Cities.Count)];
-            } while (startCity.IsCity);
+            } while (startCity.People > 300_000);
 
             PaymentPlan plan = new PaymentPlan(Company);
             plan.Name = "Default plan";
