@@ -81,6 +81,7 @@ namespace IP.Objective.Builds
             clone._constructCity = _constructCity;
             clone._wireStartCity = _wireStartCity;
             clone._isComplete = _isComplete;
+            clone._textureMap = _textureMap;
             return clone;
         }
 

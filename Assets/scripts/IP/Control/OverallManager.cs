@@ -31,9 +31,10 @@ namespace IP.Control
 
         private void UpdateBuildsInfo()
         {
+            ClearChild(buildsInfo.transform);
             foreach (BuildBase build in GameManager.Instance.Company.GetUnderConstructBuilds())
             {
-                if (build.GetType() == typeof(HeadOffice)) continue;
+                Debug.Log(build.GetName());
                 GameObject info = Instantiate(buildInfoPrefab, buildsInfo.transform, true);
                 BuildsInfoBuilder(info, build);
             }
@@ -44,6 +45,14 @@ namespace IP.Control
             OverallBuildingInfo obi = obj.GetComponent<OverallBuildingInfo>();
             obi.SetBuildInfo(build);
             obi.Build();
+        }
+
+        private void ClearChild(Transform tf)
+        {
+            foreach (Transform child in tf)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }
