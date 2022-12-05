@@ -82,7 +82,7 @@ namespace IP.Screen
         private void UpdateMoneyText()
         {
             Company company = GameManager.Instance.Company;
-            _changeMoney = (company.CalcRevenue() / 1000) - (company.CalcMaintenance() + company.CalcInterest());
+            _changeMoney = company.CalcRevenue() / 1000 - company.GetUsingMoney();
             moneyPrint.text = $"{GameManager.Instance.Company.Money:n0}";
             changeMoneyPrint.text = $"{_changeMoney:n0}";
             Color textColor = _changeMoney < 0

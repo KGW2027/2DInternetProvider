@@ -98,7 +98,7 @@ namespace IP
         private void UserEarn()
         {
             long planRevenue = Company.CalcRevenue() / 1000;
-            long used = Company.CalcInterest() + Company.CalcMaintenance();
+            long used = Company.GetUsingMoney();
             Company.Earn(planRevenue - used);
         }
         

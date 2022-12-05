@@ -42,7 +42,7 @@ namespace IP.UIFunc.Builder
             maxTraffic.text = $"최대 트래픽 : {StaticFunctions.Bytes.ToByteString(company.BandwidthAllowance)}";
             
             long revenue = company.CalcRevenue();
-            long minus = (company.CalcInterest() + company.CalcMaintenance()) * 1000;
+            long minus = company.GetUsingMoney() * 1000;
             money.text = $"보유 자금 : {company.Money*1000:n0}";
             monthMoney.text = $"월 수익 : {revenue:n0}";
             debt.text = $"총 부채 : {company.GetTotalDebtScale() * 1000:n0}" ;

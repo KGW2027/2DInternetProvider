@@ -67,7 +67,7 @@ namespace IP.AI
             foreach (Company company in Companies)
             {
                 long planRevenue = company.CalcRevenue() / 1000;
-                long used = company.CalcInterest() + company.CalcMaintenance();
+                long used = company.GetUsingMoney();
                 company.Earn(planRevenue - used);
             }
         }

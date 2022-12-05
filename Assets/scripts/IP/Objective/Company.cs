@@ -91,7 +91,7 @@ namespace IP.Objective
             return revenue;
         }
 
-        public long CalcInterest()
+        private long CalcInterest()
         {
             long interest = 0L;
             List<Debt> repayed = new List<Debt>();
@@ -111,7 +111,7 @@ namespace IP.Objective
             return interest;
         }
 
-        public long CalcMaintenance()
+        private long CalcMaintenance()
         {
             long maintenance = 0L;
             foreach (List<BuildBase> builds in _builds.Values)
@@ -124,6 +124,26 @@ namespace IP.Objective
             }
 
             return maintenance;
+        }
+
+        private long CalcBuildings()
+        {
+            long use = 0L;
+            int[] nowDate = AppBarManager.Instance.GetDate();
+            GetUnderConstructBuilds().ForEach(build =>
+            {
+                use += (long) build.GetBudget();
+                if (build.GetEndDate()[0] >= nowDate[0] && build.GetEndDate()[1] >= nowDate[1])
+                {
+                    build.Complete(this);
+                }
+            });
+            return use;
+        }
+
+        public long GetUsingMoney()
+        {
+            return CalcMaintenance() + CalcBuildings() + CalcInterest();
         }
 
         public void Earn(long money)
@@ -176,13 +196,6 @@ namespace IP.Objective
             return total;
         }
         
-        
-        
-        public List<City> GetConnectedCities()
-        {
-            return new List<City>(_builds.Keys);
-        }       
-        
         public List<BuildBase> GetUnderConstructBuilds()
         {
             List<BuildBase> ucbList = new List<BuildBase>();
@@ -195,6 +208,13 @@ namespace IP.Objective
             });
             return ucbList;
         }
+        
+        
+        
+        public List<City> GetConnectedCities()
+        {
+            return new List<City>(_builds.Keys);
+        }       
 
         public int GetConnectedCountries()
         {
