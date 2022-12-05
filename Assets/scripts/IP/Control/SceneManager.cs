@@ -8,11 +8,11 @@ namespace IP.Control
     {
 
         [Header("회사 이름 입력필드")]
-        public GameObject inputName;
+        public TMP_InputField inputName;
 
         public void StartGame()
         {
-            string name = inputName.GetComponent<TMP_InputField>().text.Trim();
+            string name = inputName.text.Trim();
             string pattern = @"[^a-zA-Z0-9가-힣]";
             Regex regex = new Regex(pattern);
             if (regex.IsMatch(name)) return;

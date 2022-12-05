@@ -1,5 +1,6 @@
 using System;
 using IP.Objective;
+using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
@@ -8,13 +9,13 @@ namespace IP.Control
     public class LottoManager : MonoBehaviour
     {
         [Header("복권 상태 설명")]
-        public GameObject title;
-        public GameObject temptText;
-        public GameObject alertText;
+        public TextMeshProUGUI title;
+        public TextMeshProUGUI temptText;
+        public TextMeshProUGUI alertText;
         
         [Header("복권의 숫자 표시")]
-        public GameObject myNumbers;
-        public GameObject winNumbers;
+        public TextMeshProUGUI myNumbers;
+        public TextMeshProUGUI winNumbers;
 
         private Lotto _lotto;
         private long _cumulPrice;
@@ -66,9 +67,9 @@ namespace IP.Control
         public void ResetUI()
         {
             _bought = false;
-            title.SetUIText($"복권 제{_attempt}회차 당첨 번호 / 마지막 복권 구매 회차 : {_lastBoughtAttempt}");
-            myNumbers.SetUIText($"복권을 구매하세요.");
-            winNumbers.SetUIText($"{ParseNumbers(_winNumbers)}");
+            title.text = $"복권 제{_attempt}회차 당첨 번호 / 마지막 복권 구매 회차 : {_lastBoughtAttempt}";
+            myNumbers.text = $"복권을 구매하세요.";
+            winNumbers.text = $"{ParseNumbers(_winNumbers)}";
         }
 
         public void Buy()
@@ -77,7 +78,7 @@ namespace IP.Control
             {
                 _myNumbers = _lotto.BoughtNumbers();
                 _lastBoughtAttempt = _attempt;
-                myNumbers.SetUIText($"{ParseNumbers(_myNumbers)}");
+                myNumbers.text = $"{ParseNumbers(_myNumbers)}";
                 _bought = true;
             }
         }
@@ -101,7 +102,7 @@ namespace IP.Control
 
         private void UpdateTemptText()
         {
-            temptText.SetUIText($"누적 금액 : {_cumulPrice:n0}$\n1등 상금 : 80% (지난 회차 당첨자 {_winners[0]}명)\n2등 상금 : 15% (지난 회차 당첨자 {_winners[1]}명)\n3등 상금 : 5% (지난 회차 당첨자 {_winners[2]}명)");
+            temptText.text = $"누적 금액 : {_cumulPrice:n0}$\n1등 상금 : 80% (지난 회차 당첨자 {_winners[0]}명)\n2등 상금 : 15% (지난 회차 당첨자 {_winners[1]}명)\n3등 상금 : 5% (지난 회차 당첨자 {_winners[2]}명)";
         }
         
 
@@ -129,10 +130,10 @@ namespace IP.Control
             }
             else
             {
-                alertText.SetUIText($"제 {_attempt}회 추첨 결과는 꽝입니다.");
+                alertText.text = $"제 {_attempt}회 추첨 결과는 꽝입니다.";
                 return;
             }
-            alertText.SetUIText($"제 {_attempt}회 추첨 결과는 {grade}등 입니다. 당첨금 : {winMoney:n0}\n이번 달이 끝나기 전에 반드시 왼쪽 아래 수령 버튼을 눌러주세요.");
+            alertText.text = $"제 {_attempt}회 추첨 결과는 {grade}등 입니다. 당첨금 : {winMoney:n0}\n이번 달이 끝나기 전에 반드시 왼쪽 아래 수령 버튼을 눌러주세요.";
             _yourPrice = winMoney;
         }
 

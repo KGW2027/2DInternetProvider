@@ -15072,11 +15072,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21d3fc6952407304db41a8450e86e8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 1636161872}
-  temptText: {fileID: 90330852}
-  alertText: {fileID: 457299050}
-  myNumbers: {fileID: 145622173}
-  winNumbers: {fileID: 1710190194}
+  title: {fileID: 1636161874}
+  temptText: {fileID: 90330854}
+  alertText: {fileID: 457299052}
+  myNumbers: {fileID: 145622175}
+  winNumbers: {fileID: 1710190196}
 --- !u!1 &1205600041
 GameObject:
   m_ObjectHideFlags: 0
@@ -16101,7 +16101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1270376517
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16863,13 +16863,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49eb75b6b2fb45543895bac009948ffb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  datePrint: {fileID: 3274833}
-  remainDatePrint: {fileID: 405602785}
-  realDatePrint: {fileID: 1635835099}
-  moneyPrint: {fileID: 1127371248}
-  changeMoneyPrint: {fileID: 753899344}
-  companyNamePrint: {fileID: 823755318}
-  screenManager: {fileID: 1708773574}
+  datePrint: {fileID: 3274835}
+  remainDatePrint: {fileID: 405602787}
+  realDatePrint: {fileID: 1635835101}
+  moneyPrint: {fileID: 1127371250}
+  changeMoneyPrint: {fileID: 753899346}
+  companyNamePrint: {fileID: 823755320}
+  screenManager: {fileID: 1708773575}
 --- !u!114 &1317744292
 MonoBehaviour:
   m_ObjectHideFlags: 0

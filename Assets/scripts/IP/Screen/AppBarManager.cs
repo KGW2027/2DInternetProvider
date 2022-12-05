@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using IP.Objective;
 using MEC;
+using TMPro;
 using UnityEngine;
 
 namespace IP.Screen
@@ -10,23 +11,22 @@ namespace IP.Screen
         public static AppBarManager Instance;
         
         [Header("게임 내 시간 표시")]
-        public GameObject datePrint;
-        public GameObject remainDatePrint;
-        public GameObject realDatePrint;
+        public TextMeshProUGUI datePrint;
+        public TextMeshProUGUI remainDatePrint;
+        public TextMeshProUGUI realDatePrint;
         [Header("회사 자산 표시")]
-        public GameObject moneyPrint;
-        public GameObject changeMoneyPrint;
+        public TextMeshProUGUI moneyPrint;
+        public TextMeshProUGUI changeMoneyPrint;
         [Header("회사 이름 표시")]
-        public GameObject companyNamePrint;
+        public TextMeshProUGUI companyNamePrint;
         [Header("스크린 관리")]
-        public GameObject screenManager;
+        public ScreenManager screenManager;
 
         private int _year;
         private int _month;
         private int _remainNextMonth = 10;
         private long _changeMoney = 0;
 
-        private ScreenManager _screenManager;
         private CoroutineHandle _timerHandle;
     
         // Start is called before the first frame update
@@ -37,9 +37,8 @@ namespace IP.Screen
             _month = GameManager.Instance.GetStartDate()[1];
             
             UpdateDateText(true); // Initial Set
-            _screenManager = screenManager.GetComponent<ScreenManager>();
 
-            companyNamePrint.SetUIText(GameManager.Instance.Company.Name);
+            companyNamePrint.text = GameManager.Instance.Company.Name;
             UpdateMoneyText();
             _timerHandle = Timing.RunCoroutine(RunTimer());
         }
@@ -76,20 +75,20 @@ namespace IP.Screen
 
         private void UpdateDateText(bool dateChanged)
         {
-            if(dateChanged) datePrint.SetUIText($"{_year}Y {_month:00}M");
-            remainDatePrint.SetUIText($"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}");
+            if(dateChanged) datePrint.text = $"{_year}Y {_month:00}M";
+            remainDatePrint.text = $"~ {_remainNextMonth / 60:00}:{_remainNextMonth % 60:00}";
         }
 
         private void UpdateMoneyText()
         {
             Company company = GameManager.Instance.Company;
             _changeMoney = (company.CalcRevenue() / 1000) - (company.CalcMaintenance() + company.CalcInterest());
-            moneyPrint.SetUIText($"{GameManager.Instance.Company.Money:n0}");
-            changeMoneyPrint.SetUIText($"{_changeMoney:n0}");
+            moneyPrint.text = $"{GameManager.Instance.Company.Money:n0}";
+            changeMoneyPrint.text = $"{_changeMoney:n0}";
             Color textColor = _changeMoney < 0
                 ? new Color(255, 0, 0)
                 : new Color(0, 255, 0);
-            changeMoneyPrint.SetUITextColor(textColor);
+            changeMoneyPrint.color = textColor;
         }
 
         /**
@@ -112,7 +111,7 @@ namespace IP.Screen
          * 메인 UI에서 아래쪽 버튼을 눌러 화면을 전환시키는 함수
          */
         public void MoveScreen(string type) {
-            _screenManager.MoveCamara(type.ToUpper());
+            screenManager.MoveCamara(type.ToUpper());
         }
 
         /**
