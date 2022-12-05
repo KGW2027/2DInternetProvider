@@ -25560,6 +25560,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2023234696}
     m_Modifications:
+    - target: {fileID: 2643640087335353658, guid: d6b9b4cc59072584d8d0f5aaf47fc3c7, type: 3}
+      propertyPath: m_text
+      value: Amadeus
+      objectReference: {fileID: 0}
     - target: {fileID: 3117651348431172852, guid: d6b9b4cc59072584d8d0f5aaf47fc3c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: -642.8

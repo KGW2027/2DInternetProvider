@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using IP.Control;
 using IP.Objective;
 using IP.UIFunc.Builder;
@@ -120,16 +121,86 @@ namespace IP.UIFunc
                     float distance = Vector3.Distance(scv, ecv);
                     if (distance < MaxConnectDistance)
                     {
-                        LineRenderer line = Instantiate(lineDrawer).GetComponent<LineRenderer>();
-                        line.startWidth = 1.0f;
-                        line.endWidth = 1.0f;
-                        line.useWorldSpace = true;
-                        line.SetPositions(new []{scv, ecv});
-                        Connections[startCity].Add(new Connection(endCity, distance, line));
-                        Connections[endCity].Add(new Connection(startCity, distance, line));
+                        ConnectCities(startCity, endCity);
                     }
                 }
             }
+            MakeCustomTrees();
+        }
+
+        private void MakeCustomTrees()
+        {
+            string[] customTargets =
+            {
+                "Luoes", 
+                "Olkcaster", "Yhoupset", "Khore", "Akaling", "Amadeus",
+                "Ruftol", "Vrophis", "Ogabus", "Playbridge", "Agoland",
+                "Esterrith", "Sastead", "Chetin", "Qufland", "Wramore",
+                "Izlumore", "Hiavine", "Nalo", "Badledo"
+            };
+            Dictionary<string, City> customMaps = new Dictionary<string, City>();
+            foreach (City city in _mapCityDictionary.Values)
+            {
+                if (customTargets.Contains(city.Name)) customMaps[city.Name] = city;
+            }
+            
+            // 8시 3국가 삼각형
+            ConnectCities(customMaps[customTargets[0]], customMaps[customTargets[1]]);
+            ConnectCities(customMaps[customTargets[1]], customMaps[customTargets[2]]);
+            ConnectCities(customMaps[customTargets[2]], customMaps[customTargets[0]]);
+
+            // 12시 연결
+            ConnectCities(customMaps[customTargets[5]], customMaps[customTargets[6]]);
+            ConnectCities(customMaps[customTargets[5]], customMaps[customTargets[7]]);
+            ConnectCities(customMaps[customTargets[5]], customMaps[customTargets[12]]);
+            
+            // 12시 숏컷
+            ConnectCities(customMaps[customTargets[13]], customMaps[customTargets[14]]);
+            ConnectCities(customMaps[customTargets[13]], customMaps[customTargets[15]]);
+            
+            // 중앙 3시
+            ConnectCities(customMaps[customTargets[16]], customMaps[customTargets[8]]);
+            
+            // 3시 
+            ConnectCities(customMaps[customTargets[8]], customMaps[customTargets[9]]);
+            
+            // 6시 숏컷
+            ConnectCities(customMaps[customTargets[10]], customMaps[customTargets[11]]);
+            
+            // 6시 중앙 연결
+            ConnectCities(customMaps[customTargets[3]], customMaps[customTargets[4]]);
+            
+            // 6시 3시
+            ConnectCities(customMaps[customTargets[10]], customMaps[customTargets[18]]);
+            ConnectCities(customMaps[customTargets[10]], customMaps[customTargets[11]]);
+            
+            // 6시 9시
+            ConnectCities(customMaps[customTargets[1]], customMaps[customTargets[3]]);
+            ConnectCities(customMaps[customTargets[1]], customMaps[customTargets[17]]);
+            
+            // 중앙
+            ConnectCities(customMaps[customTargets[19]], customMaps[customTargets[4]]);
+            ConnectCities(customMaps[customTargets[19]], customMaps[customTargets[12]]);
+            
+
+        }
+
+        /**
+         * 연결 생성
+         */
+        private void ConnectCities(City c1, City c2)
+        {
+            LineRenderer line = Instantiate(lineDrawer).GetComponent<LineRenderer>();
+            line.startWidth = 1.0f;
+            line.endWidth = 1.0f;
+            line.useWorldSpace = true;
+            Vector3 scv = c1.Button.transform.position;
+            Vector3 ecv = c2.Button.transform.position;
+            line.SetPositions(new []{scv, ecv});
+            float distance = Vector3.Distance(scv, ecv);
+            Connections[c1].Add(new Connection(c2, distance, line));
+            Connections[c2].Add(new Connection(c1, distance, line));
+            
         }
 
         /**
