@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IP.Control;
 using IP.Objective;
 using IP.Objective.Builds;
+using IP.Screen;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +27,7 @@ namespace IP.UIFunc.Builder
         {
             thumbnail.texture = _buildBase.GetTexture();
             buildName.text = _buildBase.GetName();
-            buildInfo.text = $"예정 완공일 : {_buildBase.GetBuildDate()}\n예상 월 소비 비용 : {_buildBase.GetBudget() / _buildBase.GetBuildDate()}k$";
+            MakeBuildInfo();
         }
 
         public void SendData(params object[] datas)
@@ -36,13 +38,132 @@ namespace IP.UIFunc.Builder
 
         public void Confirm()
         {
-            Debug.Log($"{_buildBase.GetName()} 건축 시작 => {GetSelected(dropdown1)}, {GetSelected(dropdown2)}");
             PopupManager.Instance.ClosePopup();
+            if (_buildBase.IsWire())
+            {
+                // 전선 설치에서 설치할 도시가 없는 경우는 진행하지 않는다.
+                if (dropdown1.options.Count == 0 || dropdown2.options.Count == 0) return;
+                GameManager.Instance.Company.ConstructWire(GameManager.Instance.FindCity(GetSelected(dropdown1)), GameManager.Instance.FindCity(GetSelected(dropdown2)), _buildBase);
+            }
+            else
+            {
+                // 건물 설치에서 설치할 도시가 없는 경우는 진행하지 않는다.
+                if (dropdown1.options.Count == 0) return;
+                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), _buildBase);
+            }
+            
+            Debug.Log($"{_buildBase.GetName()} 건축 시작 => {GetSelected(dropdown1)}, {GetSelected(dropdown2)}");
+        }
+
+        public void MakeBuildInfo()
+        {
+            if (_buildBase.IsWire())
+            {
+                if (dropdown1.options.Count == 0 || dropdown2.options.Count == 0)
+                {
+                    buildInfo.text = "건설이 불가능합니다.";
+                    return;
+                }
+
+                City fromCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
+                City toCity = GameManager.Instance.FindCity(GetSelected(dropdown2));
+                if (fromCity == null)
+                {
+                    buildInfo.text = "시작도시를 선택해주세요.";
+                    return;
+                }
+
+                if (toCity == null)
+                {
+                    buildInfo.text = "목표도시를 선택해주세요.";
+                    return;
+                }
+
+                if (fromCity == toCity)
+                {
+                    PrintBuildInfo(1, _buildBase.GetBudget()*5);
+                }
+                else
+                {
+                    float dist = Vector3.Distance(fromCity.Button.transform.position, toCity.Button.transform.position);
+                    PrintBuildInfo(_buildBase.GetBuildDate() * dist, _buildBase.GetBudget() * dist);
+                }
+
+            }
+            else
+            {
+                if (dropdown1.options.Count == 0)
+                {
+                    buildInfo.text = "건설이 불가능합니다.";
+                    return;
+                }
+
+                float budget = _buildBase.GetBudget();
+                float date = _buildBase.GetBuildDate();
+                
+                City selectedCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
+                if (selectedCity == null)
+                {
+                    buildInfo.text = "도시를 선택해주세요.";
+                    return;
+                }
+
+                // [전선, 사무실, 서비스센터, 소형IDC, 중형IDC, 대형IDC, 캐시서버, 스타링크]
+                bool[] cityInfo = GetBuildExists(selectedCity);
+                if (cityInfo[5]) // 대형 IDC가 있을 경우 캐시 서버 건설 기간을 1/3, 비용을 2/5로 줄여준다.
+                {
+                    if (_buildBase.GetName().Equals("캐시 서버"))
+                    {
+                        date *= 0.33f;
+                        budget *= 0.4f;
+                    }
+                }
+                else if (cityInfo[4]) // 중형 IDC가 있을 경우 캐시 서버 건설 기간을 2/3, 비용을 3/5로 줄여주고, 대형 IDC의 건설 기간을 12개월 단축 시킨다.
+                {
+                    if (_buildBase.GetName().Equals("캐시 서버"))
+                    {
+                        date *= 0.66f;
+                        budget *= 0.6f;
+                    }
+                    else if (_buildBase.GetName().Equals("대형 IDC"))
+                    {
+                        budget -= (budget / date) * 12;
+                        date -= 12;
+                    }
+                }
+                else if (cityInfo[3]) // 소형 IDC가 있을 경우, 중형 및 대형 IDC 건설 기간을 6개월 단축 시킨다.
+                {
+                    if (_buildBase.GetName().Equals("중형 IDC") || _buildBase.GetName().Equals("대형 IDC"))
+                    {
+                        budget -= (budget / date) * 6;
+                        date -= 6;
+                    }
+                }
+                
+                PrintBuildInfo(date, budget);
+            }
+        }
+
+        private void PrintBuildInfo(float date, float budget)
+        {
+            int completeDate = (int) Math.Round(date);
+            int year = completeDate / 12, month = completeDate % 12;
+            int[] nowDate = AppBarManager.Instance.GetDate();
+            nowDate[0] += year;
+            nowDate[1] += month;
+            if (nowDate[1] > 12)
+            {
+                nowDate[0]++;
+                nowDate[1] -= 12;
+            }
+            
+            buildInfo.text = $"예정 완공일 : {nowDate[0]:00}년 {nowDate[1]:00}월\n예상 월 소비 비용 : {budget/completeDate:F2}k$";
         }
 
         private string GetSelected(TMP_Dropdown obj)
         {
-            return obj.options[obj.value].text;
+            if (obj.value < 0) return null;
+            return obj.options[obj.value].text.Split(" ")[0];
         }
 
         private void SetDropdownMode(bool isWire)
@@ -56,18 +177,22 @@ namespace IP.UIFunc.Builder
                 GameManager.Instance.Company.GetConnectedCities().ForEach(city =>
                 {
                     bool dd1Added = false, dd2Added = false;
-                    foreach (BuildBase build in GameManager.Instance.Company.GetBuilds(city))
+                    if (GameManager.Instance.Company.GetBuilds(city) != null)
                     {
-                        if (!dd1Added && build.IsComplete() && build.IsWire())
+                        foreach (BuildBase build in GameManager.Instance.Company.GetBuilds(city))
                         {
-                            dropdown1.options.Add(new TMP_Dropdown.OptionData(city.Name));
-                            dd1Added = true;
-                        }
+                            if (!dd1Added && build.IsComplete() && build.IsWire())
+                            {
+                                dropdown1.options.Add(new TMP_Dropdown.OptionData(city.Name));
+                                dd1Added = true;
+                            }
 
-                        if (!dd2Added && build.IsComplete() && (build.GetName().Equals("사무실") || build.GetName().Equals("본사")))
-                        {
-                            dropdown2.options.Add(new TMP_Dropdown.OptionData(city.Name));
-                            dd2Added = true;
+                            if (!dd2Added && build.IsComplete() &&
+                                (build.GetName().Equals("사무실") || build.GetName().Equals("본사")))
+                            {
+                                dropdown2.options.Add(new TMP_Dropdown.OptionData(city.Name));
+                                dd2Added = true;
+                            }
                         }
                     }
                 });
@@ -107,6 +232,10 @@ namespace IP.UIFunc.Builder
                 dropdown2.gameObject.SetActive(false);
                 dropdown1.transform.SetLocalPositionAndRotation(DefaultVector, Quaternion.identity);
             }
+
+            // 설치 가능한 도시가 없다면 비활성화
+            dropdown1.interactable = dropdown1.options.Count > 0;
+            dropdown2.interactable = dropdown2.options.Count > 0;
         }
 
         private string IsBuildable(City city)
@@ -114,31 +243,8 @@ namespace IP.UIFunc.Builder
             // IDC는 전선이 설치 되어있어야하며, 이미 IDC가 설치되있는 경우에는 업그레이드만 가능
             // CacheServer는 IDC가 설치 되어있어야함.
             // Starlink는 IDCLarge와 CacheServer가 필요
-            Company user = GameManager.Instance.Company;
-            List<BuildBase> builds = user.GetBuilds(city);
-
-            bool[] buildExists = new bool[8]; // [전선, 사무실, 서비스센터, 소형IDC, 중형IDC, 대형IDC, 캐시서버, 스타링크]
-            string[] buildsName = {"", "사무실", "서비스 센터", "소형 IDC", "중형 IDC", "대형 IDC", "캐시 서버", "스타링크"};
-            foreach (BuildBase build in builds)
-            {
-                if (build.IsWire())
-                {
-                    buildExists[0] = true;
-                    continue;
-                }
-
-                if (build.GetName().Equals("본사"))
-                {
-                    buildExists[1] = true;
-                    continue;
-                }
-                
-                for (int key = 1; key < 8; key++)
-                {
-                    if (build.GetName().Equals(buildsName[key])) buildExists[key] = true;
-                }
-            }
-
+            bool[] buildExists = GetBuildExists(city);
+            
             bool canBuild = false;
             string cityName = city.Name;
             switch (_buildBase.GetName())
@@ -168,6 +274,35 @@ namespace IP.UIFunc.Builder
 
             if (canBuild) return cityName;
             return null;
+        }
+
+        private bool[] GetBuildExists(City city)
+        {
+            
+            bool[] buildExists = new bool[8]; // [전선, 사무실, 서비스센터, 소형IDC, 중형IDC, 대형IDC, 캐시서버, 스타링크]
+            string[] buildsName = {"", "사무실", "서비스 센터", "소형 IDC", "중형 IDC", "대형 IDC", "캐시 서버", "스타링크"};
+            if (GameManager.Instance.Company.GetBuilds(city) == null) return buildExists;
+            foreach (BuildBase build in GameManager.Instance.Company.GetBuilds(city))
+            {
+                if (build.IsWire())
+                {
+                    buildExists[0] = true;
+                    continue;
+                }
+
+                if (build.GetName().Equals("본사"))
+                {
+                    buildExists[1] = true;
+                    continue;
+                }
+                
+                for (int key = 1; key < 8; key++)
+                {
+                    if (build.GetName().Equals(buildsName[key])) buildExists[key] = true;
+                }
+            }
+
+            return buildExists;
         }
     }
 }

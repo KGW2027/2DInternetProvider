@@ -68,6 +68,7 @@ namespace IP.Objective
             long customer = 0L;
             foreach (KeyValuePair<CitizenCharacter, PaymentPlan> item in _selectedPlans)
             {
+                if (item.Value == null) continue;
                 if (item.Value.OwnerCompany == company)
                 {
                     customer += _peopleCharacters[item.Key];

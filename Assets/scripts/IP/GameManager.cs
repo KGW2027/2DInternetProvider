@@ -165,9 +165,25 @@ namespace IP
             return count;
         }
 
+        /**
+         * 특정 도시로부터 연결된 다른 도시들의 목록을 가져온다.
+         */
         public List<Connection> GetConnections(City city)
         {
             return _wmi.Connections[city];
+        }
+
+        /**
+         * 도시의 이름으로부터 도시 객체를 얻는다.
+         */
+        public City FindCity(string name)
+        {
+            foreach (City city in _wmi.Cities)
+            {
+                if (city.Name.Equals(name)) return city;
+            }
+
+            return null;
         }
     }
 }
