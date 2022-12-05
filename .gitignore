@@ -10,6 +10,12 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 /Assets/Resources/fonts/
+/2D Project_BurstDebugInformation_DoNotShip/
+/2D Project_Data/
+/MonoBleedingEdge/
+2D Project.exe
+UnityCrashHandler64.exe
+UnityPlayer.dll
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

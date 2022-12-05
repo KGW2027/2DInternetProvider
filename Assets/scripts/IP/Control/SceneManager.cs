@@ -17,7 +17,7 @@ namespace IP.Control
             Regex regex = new Regex(pattern);
             if (regex.IsMatch(name)) return;
             GameManager.Instance.InitGame(name);
-            UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("InGame");
         }
     }
 }
