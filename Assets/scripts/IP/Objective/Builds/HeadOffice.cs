@@ -26,7 +26,7 @@ namespace IP.Objective.Builds
 
         protected override void CompleteAction(Company owner)
         {
-            Debug.Log($"{GetName()} Complete");
+            
         }
 
         public override bool IsWire()
