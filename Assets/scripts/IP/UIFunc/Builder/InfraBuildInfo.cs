@@ -20,8 +20,11 @@ namespace IP.UIFunc.Builder
         {
             thumbnail.texture = _buildInfo.GetTexture();
             buildName.text = _buildInfo.GetName();
-            spend.text = $"건설 예산 : {_buildInfo.GetBudget():n0}k$";
-            complete.text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}개월";
+            if (_buildInfo.IsWire()) spend.text = $"건설 예산 : 거리 1당 {_buildInfo.GetBudget()}k$";
+            else spend.text = $"건설 예산 : {_buildInfo.GetBudget():n0}k$";
+
+            if (_buildInfo.IsWire()) complete.text = $"예정 건설 기한 : 거리 {1 / _buildInfo.GetBuildDate():N0}당 1개월";
+            else complete.text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}개월";
         }
 
         public void SendData(params object[] datas)
