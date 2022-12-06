@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using IP.Objective.Builds;
 using IP.Screen;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace IP.Objective
@@ -78,6 +77,7 @@ namespace IP.Objective
         {
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
             build.SetCity(city);
+            Debug.Log($"{Name}이 {city.Name}에 {build.GetName()}건설 시작 - 예상 종료 기간 {build.GetEndDate()[0]}년 {build.GetEndDate()[1]}월");
             _builds[city].Add(build);
         }
 
@@ -101,7 +101,6 @@ namespace IP.Objective
                 interest += (long) (debt.Scale * (debt.Interest / (12 * 100)));
                 if (debt.StartYear + 3 <= date[0] && debt.StartMonth <= date[1])
                 {
-                    Debug.Log($"대출 {debt.Scale}상환");
                     Money -= debt.Scale;
                     RepayLoanTimes++;
                     repayed.Add(debt);

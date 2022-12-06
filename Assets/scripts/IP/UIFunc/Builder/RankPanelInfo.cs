@@ -36,7 +36,6 @@ namespace IP.UIFunc.Builder
 
         private double GetShare()
         {
-            Debug.Log($"{_company.GetTotalCustomers()} / {GameManager.Instance.GetTotalPeopleCount()}");
             return (double) _company.GetTotalCustomers() / GameManager.Instance.GetTotalPeopleCount()*100;
         }
     }
