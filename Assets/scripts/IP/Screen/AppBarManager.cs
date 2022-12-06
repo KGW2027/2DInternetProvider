@@ -27,8 +27,6 @@ namespace IP.Screen
         private int _remainNextMonth = 10;
         private long _changeMoney = 0;
 
-        private CoroutineHandle _timerHandle;
-    
         // Start is called before the first frame update
         void Start()
         {
@@ -40,7 +38,8 @@ namespace IP.Screen
 
             companyNamePrint.text = GameManager.Instance.Company.Name;
             UpdateMoneyText();
-            _timerHandle = Timing.RunCoroutine(RunTimer());
+            Timing.RunCoroutine(RunTimer());
+            new RealTimeManager(realDatePrint).Run();
         }
 
         private IEnumerator<float> RunTimer()
