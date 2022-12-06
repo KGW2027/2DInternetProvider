@@ -115,5 +115,13 @@ namespace IP.Screen
             _infraUI.GetComponent<ISubUI>()?.UpdateUI();
         }
 
+        public void Refresh()
+        {
+            foreach (var subUI in _screenSubUIs.Values)
+            {
+                subUI.GetComponent<ISubUI>()?.UpdateUI();
+            }
+        }
+
     }
 }

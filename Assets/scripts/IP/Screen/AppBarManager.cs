@@ -127,6 +127,7 @@ namespace IP.Screen
         public void Refresh()
         {
             UpdateMoneyText();
+            screenManager.Refresh();
         }
     }
 }
