@@ -1,4 +1,3 @@
-using IP.Objective;
 using UnityEngine;
 
 namespace IP.UIFunc
@@ -11,6 +10,8 @@ namespace IP.UIFunc
         [Header("카메라 속성")]
         public float camMoveSpeed = 1.0f;
         public float camZoomSpeed = 3.0f;
+
+        public GameObject circle;
 
         private Camera _mainCamera;
         private Camera _camCamera;
@@ -27,7 +28,6 @@ namespace IP.UIFunc
 
         void Start()
         {
-        
             _mainCamera = Camera.main;
 
             Bounds mapBounds = map.GetComponent<SpriteRenderer>().bounds;
@@ -47,7 +47,14 @@ namespace IP.UIFunc
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _wmi.ClickMap(_camCamera.ScreenToWorldPoint(Input.mousePosition));
+                Vector3 mouse = Input.mousePosition;
+                Bounds cameraBounds = _camCamera.OrthographicBounds(_camCamera.aspect);
+                float primeX = (mouse.x - 960) * (cameraBounds.extents.x - (cameraBounds.extents.x * -1)) / (1920 - 0);
+                float primeY = (mouse.y - 540) * (cameraBounds.extents.y - (cameraBounds.extents.y * -1)) / (1080 - 0);
+                Vector3 correctionVector = new(cameraBounds.center.x + primeX, cameraBounds.center.y + primeY, 0);
+                Instantiate(circle, correctionVector, Quaternion.identity);
+                
+                _wmi.ClickMap(correctionVector);
             }
             
             if (!_moveCameraMode && Input.GetMouseButtonDown(1))

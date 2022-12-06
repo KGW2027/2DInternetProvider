@@ -40,5 +40,14 @@ namespace IP
                 return $"{(double) data / MB:F} MB";
             }
         }
+    
+        public static Bounds OrthographicBounds(this Camera camera, float aspect)
+        {
+            float cameraHeight = camera.orthographicSize * 2;
+            Bounds bounds = new Bounds(
+                camera.transform.position,
+                new Vector3(cameraHeight * aspect, cameraHeight, 0));
+            return bounds;
+        }
     }
 }
