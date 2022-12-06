@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using IP.Objective;
 using IP.Objective.Builds;
+using IP.Screen;
 using IP.UIFunc;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,6 +12,12 @@ namespace IP.AI
 {
     public class AIManager
     {
+        enum CompanyStrategy
+        {
+            EXPAND_FIRST,
+            UPGRADE_FIRST
+        }
+        
         private static AIManager _instance;
         
         public static AIManager Instance
@@ -32,7 +40,12 @@ namespace IP.AI
             "Company6", "Company7", "Company8", "Company9", "Company10",
             "Company11", "Company12", "Company13", "Company14", "Company15",
         };
-        
+
+        private Dictionary<Company, CompanyStrategy> _strategies;
+
+        private const long WireOfficeLeast = 1000L;
+        private const long SmallIDCLeast = 3000L;
+
         /// <summary>
         /// 국가마다 도시 2개, 시골 1개를 중심으로 하는 회사를 총 15개 생성한다.
         /// </summary>
@@ -42,6 +55,7 @@ namespace IP.AI
             
             // 회사 생성
             Companies = new List<Company>();
+            _strategies = new Dictionary<Company, CompanyStrategy>();
             foreach (Country country in _wmi.Countries)
             {
                 byte cityCreated = 0, countrysideCreated = 0;
@@ -78,6 +92,164 @@ namespace IP.AI
             {
                 company.CalcTrust();
             }
+        }
+
+        public void ExecuteStrategy()
+        {
+            foreach (Company ai in Companies)
+            {
+                if (IsStage1(ai)) continue;
+                if (IsStage2(ai)) continue;
+            }
+        }
+
+
+        // Stage 1. 연결된 도시가 10개보다 적으면 확장한다.
+        private bool IsStage1(Company company)
+        {
+            if (company.GetConnectedCities().Count >= 10) return false;
+            Expanding(company);
+            return true;
+        }
+        
+        // 도시 확장을 위한 시퀀스
+        private void Expanding(Company company)
+        {
+            // 최근 3달 수익 평균이 1000k$보다 낮을 경우 건설하지 않는다.
+            if (company.RecentRevenue(3) < WireOfficeLeast) return;
+            
+            // 1. 사무실이 건설된 도시 중 전선 연결이 안된 도시가 있다면 전선을 연결한다.
+            City buildTarget = null;
+            foreach (City city in company.GetConnectedCities())
+            {
+                bool needWire = true;
+                foreach (BuildBase builds in company.GetBuilds(city))
+                {
+                    if (builds.IsWire()) needWire = false;
+                }
+
+                if (!needWire) continue;
+                buildTarget = city;
+                break;
+            }
+
+            if (buildTarget != null)
+            {
+                Connection nearest = null;
+                float distance = float.MaxValue;
+                foreach (Connection conn in GameManager.Instance.GetConnections(buildTarget))
+                {
+                    if (conn.Distance < distance)
+                    {
+                        nearest = conn;
+                    }
+                }
+
+                BuildBase wire = GetRecommendWire(company.CalcRevenue()).Clone();
+                float buildDate = wire.GetBuildDate() * nearest.Distance;
+                int[] nowDate = CalcEndDate((int) Math.Round(buildDate));
+
+                wire.OverrideValues(nowDate, (wire.GetBudget() * nearest.Distance) / buildDate);
+                company.ConstructWire(nearest.EndCity, buildTarget, wire);
+                return;
+            }
+
+            // 2. 사무실이 있는 도시들이 모두 전선이 연결되어있다면, 새로운 사무실을 건설할 회사 개수가 적은 도시를 탐색한다.
+            City lowCompanies = null;
+            int connectedCompanies = Int32.MaxValue;
+            foreach (City city in company.GetConnectedCities())
+            {
+                foreach (Connection conn in GameManager.Instance.GetConnections(city))
+                {
+                    if (company.GetConnectedCities().Contains(conn.EndCity)) continue;
+                    List<Company> servicing = new List<Company>();
+                    foreach (PaymentPlan plan in city.ServicingPlans)
+                        if (!servicing.Contains(plan.OwnerCompany))
+                            servicing.Add(plan.OwnerCompany);
+
+                    if (servicing.Count < connectedCompanies)
+                    {
+                        lowCompanies = conn.EndCity;
+                        connectedCompanies = servicing.Count;
+                    }
+
+                    if (connectedCompanies == 0) break;
+                }
+
+                if (connectedCompanies == 0) break;
+            }
+
+            if (lowCompanies != null)
+            {
+                BuildBase office = new Office().Clone();
+                int[] nowDate = CalcEndDate((int) office.GetBuildDate());
+                office.OverrideValues(nowDate, office.GetBudget());
+                company.ConstructBuild(lowCompanies, office);
+            }
+        }
+
+        // Stage 2. EXPAND FIRST일 경우 20개까지 Stage 1을 반복, Upgrade First일 경우 SMALL IDC를 짓기 시작한다.
+        private bool IsStage2(Company company)
+        {
+            if (_strategies[company] == CompanyStrategy.EXPAND_FIRST)
+            {
+                if(company.GetConnectedCities().Count >= 20) return false;
+                Expanding(company);
+            }
+            else if (_strategies[company] == CompanyStrategy.UPGRADE_FIRST)
+            {
+                City noIdc = null;
+                foreach (City city in company.GetConnectedCities())
+                {
+                    bool hasIDC = false;
+                    foreach (BuildBase builds in company.GetBuilds(city))
+                    {
+                        if (builds.GetName().Contains("IDC"))
+                        {
+                            hasIDC = true;
+                            break;
+                        }
+                    }
+
+                    if (!hasIDC)
+                    {
+                        noIdc = city;
+                        break;
+                    }
+                }
+
+                if (noIdc == null) return false;
+                
+                // 최근 3달 평균 수익이 3000k$보다 낮을 시 건설하지 않는다.
+                if (company.RecentRevenue(3) < SmallIDCLeast) return true;
+
+                BuildBase smallIDC = new IDCSmall().Clone();
+                smallIDC.OverrideValues(CalcEndDate((int) smallIDC.GetBuildDate()), smallIDC.GetBudget());
+                company.ConstructBuild(noIdc, smallIDC);
+            }
+            return true;
+        }
+        
+        // 회사 수익금에 따른 티어 구분
+        private BuildBase GetRecommendWire(long rev)
+        {
+            if (rev >= 500_000) return new UndergroundFiberCable();
+            if (rev >= 200_000) return new FiberCable();
+            if (rev >= 50_000) return new UndergroundCoaxialCable();
+            return new CoaxialCable();
+        }
+
+        private int[] CalcEndDate(int duration)
+        {
+            int[] nowDate = AppBarManager.Instance.GetDate();
+            nowDate[1] += duration;
+            while (nowDate[1] > 12)
+            {
+                nowDate[1] -= 12;
+                nowDate[0]++;
+            }
+
+            return nowDate;
         }
 
         private Company NewCompany(City startCity)
@@ -145,6 +317,10 @@ namespace IP.AI
             plan.Download = company.UpDownSpeed / connections.Count;
             plan.Budget = 13;
             company.AddPlan(plan, connections);
+
+            Array strategies = Enum.GetValues(typeof(CompanyStrategy));
+            CompanyStrategy randStrategy = (CompanyStrategy) strategies.GetValue(Random.Range(0, strategies.Length));
+            _strategies[company] = randStrategy;
             
             return company;
         }
