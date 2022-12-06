@@ -65,7 +65,7 @@ namespace IP.Objective.Builds
         public void Complete(Company owner)
         {
             _isComplete = true;
-            if (IsWire()) CompleteWireAction();
+            if (IsWire() && owner == GameManager.Instance.Company) CompleteWireAction();
             CompleteAction(owner);
         }
 
