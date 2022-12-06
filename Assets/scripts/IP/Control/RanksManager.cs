@@ -7,21 +7,26 @@ using UnityEngine;
 
 namespace IP.Control
 {
-    public class RanksManager : MonoBehaviour
+    public class RanksManager : MonoBehaviour, ISubUI
     {
-        
-    
         [Header("회사 정보 프리팹")]
         public GameObject panel;
+
+        [Header("순위 목록")] public GameObject rankParent;
     
         void Start()
         {
             UpdateRanks();
         }
 
+        public void UpdateUI()
+        {
+            UpdateRanks();
+        }
+
         private void ClearChilds()
         {
-            foreach (Transform child in transform)
+            foreach (Transform child in rankParent.transform)
             {
                 Destroy(child.gameObject);
             }
@@ -51,8 +56,7 @@ namespace IP.Control
             int rankNum = 1;
             while (sortedDict.MoveNext())
             {
-                Debug.Log($"[{rankNum}] {sortedDict.Current.Key.Name} -> 수익 : {sortedDict.Current.Key.CalcRevenue()} / 소비자 수 : {sortedDict.Current.Key.GetTotalCustomers()}");
-                GameObject rankPanel = Instantiate(panel, transform, true);
+                GameObject rankPanel = Instantiate(panel, rankParent.transform, true);
                 UpdatePanelDisplay(rankPanel, sortedDict.Current.Key, rankNum++);
             }
         }

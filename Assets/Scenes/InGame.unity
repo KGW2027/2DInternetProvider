@@ -1608,6 +1608,7 @@ GameObject:
   - component: {fileID: 113650438}
   - component: {fileID: 113650437}
   - component: {fileID: 113650436}
+  - component: {fileID: 113650439}
   m_Layer: 5
   m_Name: RankSubUI
   m_TagString: SubUI
@@ -1698,6 +1699,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &113650439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113650434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edd997ee2ba37948ab552a5efc91af8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 1672694669101999823, guid: 3a0ad5c4e8510074fa776705f50dae67, type: 3}
+  rankParent: {fileID: 1371718484}
 --- !u!1 &121296190
 GameObject:
   m_ObjectHideFlags: 0
@@ -17443,7 +17458,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1371718485}
-  - component: {fileID: 1371718486}
   - component: {fileID: 1371718487}
   - component: {fileID: 1371718488}
   m_Layer: 5
@@ -17473,19 +17487,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.00045435943}
   m_SizeDelta: {x: -1923, y: 10}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &1371718486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371718484}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8edd997ee2ba37948ab552a5efc91af8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 1672694669101999823, guid: 3a0ad5c4e8510074fa776705f50dae67, type: 3}
 --- !u!114 &1371718487
 MonoBehaviour:
   m_ObjectHideFlags: 0
