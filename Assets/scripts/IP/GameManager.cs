@@ -28,12 +28,14 @@ namespace IP
         private WorldMapCameraController _wmcc;
         private LottoManager _lotto;
         private bool _executedLateStart;
+        private bool _initMonth;
 
         public Company Company { get; private set; }
 
         void Start()
         {
             Instance = this;
+            _initMonth = true;
         }
 
         /**
@@ -79,17 +81,26 @@ namespace IP
             // 복권 회차 넘기기
             _lotto.Next();
             
-            // 수익금 정산
-            UserEarn();
-            AIManager.Instance.Earn();
             
-            // 회사 신뢰도 평가
-            Company.CalcTrust();
-            AIManager.Instance.CheckTrust();
+            if (_initMonth)
+            {
+                // 최초달에는 평가를 진행하지않는다.
+                _initMonth = false;
+            }
+            else
+            {
+                // 수익금 정산
+                UserEarn();
+                AIManager.Instance.Earn();
 
+                // 회사 신뢰도 평가
+                Company.CalcTrust();
+                AIManager.Instance.CheckTrust();
+                
+            }
             // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
-            
+
             // Appbar UI 새로고침
             AppBarManager.Instance.Refresh();
         }
