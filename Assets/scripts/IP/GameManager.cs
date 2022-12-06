@@ -58,7 +58,6 @@ namespace IP
             plan.Budget = 8;
             plan.Upload = 100 * StaticFunctions.Bytes.MB;
             plan.Download = 100 * StaticFunctions.Bytes.MB;
-            plan.Service(startCity);
 
             AIManager.Instance.Initialize(_wmi);
             
