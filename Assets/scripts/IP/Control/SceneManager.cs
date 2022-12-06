@@ -13,7 +13,7 @@ namespace IP.Control
         public void StartGame()
         {
             string name = inputName.text.Trim();
-            string pattern = @"[^a-zA-Z0-9가-힣]";
+            string pattern = @"[^a-zA-Z0-9가-힣 ]";
             Regex regex = new Regex(pattern);
             if (regex.IsMatch(name)) return;
             GameManager.Instance.InitGame(name);
