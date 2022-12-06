@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using IP.Objective;
+using IP.Objective.Builds;
 using IP.UIFunc.Builder;
 using TMPro;
 using UnityEngine;
@@ -70,8 +71,19 @@ namespace IP.Control
         {
             foreach (City city in GameManager.Instance.Company.GetConnectedCities())
             {
-                if (!_cityToggles.ContainsKey(city)) continue;
-                _cityToggles[city].SetEnabled();
+                if (!_cityToggles.ContainsKey(city)) continue; // 연결된 도시가 아닌경우 스킵
+                
+                // 전선이 연결된 경우만 영업 가능
+                bool wireConnected = false;
+                foreach (BuildBase builds in GameManager.Instance.Company.GetBuilds(city))
+                {
+                    if (builds.IsWire())
+                    {
+                        wireConnected = true;
+                        break;
+                    }
+                }
+                if(wireConnected) _cityToggles[city].SetEnabled();
             }
         }
 
