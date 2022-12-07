@@ -24,6 +24,11 @@ namespace IP.Control
             UpdateBuildsInfo();
         }
 
+        public void MonthRefresh()
+        {
+            UpdateUI();
+        }
+
         private void UpdateInfoTexts()
         {
             infoTextsParent.GetComponent<OverallInfo>().Build();

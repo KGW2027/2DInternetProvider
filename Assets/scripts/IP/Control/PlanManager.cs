@@ -43,6 +43,18 @@ namespace IP.Control
             }
         }
 
+        public void MonthRefresh()
+        {
+            ClearChild(planList.transform);
+            foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList)
+            {
+                var planPanel = Instantiate(planPrefab, planList.transform, true);
+                IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
+                builder.SendData(plan, this);
+                builder.Build();
+            }
+        }
+
         private void ClearChild(Transform parent)
         {
             foreach (Transform child in parent)

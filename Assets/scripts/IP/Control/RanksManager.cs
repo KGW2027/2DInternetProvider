@@ -24,6 +24,11 @@ namespace IP.Control
             UpdateRanks();
         }
 
+        public void MonthRefresh()
+        {
+            UpdateUI();
+        }
+
         private void ClearChilds()
         {
             foreach (Transform child in rankParent.transform)

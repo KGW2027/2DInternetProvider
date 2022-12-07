@@ -119,7 +119,7 @@ namespace IP.Screen
         {
             foreach (var subUI in _screenSubUIs.Values)
             {
-                subUI.GetComponent<ISubUI>()?.UpdateUI();
+                subUI.GetComponent<ISubUI>()?.MonthRefresh();
             }
         }
 

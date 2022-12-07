@@ -63,5 +63,10 @@ namespace IP.Control
 
             _bankInfos.ForEach(bi => bi.Build());
         }
+
+        public void MonthRefresh()
+        {
+            UpdateUI();
+        }
     }
 }

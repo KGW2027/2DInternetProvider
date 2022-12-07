@@ -38,6 +38,11 @@ namespace IP.Control
             }
         }
 
+        public void MonthRefresh()
+        {
+            UpdateUI();
+        }
+
         public static void ReserveUpdate()
         {
             _needUpdate = true;
