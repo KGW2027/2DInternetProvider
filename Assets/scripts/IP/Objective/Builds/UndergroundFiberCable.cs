@@ -27,7 +27,7 @@ namespace IP.Objective.Builds
 
         protected override void CompleteAction(Company owner)
         {
-            owner.UpDownSpeed += 5 * StaticFunctions.Bytes.GB;
+            owner.UpDownSpeed += 1 * StaticFunctions.Bytes.GB;
         }
 
         public override bool IsWire()
