@@ -100,6 +100,9 @@ namespace IP
                 // AI 회사 운영
                 AIManager.Instance.ExecuteStrategy();
             }
+
+            LoseCheck();
+            
             // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
 
@@ -112,6 +115,18 @@ namespace IP
             long planRevenue = Company.CalcRevenue() / 1000;
             long used = Company.GetUsingMoney();
             Company.Earn(planRevenue - used);
+        }
+
+        private void LoseCheck()
+        {
+            bool lose = Company.RecentRevenue(3) < 0;
+            if (!lose) lose = Company.Trust < PenaltyTrust * 4;
+
+            if (lose)
+            {
+                Debug.Log("게임 패배");
+                Application.Quit();
+            }
         }
         
         /**
