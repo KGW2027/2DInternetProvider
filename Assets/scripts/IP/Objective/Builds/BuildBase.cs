@@ -19,6 +19,7 @@ namespace IP.Objective.Builds
 
         private static List<BuildBase> _buildBases;
         private static readonly Color WireConnectedColor = new(250, 248, 143);
+        private static Dictionary<string, Texture2D> _iconTextureMap;
 
         public abstract string GetName();
         public abstract float GetMaintenance();
@@ -57,15 +58,58 @@ namespace IP.Objective.Builds
             return _textureMap[key];
         }
 
+        public Texture2D GetIconTexture()
+        {
+            if (_iconTextureMap == null)
+            {
+                _iconTextureMap = new Dictionary<string, Texture2D>();
+                Sprite[] sprites = Resources.LoadAll<Sprite>("BuildsThumbnails/BuildIcon");
+                foreach (var sprite in sprites)
+                {
+                    Rect rect = sprite.textureRect;
+                    Texture2D texture = new Texture2D((int) rect.width, (int) rect.height);
+                    texture.SetPixels(sprite.texture.GetPixels((int) rect.x, (int) rect.y, (int) rect.width, (int) rect.height));
+                    texture.Apply();
+                    _iconTextureMap[sprite.name] = texture;
+                }
+            }
+
+            string key = $"BuildIcon_{GetType().Name}";
+            return _iconTextureMap[key];
+        }
+
         public bool IsComplete()
         {
             return _isComplete;
         }
 
+        public void ForceComplete(Company owner, City city)
+        {
+            _isComplete = true;
+
+            if (owner == GameManager.Instance.Company)
+            {
+                if (this is IDCSmall || this is IDCMedium || this is IDCLarge)
+                    city.ActiveIdcIcon(this, GetIconTexture());
+                else city.ActiveIcon(this);
+            }
+            CompleteAction(owner);
+        }
+
         public void Complete(Company owner)
         {
             _isComplete = true;
-            if (IsWire() && owner == GameManager.Instance.Company) CompleteWireAction();
+            if (owner == GameManager.Instance.Company)
+            {
+                if (IsWire()) CompleteWireAction();
+                else
+                {
+                    if (this is IDCSmall || this is IDCMedium || this is IDCLarge)
+                        _constructCity.ActiveIdcIcon(this, GetIconTexture());
+                    else _constructCity.ActiveIcon(this);
+                }
+            }
+
             CompleteAction(owner);
         }
 

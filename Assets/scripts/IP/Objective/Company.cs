@@ -42,7 +42,7 @@ namespace IP.Objective
         public void AddBuild(City city, BuildBase build)
         {
             if (!_builds.ContainsKey(city)) _builds[city] = new List<BuildBase>();
-            build.Complete(this);
+            build.ForceComplete(this, city);
             _builds[city].Add(build);
         }
         

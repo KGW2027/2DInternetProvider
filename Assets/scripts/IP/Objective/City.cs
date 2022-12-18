@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using IP.Objective.Builds;
+using IP.UIFunc;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -27,6 +29,7 @@ namespace IP.Objective
         public GameObject Button;
         public float ActiveRate;
         public bool IsCity;
+        public MapCityInfo IconInfo;
 
         private readonly Dictionary<CitizenCharacter, PaymentPlan> _selectedPlans;
         private readonly Dictionary<CitizenCharacter, long> _peopleCharacters;
@@ -42,6 +45,8 @@ namespace IP.Objective
             Button = button;
             ActiveRate = Random.Range(0.001f, 0.020f);
             IsCity = isCity;
+            
+            IconInfo = button.GetComponent<MapCityInfo>();
 
             ServicingPlans = new List<PaymentPlan>();
             _selectedPlans = new Dictionary<CitizenCharacter, PaymentPlan>();
@@ -102,6 +107,16 @@ namespace IP.Objective
                     if (_selectedPlans[character] == plan) _selectedPlans[character] = null;
                 }
             }
+        }
+
+        public void ActiveIcon(BuildBase build)
+        {
+            if(IconInfo != null) IconInfo.ActiveIcon(build);
+        }
+
+        public void ActiveIdcIcon(BuildBase build, Texture2D icon)
+        {
+            if(IconInfo != null) IconInfo.ActiveIcon(build, icon);
         }
 
         public void PlanSelect()
