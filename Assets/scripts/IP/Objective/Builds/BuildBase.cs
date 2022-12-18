@@ -92,6 +92,7 @@ namespace IP.Objective.Builds
                 if (this is IDCSmall || this is IDCMedium || this is IDCLarge)
                     city.ActiveIdcIcon(this, GetIconTexture());
                 else city.ActiveIcon(this);
+                AlertBox.New(AlertBox.AlertType.BuildEnd, city.Name, GetName(), $"{GetMaintenance():F2}");
             }
             CompleteAction(owner);
         }
@@ -101,12 +102,17 @@ namespace IP.Objective.Builds
             _isComplete = true;
             if (owner == GameManager.Instance.Company)
             {
-                if (IsWire()) CompleteWireAction();
+                if (IsWire())
+                {
+                    CompleteWireAction();
+                    AlertBox.New(AlertBox.AlertType.WireEnd, _wireStartCity.Name, _constructCity.Name, $"{GetMaintenance():F2}");
+                }
                 else
                 {
                     if (this is IDCSmall || this is IDCMedium || this is IDCLarge)
                         _constructCity.ActiveIdcIcon(this, GetIconTexture());
                     else _constructCity.ActiveIcon(this);
+                    AlertBox.New(AlertBox.AlertType.BuildEnd, _constructCity.Name, GetName(), $"{GetMaintenance():F2}");
                 }
             }
 

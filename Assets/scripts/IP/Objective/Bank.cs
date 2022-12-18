@@ -1,4 +1,6 @@
-﻿namespace IP.Objective
+﻿using IP.UIFunc;
+
+namespace IP.Objective
 {
     public class Bank
     {
@@ -45,6 +47,7 @@
 
         public void Repayed(long amount)
         {
+            AlertBox.New(AlertBox.AlertType.LoanEnd, Name, $"{amount:N0}");
             Loaned(amount*-1);
         }
 

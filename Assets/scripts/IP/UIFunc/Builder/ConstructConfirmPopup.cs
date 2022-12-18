@@ -51,7 +51,12 @@ namespace IP.UIFunc.Builder
                 if (dropdown1.options.Count == 0 || dropdown2.options.Count == 0) return;
                 BuildBase construct = _buildBase.Clone();
                 construct.OverrideValues(_endDate, _budget);
-                GameManager.Instance.Company.ConstructWire(GameManager.Instance.FindCity(GetSelected(dropdown1)), GameManager.Instance.FindCity(GetSelected(dropdown2)), construct);
+
+                City fromCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
+                City toCity = GameManager.Instance.FindCity(GetSelected(dropdown2));
+                
+                AlertBox.New(AlertBox.AlertType.WireStart, fromCity.Name, toCity.Name, $"{construct.GetEndDate()[0]}년 {construct.GetEndDate()[1]}월");
+                GameManager.Instance.Company.ConstructWire(fromCity, toCity, construct);
             }
             else
             {
@@ -59,7 +64,9 @@ namespace IP.UIFunc.Builder
                 if (dropdown1.options.Count == 0) return;
                 BuildBase construct = _buildBase.Clone();
                 construct.OverrideValues(_endDate, _budget);
-                GameManager.Instance.Company.ConstructBuild(GameManager.Instance.FindCity(GetSelected(dropdown1)), construct);
+                City targetCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
+                AlertBox.New(AlertBox.AlertType.BuildStart, targetCity.Name, construct.GetName(), $"{construct.GetEndDate()[0]}년 {construct.GetEndDate()[1]}월");
+                GameManager.Instance.Company.ConstructBuild(targetCity, construct);
             }
         }
 

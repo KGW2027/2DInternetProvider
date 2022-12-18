@@ -40,6 +40,7 @@ namespace IP.UIFunc.Builder
                 if (_bankManager == null) _bankManager = FindObjectOfType<BankManager>();
                 _bankManager.UpdateUI();
                 PopupManager.Instance.ClosePopup();
+                AlertBox.New(AlertBox.AlertType.Loan, bankName.text, $"{loanSize:N0}", $"{loanSize/12:F2}k$");
             }
         }
     }
