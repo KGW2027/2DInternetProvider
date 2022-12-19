@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using IP.Control;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace IP.Screen
 {
@@ -88,6 +90,8 @@ namespace IP.Screen
          */
         public void MoveCamara(String name)
         {
+            if (GameManager.Instance.IsGameEnd) return;
+            
             PopupManager.Instance.ClosePopup();
             CloseAllSubUI();
             if (!name.Equals("MAP"))
@@ -121,6 +125,16 @@ namespace IP.Screen
             {
                 subUI.GetComponent<ISubUI>()?.MonthRefresh();
             }
+        }
+
+        public void EnableGameOverScreen()
+        {
+            _screenSubUIs["GAMEOVER"].SetActive(true);
+        }
+
+        public void BackToLobby()
+        {
+            SceneManager.LoadScene("TitleMenu");
         }
 
     }

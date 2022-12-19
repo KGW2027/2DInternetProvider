@@ -25,7 +25,7 @@ namespace IP.Screen
         private int _year;
         private int _month;
         private int _remainNextMonth = 10;
-        private long _changeMoney = 0;
+        private CoroutineHandle _timerHandle;
 
         // Start is called before the first frame update
         void Start()
@@ -38,7 +38,7 @@ namespace IP.Screen
 
             companyNamePrint.text = GameManager.Instance.Company.Name;
             UpdateMoneyText();
-            Timing.RunCoroutine(RunTimer());
+            _timerHandle = Timing.RunCoroutine(RunTimer());
             new RealTimeManager(realDatePrint).Run();
         }
 
@@ -81,13 +81,18 @@ namespace IP.Screen
         private void UpdateMoneyText()
         {
             Company company = GameManager.Instance.Company;
-            _changeMoney = company.CalcRevenue() / 1000 - company.GetUsingMoney();
+            float changeMoney = company.CalcRevenue() / 1000 - company.GetUsingMoney();
             moneyPrint.text = $"{GameManager.Instance.Company.Money:n0}";
-            changeMoneyPrint.text = $"{_changeMoney:n0}";
-            Color textColor = _changeMoney < 0
+            changeMoneyPrint.text = $"{changeMoney:n0}";
+            Color textColor = changeMoney < 0
                 ? new Color(255, 0, 0)
                 : new Color(0, 255, 0);
             changeMoneyPrint.color = textColor;
+        }
+
+        public void KillTimer()
+        {
+            Timing.KillCoroutines(_timerHandle);
         }
 
         /**
@@ -95,6 +100,7 @@ namespace IP.Screen
          */
         public void SkipMonth()
         {
+            if (GameManager.Instance.IsGameEnd) return;
             NextMonth();
         }
 
@@ -111,6 +117,11 @@ namespace IP.Screen
          */
         public void MoveScreen(string type) {
             screenManager.MoveCamara(type.ToUpper());
+        }
+
+        public void OpenGameOverScreen()
+        {
+            screenManager.EnableGameOverScreen();
         }
 
         /**

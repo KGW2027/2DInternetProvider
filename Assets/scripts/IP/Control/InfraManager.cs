@@ -7,7 +7,7 @@ namespace IP.Control
 {
     public class InfraManager : MonoBehaviour, ISubUI
     {
-        private static bool _needUpdate = true;
+        private bool _needUpdate = true;
         
         [Header("건물 목록")]
         public GameObject scrollContent;
@@ -41,11 +41,6 @@ namespace IP.Control
         public void MonthRefresh()
         {
             UpdateUI();
-        }
-
-        public static void ReserveUpdate()
-        {
-            _needUpdate = true;
         }
     }
 }

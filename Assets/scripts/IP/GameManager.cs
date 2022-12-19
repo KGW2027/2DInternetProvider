@@ -18,7 +18,9 @@ namespace IP
     {
 
         public static GameManager Instance { get; private set; }
-        public static int PenaltyTrust = -50;
+        public static readonly int PenaltyTrust = -50;
+
+        public bool IsGameEnd { get; private set; }
 
         private const int StartYear = 22;
         private const int StartMonth = 11;
@@ -36,6 +38,7 @@ namespace IP
         {
             Instance = this;
             _initMonth = true;
+            IsGameEnd = false;
         }
 
         /**
@@ -124,7 +127,9 @@ namespace IP
 
             if (lose)
             {
-                Debug.Log("게임 패배");
+                IsGameEnd = true;
+                AppBarManager.Instance.KillTimer();
+                AppBarManager.Instance.OpenGameOverScreen();
                 Application.Quit();
             }
         }
