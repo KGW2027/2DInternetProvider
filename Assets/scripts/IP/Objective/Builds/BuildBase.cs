@@ -102,6 +102,7 @@ namespace IP.Objective.Builds
             _isComplete = true;
             if (owner == GameManager.Instance.Company)
             {
+                AudioManager.Instance.PlayOneShot(AudioManager.Audios.ConstructEnd);
                 if (IsWire())
                 {
                     CompleteWireAction();

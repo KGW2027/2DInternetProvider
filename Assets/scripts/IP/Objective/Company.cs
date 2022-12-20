@@ -281,6 +281,7 @@ namespace IP.Objective
 
         public void AddLoan(Debt debt)
         {
+            AudioManager.Instance.PlayOneShot(AudioManager.Audios.LoanConfirm);
             _debts.Add(debt);
             Money += debt.Scale;
             UseLoanTimes++;

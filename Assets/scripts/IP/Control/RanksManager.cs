@@ -40,8 +40,6 @@ namespace IP.Control
         private void UpdateRanks()
         {
             ClearChilds();
-            float x = 960;
-            float y = -60;
 
             // 등수 매기기
             Dictionary<Company, long> rank = new Dictionary<Company, long>();

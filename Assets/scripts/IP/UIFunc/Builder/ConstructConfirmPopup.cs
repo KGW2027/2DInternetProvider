@@ -55,6 +55,7 @@ namespace IP.UIFunc.Builder
                 City fromCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
                 City toCity = GameManager.Instance.FindCity(GetSelected(dropdown2));
                 
+                AudioManager.Instance.PlayOneShot(AudioManager.Audios.ConstructStart);
                 AlertBox.New(AlertBox.AlertType.WireStart, fromCity.Name, toCity.Name, $"{construct.GetEndDate()[0]}년 {construct.GetEndDate()[1]}월");
                 GameManager.Instance.Company.ConstructWire(fromCity, toCity, construct);
             }
@@ -65,6 +66,8 @@ namespace IP.UIFunc.Builder
                 BuildBase construct = _buildBase.Clone();
                 construct.OverrideValues(_endDate, _budget);
                 City targetCity = GameManager.Instance.FindCity(GetSelected(dropdown1));
+                    
+                AudioManager.Instance.PlayOneShot(AudioManager.Audios.ConstructStart);
                 AlertBox.New(AlertBox.AlertType.BuildStart, targetCity.Name, construct.GetName(), $"{construct.GetEndDate()[0]}년 {construct.GetEndDate()[1]}월");
                 GameManager.Instance.Company.ConstructBuild(targetCity, construct);
             }
@@ -212,7 +215,7 @@ namespace IP.UIFunc.Builder
                 dropdown1.options.Clear();
                 GameManager.Instance.Company.GetConnectedCities().ForEach(city =>
                 {
-                    bool dd1Added = false, dd2Added = false;
+                    bool dd1Added = false;
                     if (GameManager.Instance.Company.GetBuilds(city) != null)
                     {
                         foreach (BuildBase build in GameManager.Instance.Company.GetBuilds(city))
