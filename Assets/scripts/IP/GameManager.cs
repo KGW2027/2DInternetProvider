@@ -72,6 +72,7 @@ namespace IP
             Company.AddPlan(plan, startCity);
             
             _wmi.ChangeVisibleMode(true);
+            AudioManager.Instance.RunBGM();
             SetCameraFocus(startCity);
             ExecuteMonthlyEvent();
         }
@@ -128,6 +129,8 @@ namespace IP
             if (lose)
             {
                 IsGameEnd = true;
+                AudioManager.Instance.StopBGM();
+                AudioManager.Instance.PlayOneShot(AudioManager.Audios.GameOver);
                 AppBarManager.Instance.KillTimer();
                 AppBarManager.Instance.OpenGameOverScreen();
                 Application.Quit();
