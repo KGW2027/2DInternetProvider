@@ -125,9 +125,12 @@ namespace IP.Objective
             Dictionary<PaymentPlan, double> speedDict = new Dictionary<PaymentPlan, double>();
             Dictionary<PaymentPlan, double> bandDict = new Dictionary<PaymentPlan, double>();
             Dictionary<PaymentPlan, double> valueDict = new Dictionary<PaymentPlan, double>();
-
+            long nearMaxPrice = CheckMaxPrice();
+            
             foreach (PaymentPlan plan in ServicingPlans)
             {
+                if (plan.Budget > nearMaxPrice) continue;
+                
                 trustDict[plan] = plan.OwnerCompany.Trust;
                 speedDict[plan] = plan.Download * DownloadGuarantee + plan.Upload * UploadGuarantee;
                 bandDict[plan] = plan.Bandwidth;
@@ -168,6 +171,21 @@ namespace IP.Objective
                     }
                 }
             }
+        }
+
+        private long CheckMaxPrice()
+        {
+            List<Connection> connections = GameManager.Instance.GetConnections(this);
+            long maxPrice = 0L;
+            foreach (Connection conn in connections)
+            {
+                conn.EndCity.ServicingPlans.ForEach(plan =>
+                {
+                    if (plan.Budget > maxPrice) maxPrice = plan.Budget;
+                });
+            }
+
+            return Math.Min(133L, maxPrice*2);
         }
         
     }
