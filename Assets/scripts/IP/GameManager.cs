@@ -100,6 +100,7 @@ namespace IP
                 // 회사 신뢰도 평가
                 Company.CalcTrust();
                 AIManager.Instance.CheckTrust();
+                Debug.Log("내 회사 신뢰도 : " + Company.Trust);
                 
                 // AI 회사 운영
                 AIManager.Instance.ExecuteStrategy();
@@ -123,18 +124,35 @@ namespace IP
 
         private void LoseCheck()
         {
-            bool lose = Company.RecentRevenue(3) < 0;
-            if (!lose) lose = Company.Trust < PenaltyTrust * 4;
+            NoMoneyOver();
+            LowTrustOver();
+        }
 
-            if (lose)
+        private void NoMoneyOver()
+        {
+            // 최근 3달 평균 수익이 적자면서, 보유 자금도 0인 경우
+            if (Company.RecentRevenue(3) < 0 && Company.Money < 0)
             {
-                IsGameEnd = true;
-                AudioManager.Instance.StopBGM();
-                AudioManager.Instance.PlayOneShot(AudioManager.Audios.GameOver);
-                AppBarManager.Instance.KillTimer();
-                AppBarManager.Instance.OpenGameOverScreen();
-                Application.Quit();
+                GameOverSeq("연속된 적자로 파산");
             }
+        }
+
+        private void LowTrustOver()
+        {
+            // 신뢰도가 너무 많이 하락한 경우
+            if (Company.Trust < PenaltyTrust * 4)
+            {
+                GameOverSeq("낮은 신뢰도로 운영 불가능");
+            }
+        }
+
+        private void GameOverSeq(string reason)
+        {
+            IsGameEnd = true;
+            AudioManager.Instance.StopBGM();
+            AudioManager.Instance.PlayOneShot(AudioManager.Audios.GameOver);
+            AppBarManager.Instance.KillTimer();
+            AppBarManager.Instance.OpenGameOverScreen(reason);
         }
         
         /**

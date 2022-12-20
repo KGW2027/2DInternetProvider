@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using IP.Control;
+using TMPro;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
 
 namespace IP.Screen
@@ -127,9 +127,16 @@ namespace IP.Screen
             }
         }
 
-        public void EnableGameOverScreen()
+        public void EnableGameOverScreen(string reason)
         {
             _screenSubUIs["GAMEOVER"].SetActive(true);
+            foreach (Transform child in _screenSubUIs["GAMEOVER"].transform)
+            {
+                if (child.name.Equals("Reason"))
+                {
+                    child.gameObject.GetComponent<TextMeshProUGUI>().text = $"사유 : {reason}";
+                }
+            }
         }
 
         public void BackToLobby()

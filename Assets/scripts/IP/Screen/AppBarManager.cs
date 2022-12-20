@@ -119,9 +119,9 @@ namespace IP.Screen
             screenManager.MoveCamara(type.ToUpper());
         }
 
-        public void OpenGameOverScreen()
+        public void OpenGameOverScreen(string reason)
         {
-            screenManager.EnableGameOverScreen();
+            screenManager.EnableGameOverScreen(reason);
         }
 
         /**
