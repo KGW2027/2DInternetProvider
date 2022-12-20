@@ -24,7 +24,7 @@ namespace IP.Screen
 
         private int _year;
         private int _month;
-        private int _remainNextMonth = 10;
+        private int _remainNextMonth = 10 * 60;
         private CoroutineHandle _timerHandle;
 
         // Start is called before the first frame update
@@ -61,7 +61,7 @@ namespace IP.Screen
         
         private void NextMonth()
         {
-            _remainNextMonth = 10;
+            _remainNextMonth = 10 * 60;
             if (++_month == 13)
             {
                 _year++;
