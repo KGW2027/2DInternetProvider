@@ -230,21 +230,23 @@ namespace IP.AI
             // 1. 대역폭 확장 ( 현 대역폭의 70% 까지 점유하게 만듬 )
             long nowBandwidth = totalCitizen * (long) plan.Bandwidth;
             double bwShare = nowBandwidth / comp.BandwidthAllowance;
-            if (bwShare <= 0.70)
+            if (bwShare <= 0.7d)
             {
-                plan.Bandwidth = comp.BandwidthAllowance * 0.7d;
+                double spare = comp.BandwidthAllowance * 0.7d;
+                if (totalCitizen == 0) totalCitizen = 300_000;
+                plan.Bandwidth = spare / totalCitizen;
                 return;
             }
             
-            // 2. 속도 확장 ( 최대치로 )
-            if (plan.Download < comp.UpDownSpeed)
+            // 2. 속도 확장 ( 50%까지 점유 )
+            if (plan.Download < comp.UpDownSpeed * 0.5d)
             {
-                plan.Upload = comp.UpDownSpeed;
-                plan.Download = comp.UpDownSpeed;
+                plan.Upload = comp.UpDownSpeed * 0.5d;
+                plan.Download = comp.UpDownSpeed * 0.5d;
                 return;
             }
             
-            // 3. 가격 인하 ( 20%정도 여유로 )
+            // 3. 가격 인하
             long estimateEarn = totalCitizen * plan.Budget;
             int subs = 0;
             while (estimateEarn > comp.GetUsingMoney())
@@ -253,7 +255,7 @@ namespace IP.AI
                 subs++;
             }
 
-            if (subs > 2) plan.Budget -= subs - 2;
+            if (subs > 5) plan.Budget -= subs - 5;
         }
 
         private void CheckService(Company comp)
