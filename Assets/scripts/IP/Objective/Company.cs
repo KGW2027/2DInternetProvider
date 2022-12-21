@@ -20,8 +20,8 @@ namespace IP.Objective
         public int UseLoanTimes { get; private set; }
         public int RepayLoanTimes { get; private set; }
         public int Trust { get; private set; }
-        public long BandwidthAllowance;
-        public long UpDownSpeed;
+        public ulong BandwidthAllowance;
+        public ulong UpDownSpeed;
         public List<PaymentPlan> PlanList => _plans;
 
         public Company(string name, long startMoney)
@@ -172,14 +172,14 @@ namespace IP.Objective
             foreach (PaymentPlan plan in _plans)
             {
                 usingBandwidth += plan.GetUsingBandwidth();
-                usingUpDown += plan.GetUpDown();
+                usingUpDown += (long) plan.GetUpDown();
             }
 
             // 서비스 중인 플랜이 없는 경우 신뢰도 계산 스킵
             if (usingBandwidth == 0 || usingUpDown == 0) return;
             
-            double bandwidthTrust = (usingBandwidth / BandwidthAllowance) - 1;
-            double updownTrust = (usingUpDown / UpDownSpeed) - 1;
+            double bandwidthTrust = usingBandwidth / BandwidthAllowance - 1;
+            double updownTrust = usingUpDown / (long) UpDownSpeed - 1;
 
             if (bandwidthTrust < 0 && updownTrust < 0)
             {
@@ -192,10 +192,10 @@ namespace IP.Objective
             }
         }
 
-        public long GetTotalTraffic()
+        public ulong GetTotalTraffic()
         {
-            long total = 0L;
-            foreach (PaymentPlan plan in _plans) total += (long) plan.GetUsingBandwidth();
+            ulong total = 0L;
+            foreach (PaymentPlan plan in _plans) total += (ulong) plan.GetUsingBandwidth();
             return total;
         }
         

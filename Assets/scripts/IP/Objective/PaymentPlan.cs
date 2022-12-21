@@ -10,9 +10,9 @@ namespace IP.Objective
         private readonly List<City> _cities;
         public string Name;
         public long Budget;
-        public long Bandwidth;
-        public long Upload;
-        public long Download;
+        public ulong Bandwidth;
+        public ulong Upload;
+        public ulong Download;
         public List<City> Cities => _cities;
 
         public PaymentPlan(Company comp)
@@ -46,7 +46,7 @@ namespace IP.Objective
             return sum * Bandwidth;
         }
         
-        public long GetUpDown()
+        public ulong GetUpDown()
         {
             return Math.Max(Upload, Download);
         }

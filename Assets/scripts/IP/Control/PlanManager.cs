@@ -161,9 +161,9 @@ namespace IP.Control
             PaymentPlan plan = new PaymentPlan(GameManager.Instance.Company);
             plan.Name = planName.text;
             plan.Budget = Convert.ToInt64(planBudget.text);
-            plan.Bandwidth = Convert.ToInt64(planBandwidth.text) * StaticFunctions.Bytes.GB;
-            plan.Upload = Convert.ToInt64(planUpload.text);
-            plan.Download = Convert.ToInt64(planDownload.text);
+            plan.Bandwidth = (ulong) (Convert.ToInt64(planBandwidth.text) * (long) StaticFunctions.Bytes.GB);
+            plan.Upload = (ulong) Convert.ToInt64(planUpload.text);
+            plan.Download = (ulong) Convert.ToInt64(planDownload.text);
             
             if (_isEditMode)
             {

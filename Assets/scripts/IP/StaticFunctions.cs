@@ -11,13 +11,13 @@ namespace IP
         {
             private long InternalValue { get; set; }
 
-            public static readonly long MB = 1L << 0;
-            public static readonly long GB = 1L << 10;
-            public static readonly long TB = 1L << 20;
-            public static readonly long PB = 1L << 30;
-            public static readonly long EB = 1L << 40;
-            public static readonly long ZB = 1L << 50;
-            public static readonly long YB = 1L << 60;
+            public static readonly ulong MB = 1L << 0;
+            public static readonly ulong GB = 1L << 10;
+            public static readonly ulong TB = 1L << 20;
+            public static readonly ulong PB = 1L << 30;
+            public static readonly ulong EB = 1L << 40;
+            public static readonly ulong ZB = 1L << 50;
+            public static readonly ulong YB = 1L << 60;
 
             public static long operator *(Bytes b, long n)
             {
@@ -29,7 +29,7 @@ namespace IP
                 return new Bytes {InternalValue = value};
             }
 
-            public static string ToByteString(long data)
+            public static string ToByteString(ulong data)
             {
                 if (data / YB > 0) return $"{(double) data / YB:F} YB";
                 if (data / ZB > 0) return $"{(double) data / ZB:F} ZB";

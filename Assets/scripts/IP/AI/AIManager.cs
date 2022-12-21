@@ -186,9 +186,9 @@ namespace IP.AI
             // 전체 대역폭, 속도를 연결된 도시에 1/N한 균등 플랜을 만들어서 모든 도시에서 서비스한다.
             PaymentPlan plan = new PaymentPlan(company);
             plan.Name = $"{company.Name}'s Plan";
-            plan.Bandwidth = company.BandwidthAllowance / totalCitizen;
-            plan.Upload = company.UpDownSpeed / connections.Count;
-            plan.Download = company.UpDownSpeed / connections.Count;
+            plan.Bandwidth = company.BandwidthAllowance / (ulong) totalCitizen;
+            plan.Upload = company.UpDownSpeed / (ulong) connections.Count;
+            plan.Download = company.UpDownSpeed / (ulong) connections.Count;
             plan.Budget = 13;
             company.AddPlan(plan, connections);
 
@@ -224,11 +224,11 @@ namespace IP.AI
             });
             
             // 1. 대역폭 확장 ( 현 대역폭의 70% 까지 점유하게 만듬 )
-            long nowBandwidth = totalCitizen * plan.Bandwidth;
+            long nowBandwidth = totalCitizen * (long) plan.Bandwidth;
             double bwShare = (double) nowBandwidth / comp.BandwidthAllowance;
             if (bwShare <= 0.70)
             {
-                plan.Bandwidth = (long) (comp.BandwidthAllowance * 0.7d);
+                plan.Bandwidth = (ulong) (comp.BandwidthAllowance * 0.7d);
                 return;
             }
             
