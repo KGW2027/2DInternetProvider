@@ -24,7 +24,7 @@ namespace IP.UIFunc.Builder
             marketShare.text = $"{GetShare():F2}%";
             buildings.text = $"{_company.GetTotalBuilds()}";
             traffics.text = $"{StaticFunctions.Bytes.ToByteString(_company.GetTotalTraffic())}";
-            cities.text = $"{_company.GetConnectedCities().Count} / 50";
+            cities.text = $"{_company.GetConnectedCities().Count} / 51";
             countries.text = $"{_company.GetConnectedCountries()} / 5";
         }
 
