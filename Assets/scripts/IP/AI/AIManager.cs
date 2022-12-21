@@ -229,10 +229,10 @@ namespace IP.AI
             
             // 1. 대역폭 확장 ( 현 대역폭의 70% 까지 점유하게 만듬 )
             long nowBandwidth = totalCitizen * (long) plan.Bandwidth;
-            double bwShare = (double) nowBandwidth / comp.BandwidthAllowance;
+            double bwShare = nowBandwidth / comp.BandwidthAllowance;
             if (bwShare <= 0.70)
             {
-                plan.Bandwidth = (ulong) (comp.BandwidthAllowance * 0.7d);
+                plan.Bandwidth = comp.BandwidthAllowance * 0.7d;
                 return;
             }
             
@@ -244,12 +244,16 @@ namespace IP.AI
                 return;
             }
             
-            // 3. 가격 인하 ( 1$씩 )
-            long estimateNewEarn = totalCitizen * (plan.Budget - 1);
-            if (comp.GetUsingMoney() < estimateNewEarn)
+            // 3. 가격 인하 ( 20%정도 여유로 )
+            long estimateEarn = totalCitizen * plan.Budget;
+            int subs = 0;
+            while (estimateEarn > comp.GetUsingMoney())
             {
-                plan.Budget -= 1;
+                estimateEarn -= totalCitizen;
+                subs++;
             }
+
+            if (subs > 2) plan.Budget -= subs - 2;
         }
 
         private void CheckService(Company comp)
