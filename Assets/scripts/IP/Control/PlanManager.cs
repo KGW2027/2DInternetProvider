@@ -160,22 +160,32 @@ namespace IP.Control
         {
             PaymentPlan plan = new PaymentPlan(GameManager.Instance.Company);
             plan.Name = planName.text;
-            plan.Budget = Convert.ToInt64(planBudget.text);
-            plan.Bandwidth = (ulong) (Convert.ToInt64(planBandwidth.text) * (long) StaticFunctions.Bytes.GB);
-            plan.Upload = (ulong) Convert.ToInt64(planUpload.text);
-            plan.Download = (ulong) Convert.ToInt64(planDownload.text);
+            plan.Budget = long.Parse(planBudget.text.Trim());
+            plan.Bandwidth = double.Parse(planBandwidth.text.Trim()) * (long) StaticFunctions.Bytes.GB;
+            plan.Upload = double.Parse(planUpload.text.Trim()) / 1000;
+            plan.Download = double.Parse(planDownload.text.Trim()) / 1000;
             
             if (_isEditMode)
             {
-                GameManager.Instance.Company.DeletePlan(_editingPlan);
-                
-                _isEditMode = false;
-                _editingPlan = null;
-            }
-            
-            GameManager.Instance.Company.AddPlan(plan, GetSelectCities());
+                _editingPlan.Name = plan.Name;
+                _editingPlan.Budget = plan.Budget;
+                _editingPlan.Bandwidth = plan.Bandwidth;
+                _editingPlan.Upload = plan.Upload;
+                _editingPlan.Download = plan.Download;
+
+                foreach (City nowCity in _editingPlan.Cities)
+                {
+                    if(!GetSelectCities().Contains(nowCity)) _editingPlan.Deservice(nowCity);
+                }
+
+                foreach (City newCity in GetSelectCities())
+                {
+                    if(!_editingPlan.Cities.Contains(newCity)) _editingPlan.Service(newCity);
+                }
+            } else GameManager.Instance.Company.AddPlan(plan, GetSelectCities());
 
             Rebuild();
+            ResetPlan();
         }
 
         public void Edit(PaymentPlan plan)
@@ -183,8 +193,8 @@ namespace IP.Control
             planName.text = plan.Name;
             planBudget.text = plan.Budget.ToString();
             planBandwidth.text = (plan.Bandwidth / StaticFunctions.Bytes.GB).ToString();
-            planUpload.text = plan.Upload.ToString();
-            planDownload.text = plan.Download.ToString();
+            planUpload.text = ((long)(plan.Upload * 1000)).ToString();
+            planDownload.text = ((long)(plan.Download * 1000)).ToString();
             ResetChecks();
             EnableChecks(plan.Cities);
             _isEditMode = true;

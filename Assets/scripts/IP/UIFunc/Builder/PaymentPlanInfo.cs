@@ -20,7 +20,7 @@ namespace IP.UIFunc.Builder
         {
             planName.text = _plan.Name;
             planInfo.text = $"서비스 중인 국가 : {GetCities()}\n한 달 요금 : {_plan.Budget}$\n판매 비중 : {GetShare():F2}%";
-            planDesc.text = $"{StaticFunctions.Bytes.ToByteString(_plan.Bandwidth)} 대역폭, {_plan.Upload} Mbps, {_plan.Download} Mbps";
+            planDesc.text = $"{StaticFunctions.Bytes.ToByteString(_plan.Bandwidth)} 대역폭, {_plan.Upload*1000:N0} Mbps, {_plan.Download*1000:N0} Mbps";
         }
 
         public void SendData(params object[] datas)
