@@ -248,9 +248,23 @@ namespace IP.AI
             }
         }
 
-        private bool CheckBuildMoney(Company comp, BuildBase build)
+        protected long GetEstimateUse(Company comp)
         {
             long revenue = comp.RecentRevenue(3);
+            foreach (City city in comp.GetConnectedCities())
+            {
+                foreach (BuildBase bb in comp.GetBuilds(city))
+                {
+                    if (!bb.IsComplete()) revenue -= (long) bb.GetMaintenance();
+                }
+            }
+
+            return revenue;
+        }
+
+        private bool CheckBuildMoney(Company comp, BuildBase build)
+        {
+            long revenue = GetEstimateUse(comp);
             long need = (long) ((build.GetMaintenance() + build.GetBudget() / build.GetBuildDate()) * 0.8d);
             return revenue >= need;
         }

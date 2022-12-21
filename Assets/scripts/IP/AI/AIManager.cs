@@ -45,10 +45,7 @@ namespace IP.AI
         private Dictionary<Company, List<double>> _shareLog;
         private int _replanMonth;
         private Dictionary<CompanyStrategy, Strategies> _strategyManager;
-
-        private const long WireOfficeLeast = 1000L;
-        private const long SmallIDCLeast = 3000L;
-
+        
         /// <summary>
         /// 국가마다 도시 2개, 시골 1개를 중심으로 하는 회사를 총 15개 생성한다.
         /// </summary>
@@ -100,7 +97,14 @@ namespace IP.AI
                 // 매 1월마다 랜덤으로 요금제 가격 인상
                 if (AppBarManager.Instance.GetDate()[1] == 1)
                 {
-                    company.PlanList[0].Budget += Random.Range(1, 3);
+                    double leastShare = _shareLog[company][^1];
+                    if (leastShare > 0.01d)
+                    {
+                        int min = (int) Math.Ceiling(leastShare * 10);
+                        int max = (int) Math.Ceiling(leastShare * 30);
+                        company.PlanList[0].Budget += Random.Range(min, max+1);
+                        Debug.Log(company.Name + " 인상 : " + company.PlanList[0].Budget);
+                    }
                 }
                 
                 // 연결된 도시 중에 서비스 중이 아닌 도시가 있다면 요금제 서비스
