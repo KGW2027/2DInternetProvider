@@ -84,32 +84,33 @@ namespace IP
         {
             // 복권 회차 넘기기
             _lotto.Next();
-            
-            
+
             if (_initMonth)
             {
-                // 최초달에는 평가를 진행하지않는다.
-                _initMonth = false;
+                _wmi.Cities.ForEach(city => city.PlanSelect());
             }
-            else
-            {
-                // 수익금 정산
-                UserEarn();
-                AIManager.Instance.Earn();
+            
+            // 수익금 정산
+            UserEarn();
+            AIManager.Instance.Earn();
 
-                // 회사 신뢰도 평가
-                Company.CalcTrust();
-                AIManager.Instance.CheckTrust();
-                Debug.Log("내 회사 신뢰도 : " + Company.Trust);
-                
-                // AI 회사 운영
-                AIManager.Instance.ExecuteStrategy();
-            }
+            // 회사 신뢰도 평가
+            Company.CalcTrust();
+            AIManager.Instance.CheckTrust();
+            
+            // AI 회사 운영
+            AIManager.Instance.ExecuteStrategy();
 
             LoseCheck();
             
             // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
+
+            if (_initMonth)
+            {
+                _initMonth = false;
+                Company.ResetMoney();
+            }
 
             // Appbar UI 새로고침
             AppBarManager.Instance.Refresh();

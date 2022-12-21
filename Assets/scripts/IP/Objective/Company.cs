@@ -294,5 +294,10 @@ namespace IP.Objective
             AppBarManager.Instance.Refresh();
             return true;
         }
+
+        public void ResetMoney()
+        {
+            Money = 1000;
+        }
     }
 }
