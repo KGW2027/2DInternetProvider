@@ -92,10 +92,14 @@ namespace IP.AI
                 if(change > 0) company.Earn(change);
                 else company.Earn(2000);
 
+                // 매 1월마다 랜덤으로 요금제 가격 인상
                 if (AppBarManager.Instance.GetDate()[1] == 1)
                 {
                     company.PlanList[0].Budget += Random.Range(1, 3);
                 }
+                
+                // 연결된 도시 중에 서비스 중이 아닌 도시가 있다면 요금제 서비스
+                CheckService(company);
                 
                 // 요금제 설정
                 Replan(company);
@@ -383,6 +387,18 @@ namespace IP.AI
             if (comp.GetUsingMoney() < estimateNewEarn)
             {
                 plan.Budget -= 1;
+            }
+        }
+
+        private void CheckService(Company comp)
+        {
+            List<City> connected = comp.GetConnectedCities();
+            List<City> servicing = comp.PlanList[0].Cities;
+
+            foreach (City conn in connected)
+            {
+                if (servicing.Contains(conn)) continue;
+                comp.PlanList[0].Service(conn);
             }
         }
 
