@@ -12,6 +12,7 @@ namespace IP.UIFunc.Builder
         public TextMeshProUGUI buildName;
         public TextMeshProUGUI spend;
         public TextMeshProUGUI complete;
+        public TextMeshProUGUI maintanance;
         
         private BuildBase _buildInfo;
         private const string ConfirmPopup = "ConstructConfirm";
@@ -25,6 +26,8 @@ namespace IP.UIFunc.Builder
 
             if (_buildInfo.IsWire()) complete.text = $"예정 건설 기한 : 거리 {1 / _buildInfo.GetBuildDate():N0}당 1개월";
             else complete.text = $"예정 건설 기한 : {_buildInfo.GetBuildDate()}개월";
+
+            maintanance.text = $"건설 후 유지 비용 : {_buildInfo.GetMaintenance()}k$ / month";
         }
 
         public void SendData(params object[] datas)
