@@ -95,7 +95,7 @@ namespace IP.AI
                 else company.Earn(2000);
 
                 // 매 1월마다 랜덤으로 요금제 가격 인상
-                if (AppBarManager.Instance.GetDate()[1] == 1)
+                if (AppBarManager.Instance.GetDate()[1] == 1 && AppBarManager.Instance.GetDate()[0] > GameManager.Instance.GetStartDate()[0])
                 {
                     double leastShare = _shareLog[company][^1];
                     if (leastShare > 0.01d)
