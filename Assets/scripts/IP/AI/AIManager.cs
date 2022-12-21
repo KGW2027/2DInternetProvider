@@ -36,9 +36,9 @@ namespace IP.AI
         public List<Company> Companies { get; private set; }
 
         private string[] _companyNames = {
-            "Company1", "Company2", "Company3", "Company4", "Company5",
-            "Company6", "Company7", "Company8", "Company9", "Company10",
-            "Company11", "Company12", "Company13", "Company14", "Company15",
+            "XInfinity", "Goggle Fiber", "TNT Company", "Veryson", "WideOpenEast",
+            "Spektrums", "XBroadband", "CityLink", "Z-Mobile", "Media.net",
+            "Stanley Internet", "Optinum", "Fiber Zipper", "Milkylink", "O-Telecom",
         };
 
         private Dictionary<Company, CompanyStrategy> _strategies;
