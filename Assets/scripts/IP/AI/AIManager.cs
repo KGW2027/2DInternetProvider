@@ -85,11 +85,19 @@ namespace IP.AI
             ++_replanMonth;
             foreach (Company company in Companies)
             {
+                // 수익 계산
                 long planRevenue = company.CalcRevenue() / 1000;
                 long used = company.GetUsingMoney();
                 long change = planRevenue - used;
                 if(change > 0) company.Earn(change);
                 else company.Earn(2000);
+
+                if (AppBarManager.Instance.GetDate()[1] == 1)
+                {
+                    company.PlanList[0].Budget += Random.Range(1, 3);
+                }
+                
+                // 요금제 설정
                 Replan(company);
             }
 
