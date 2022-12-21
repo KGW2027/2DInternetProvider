@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,35 +10,35 @@ namespace IP
     {
         public struct Bytes
         {
-            private long InternalValue { get; set; }
+            private double InternalValue { get; set; }
 
-            public static readonly ulong MB = 1L << 0;
-            public static readonly ulong GB = 1L << 10;
-            public static readonly ulong TB = 1L << 20;
-            public static readonly ulong PB = 1L << 30;
-            public static readonly ulong EB = 1L << 40;
-            public static readonly ulong ZB = 1L << 50;
-            public static readonly ulong YB = 1L << 60;
+            public static readonly double GB = 1L << 0;
+            public static readonly double TB = 1L << 10;
+            public static readonly double PB = 1L << 20;
+            public static readonly double EB = 1L << 30;
+            public static readonly double ZB = 1L << 40;
+            public static readonly double YB = 1L << 50;
+            public static readonly double RB = 1L << 60;
 
-            public static long operator *(Bytes b, long n)
+            public static double operator *(Bytes b, double n)
             {
                 return b.InternalValue * n;
             }
 
-            public static implicit operator Bytes(long value)
+            public static implicit operator Bytes(double value)
             {
                 return new Bytes {InternalValue = value};
             }
 
-            public static string ToByteString(ulong data)
+            public static string ToByteString(double data)
             {
-                if (data / YB > 0) return $"{(double) data / YB:F} YB";
-                if (data / ZB > 0) return $"{(double) data / ZB:F} ZB";
-                if (data / EB > 0) return $"{(double) data / EB:F} EB";
-                if (data / PB > 0) return $"{(double) data / PB:F} PB";
-                if (data / TB > 0) return $"{(double) data / TB:F} TB";
-                if (data / GB > 0) return $"{(double) data / GB:F} GB";
-                return $"{(double) data / MB:F} MB";
+                if (Math.Floor(data / RB) > 0) return $"{data / RB:F} RB";
+                if (Math.Floor(data / YB) > 0) return $"{data / YB:F} YB";
+                if (Math.Floor(data / ZB) > 0) return $"{data / ZB:F} ZB";
+                if (Math.Floor(data / EB) > 0) return $"{data / EB:F} EB";
+                if (Math.Floor(data / PB) > 0) return $"{data / PB:F} PB";
+                if (Math.Floor(data / TB) > 0) return $"{data / TB:F} TB";
+                return $"{data / GB:F} GB";
             }
         }
     

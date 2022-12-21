@@ -61,8 +61,8 @@ namespace IP
             plan.Name = "Default plan";
             plan.Bandwidth = 1000 * StaticFunctions.Bytes.GB;
             plan.Budget = 8;
-            plan.Upload = 100 * StaticFunctions.Bytes.MB;
-            plan.Download = 100 * StaticFunctions.Bytes.MB;
+            plan.Upload = .1 * StaticFunctions.Bytes.GB;
+            plan.Download = .1 * StaticFunctions.Bytes.GB;
 
             AIManager.Instance.Initialize(_wmi);
             

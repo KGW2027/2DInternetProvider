@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace IP.Objective.Builds
+﻿namespace IP.Objective.Builds
 {
     public class UndergroundFiberCable : BuildBase
 

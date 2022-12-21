@@ -20,8 +20,8 @@ namespace IP.Objective
         public int UseLoanTimes { get; private set; }
         public int RepayLoanTimes { get; private set; }
         public int Trust { get; private set; }
-        public ulong BandwidthAllowance;
-        public ulong UpDownSpeed;
+        public double BandwidthAllowance;
+        public double UpDownSpeed;
         public List<PaymentPlan> PlanList => _plans;
 
         public Company(string name, long startMoney)
@@ -179,7 +179,7 @@ namespace IP.Objective
             if (usingBandwidth == 0 || usingUpDown == 0) return;
             
             double bandwidthTrust = usingBandwidth / BandwidthAllowance - 1;
-            double updownTrust = usingUpDown / (long) UpDownSpeed - 1;
+            double updownTrust = usingUpDown / UpDownSpeed - 1;
 
             if (bandwidthTrust < 0 && updownTrust < 0)
             {
