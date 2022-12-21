@@ -107,7 +107,7 @@ namespace IP
             // AI 회사 운영
             AIManager.Instance.ExecuteStrategy();
 
-            // LoseCheck();
+            LoseCheck();
             
             // 도시들의 요금제 재선택
             _wmi.Cities.ForEach(city => city.PlanSelect());
