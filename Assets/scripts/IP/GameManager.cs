@@ -109,6 +109,7 @@ namespace IP
             if (_initMonth)
             {
                 _initMonth = false;
+                TutorialManager.Instance.PrintMapTutorial();
                 Company.ResetMoney();
             }
 

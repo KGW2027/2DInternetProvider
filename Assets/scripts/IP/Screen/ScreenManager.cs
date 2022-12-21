@@ -23,11 +23,16 @@ namespace IP.Screen
         private Vector3 _moveToVector;
         private string _movedScreenType;
 
+        private bool _isInfraFirst;
+        private bool _isPlanFirst;
+
         // Start is called before the first frame update
         void Start()
         {
             _screens = new Dictionary<string, Transform>();
             _screenSubUIs = new Dictionary<string, GameObject>();
+            _isInfraFirst = true;
+            _isPlanFirst = true;
         
             foreach (Transform tf in transform)
             {
@@ -99,6 +104,12 @@ namespace IP.Screen
                 _infraUI.SetActive(false);
             }
 
+            if (name.Equals("PLAN") && _isPlanFirst)
+            {
+                _isPlanFirst = false;
+                TutorialManager.Instance.PrintPlanTutorial();
+            }
+
             Vector3 moveToVector = _screens.ContainsKey(name) 
                 ? _screens[name].transform.position 
                 : _screens["MAP"].transform.position;
@@ -114,6 +125,12 @@ namespace IP.Screen
          */
         public void ToggleInfraUI()
         {
+            if (_isInfraFirst)
+            {
+                _isInfraFirst = false;
+                TutorialManager.Instance.PrintInfraTutorial();
+            }
+            
             MoveCamara("MAP");
             _infraUI.SetActive(!_infraUI.activeSelf);
             _infraUI.GetComponent<ISubUI>()?.UpdateUI();
