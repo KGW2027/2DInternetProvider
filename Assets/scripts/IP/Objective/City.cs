@@ -142,6 +142,16 @@ namespace IP.Objective
             ChangePlanTest(CitizenCharacter.MaxBandwidthFirst, bandDict);
             ChangePlanTest(CitizenCharacter.ValueFirst, valueDict);
         }
+
+        public void PopulationGrowth()
+        {
+            People = (long) (People * 1.1d);
+            long p1 = GetRandomCount(), p2 = GetRandomCount(), p3 = GetRandomCount();
+            _peopleCharacters[CitizenCharacter.TrustFirst] = p1;
+            _peopleCharacters[CitizenCharacter.SpeedFirst] = p2;
+            _peopleCharacters[CitizenCharacter.MaxBandwidthFirst] = p3;
+            _peopleCharacters[CitizenCharacter.ValueFirst] = People - (p1 + p2 + p3);
+        }
         
 
         private void ChangePlanTest(CitizenCharacter character, Dictionary<PaymentPlan, double> dict)

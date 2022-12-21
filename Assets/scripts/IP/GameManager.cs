@@ -82,6 +82,12 @@ namespace IP
          */
         public void ExecuteMonthlyEvent()
         {
+            // 인구 성장
+            if (AppBarManager.Instance.GetDate()[1] == 1)
+            {
+                _wmi.Cities.ForEach(city => city.PopulationGrowth());
+            }
+            
             // 복권 회차 넘기기
             _lotto.Next();
 
