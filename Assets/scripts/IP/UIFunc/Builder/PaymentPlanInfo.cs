@@ -42,7 +42,7 @@ namespace IP.UIFunc.Builder
         public void DeletePlan()
         {
             GameManager.Instance.Company.DeletePlan(_plan);
-            _manager.UpdateUI();
+            _manager.DeletePlan(_plan);
         }
 
         private string GetCities()

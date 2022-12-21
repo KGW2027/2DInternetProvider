@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using IP.Objective;
 using IP.Objective.Builds;
 using IP.UIFunc.Builder;
@@ -23,44 +24,78 @@ namespace IP.Control
         public GameObject togglePrefab;
 
         private Dictionary<City, ToggleCityInfo> _cityToggles;
+        private Dictionary<PaymentPlan, PaymentPlanInfo> _plans;
 
         private bool _isEditMode;
         private PaymentPlan _editingPlan;
-        
+
         public void UpdateUI()
         {
             if(_cityToggles == null) InitializeCities();
             
-            ClearChild(planList.transform);
             ResetPlan();
             RefreshToggles();
-            foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList)
+
+            if (_plans == null || _plans.Count == 0)
             {
-                var planPanel = Instantiate(planPrefab, planList.transform, true);
-                IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
-                builder.SendData(plan, this);
-                builder.Build();
+                _plans = new Dictionary<PaymentPlan, PaymentPlanInfo>();
+                foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList)
+                {
+                    var planPanel = Instantiate(planPrefab, planList.transform, true);
+                    IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
+                    builder.SendData(plan, this);
+                    builder.Build();
+                    _plans[plan] = (PaymentPlanInfo) builder;
+                }
+            }
+            else
+            {
+                MonthRefresh();
             }
         }
 
         public void MonthRefresh()
         {
-            ClearChild(planList.transform);
-            foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList)
+            if (_plans == null) return;
+            foreach (PaymentPlanInfo ppi in _plans.Values)
             {
-                var planPanel = Instantiate(planPrefab, planList.transform, true);
-                IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
-                builder.SendData(plan, this);
-                builder.Build();
+                ppi.Build();
             }
         }
 
-        private void ClearChild(Transform parent)
+        public void Rebuild()
         {
-            foreach (Transform child in parent)
+            Dictionary<PaymentPlan, bool> isAdded = new Dictionary<PaymentPlan, bool>();
+            foreach (PaymentPlan plan in GameManager.Instance.Company.PlanList) isAdded[plan] = false;
+            
+            foreach (KeyValuePair<PaymentPlan, PaymentPlanInfo> pair in _plans)
             {
-                Destroy(child.gameObject);
+                if (!isAdded.ContainsKey(pair.Key))
+                {
+                    Destroy(pair.Value.gameObject);
+                    continue;
+                }
+                isAdded[pair.Key] = true;
+                pair.Value.Build();
             }
+
+            foreach (PaymentPlan newPlan in isAdded.Keys)
+            {
+                if (isAdded[newPlan]) continue;
+                
+                var planPanel = Instantiate(planPrefab, planList.transform, true);
+                IUIBuilder builder = planPanel.GetComponent<PaymentPlanInfo>();
+                builder.SendData(newPlan, this);
+                builder.Build();
+                _plans[newPlan] = (PaymentPlanInfo) builder;
+            }
+        }
+
+        public void DeletePlan(PaymentPlan plan)
+        {
+            Destroy(_plans[plan].gameObject);
+            _plans.Remove(plan);
+            Rebuild();
         }
 
         private void InitializeCities()
@@ -140,7 +175,7 @@ namespace IP.Control
             
             GameManager.Instance.Company.AddPlan(plan, GetSelectCities());
 
-            UpdateUI();
+            Rebuild();
         }
 
         public void Edit(PaymentPlan plan)
