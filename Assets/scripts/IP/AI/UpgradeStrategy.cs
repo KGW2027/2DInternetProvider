@@ -10,176 +10,183 @@ namespace IP.AI
     {
         protected override void Stage1(Company comp)
         {
-            // 최근 3달 수익 평균이 1000k$보다 낮을 경우 건설하지 않는다.
-            if (comp.RecentRevenue(3) < WireOfficeLeast) return;
-            
-            // 1. 사무실이 건설된 도시 중 전선 연결이 안된 도시가 있다면 전선을 연결한다.
-            City buildTarget = null;
-            foreach (City city in comp.GetConnectedCities())
-            {
-                bool needWire = true;
-                foreach (BuildBase builds in comp.GetBuilds(city))
-                {
-                    if (builds.IsWire()) needWire = false;
-                }
-
-                if (!needWire) continue;
-                buildTarget = city;
-                break;
-            }
-
-            if (buildTarget != null)
-            {
-                Connection nearest = null;
-                float distance = float.MaxValue;
-                foreach (Connection conn in GameManager.Instance.GetConnections(buildTarget))
-                {
-                    if (conn.Distance < distance)
-                    {
-                        nearest = conn;
-                    }
-                }
-
-                BuildBase wire = GetRecommendWire(comp.CalcRevenue()).Clone();
-                float buildDate = wire.GetBuildDate() * nearest.Distance;
-                int[] nowDate = CalcEndDate((int) Math.Round(buildDate));
-
-                wire.OverrideValues(nowDate, (wire.GetBudget() * nearest.Distance) / buildDate);
-                comp.ConstructWire(nearest.EndCity, buildTarget, wire);
-                return;
-            }
-
-            // 2. 사무실이 있는 도시들이 모두 전선이 연결되어있다면, 새로운 사무실을 건설할 회사 개수가 적은 도시를 탐색한다.
-            City lowCompanies = null;
-            int connectedCompanies = Int32.MaxValue;
-            foreach (City city in comp.GetConnectedCities())
-            {
-                foreach (Connection conn in GameManager.Instance.GetConnections(city))
-                {
-                    if (comp.GetConnectedCities().Contains(conn.EndCity)) continue;
-                    List<Company> servicing = new List<Company>();
-                    foreach (PaymentPlan plan in city.ServicingPlans)
-                        if (!servicing.Contains(plan.OwnerCompany))
-                            servicing.Add(plan.OwnerCompany);
-
-                    if (servicing.Count < connectedCompanies)
-                    {
-                        lowCompanies = conn.EndCity;
-                        connectedCompanies = servicing.Count;
-                    }
-
-                    if (connectedCompanies == 0) break;
-                }
-
-                if (connectedCompanies == 0) break;
-            }
-
-            if (lowCompanies != null)
-            {
-                BuildBase office = new Office().Clone();
-                int[] nowDate = CalcEndDate((int) office.GetBuildDate());
-                office.OverrideValues(nowDate, office.GetBudget());
-                comp.ConstructBuild(lowCompanies, office);
-            }
-            
+            Expand(comp);
+            if(comp.GetConnectedCities().Count >= 10) Next(comp);
         }
 
         protected override void Stage2(Company comp)
         {
-            City noIdc = null;
-            foreach (City city in comp.GetConnectedCities())
+            City noIDCSmall = FindNoBuild(comp, typeof(IDCSmall));
+            if (noIDCSmall != null)
             {
-                bool hasIDC = false;
-                foreach (BuildBase builds in comp.GetBuilds(city))
-                {
-                    if (builds.GetName().Contains("IDC"))
-                    {
-                        hasIDC = true;
-                        break;
-                    }
-                }
-
-                if (!hasIDC)
-                {
-                    noIdc = city;
-                    break;
-                }
+                bool succ = ConstructBuild(comp, noIDCSmall, new IDCSmall());
+                if (!succ && comp.GetConnectedCities().Count <= 20) Expand(comp);
+                return;
             }
-
-            if (noIdc == null) return;
-                
-            // 최근 3달 평균 수익이 3000k$보다 낮을 시 건설하지 않는다.
-            if (comp.RecentRevenue(3) < SmallIDCLeast) return;
-
-            BuildBase smallIDC = new IDCSmall().Clone();
-            smallIDC.OverrideValues(CalcEndDate((int) smallIDC.GetBuildDate()), smallIDC.GetBudget());
-            comp.ConstructBuild(noIdc, smallIDC);
-            
+            Next(comp);
         }
 
         protected override void Stage3(Company comp)
         {
-            
+            Expand(comp);
+            if(comp.GetConnectedCities().Count >= 20) Next(comp);
         }
 
         protected override void Stage4(Company comp)
         {
-            
+            City noIDCSmall = FindNoBuild(comp, typeof(IDCSmall));
+            if (noIDCSmall != null)
+            {
+                bool succ = ConstructBuild(comp, noIDCSmall, new IDCSmall());
+                if (!succ && comp.GetConnectedCities().Count <= 20) Expand(comp);
+                return;
+            }
+            Next(comp);
         }
 
         protected override void Stage5(Company comp)
         {
-            
+            int cntMedium = GetBuildCount(comp, typeof(IDCMedium));
+            if (cntMedium >= 10)
+            {
+                Next(comp);
+                return;
+            }
+
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
+            if(!succ && comp.GetConnectedCities().Count <= 30) Expand(comp);
         }
 
         protected override void Stage6(Company comp)
         {
-            
+            Expand(comp);
+            if(comp.GetConnectedCities().Count >= 30) Next(comp);
         }
 
         protected override void Stage7(Company comp)
         {
-            
+            City noIDCSmall = FindNoBuild(comp, typeof(IDCSmall));
+            if (noIDCSmall != null)
+            {
+                bool succ = ConstructBuild(comp, noIDCSmall, new IDCSmall());
+                if (!succ && comp.GetConnectedCities().Count <= 20) Expand(comp);
+                return;
+            }
+            Next(comp);
         }
 
         protected override void Stage8(Company comp)
         {
-            
+            int cntMedium = GetBuildCount(comp, typeof(IDCMedium));
+            if (cntMedium >= 20)
+            {
+                Next(comp);
+                return;
+            }
+
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
+            if(!succ && comp.GetConnectedCities().Count <= 40) Expand(comp);
         }
 
         protected override void Stage9(Company comp)
         {
-            
+            int cntCache = GetBuildCount(comp, typeof(CacheServer));
+            if (cntCache >= 10)
+            {
+                Next(comp);
+                return;
+            }
+
+            City noCache = FindHasBuild(comp, typeof(IDCMedium));
+            bool succ = ConstructBuild(comp, noCache, new CacheServer());
+            if(!succ && comp.GetConnectedCities().Count <= 40) Expand(comp);
         }
 
         protected override void Stage10(Company comp)
         {
-            
+            Expand(comp);
+            if(comp.GetConnectedCities().Count >= 40) Next(comp);
         }
 
         protected override void Stage11(Company comp)
         {
-            
+            City noIDCSmall = FindNoBuild(comp, typeof(IDCSmall));
+            if (noIDCSmall != null)
+            {
+                bool succ = ConstructBuild(comp, noIDCSmall, new IDCSmall());
+                if (!succ && comp.GetConnectedCities().Count <= 20) Expand(comp);
+                return;
+            }
+            Next(comp);
         }
 
         protected override void Stage12(Company comp)
         {
-            
+            int cntMedium = GetBuildCount(comp, typeof(IDCMedium));
+            if (cntMedium >= 30)
+            {
+                Next(comp);
+                return;
+            }
+
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
+            if(!succ && comp.GetConnectedCities().Count <= 51) Expand(comp);
         }
 
         protected override void Stage13(Company comp)
         {
-            
+            int cntCache = GetBuildCount(comp, typeof(CacheServer));
+            if (cntCache >= 20)
+            {
+                Next(comp);
+                return;
+            }
+
+            City noCache = FindHasBuild(comp, typeof(IDCMedium));
+            bool succ = ConstructBuild(comp, noCache, new CacheServer());
+            if(!succ && comp.GetConnectedCities().Count <= 51) Expand(comp);
         }
 
         protected override void Stage14(Company comp)
         {
-            
+            Expand(comp);
+            if(comp.GetConnectedCities().Count >= 51) Next(comp);
         }
 
         protected override void Stage15(Company comp)
         {
+            City noSmall = FindNoBuild(comp, typeof(IDCSmall));
+            if (noSmall != null)
+            {
+                ConstructBuild(comp, noSmall, new IDCSmall());
+                return;
+            }
+
+            City noMedium = FindNoBuild(comp, typeof(IDCMedium));
+            if (noMedium != null)
+            {
+                ConstructBuild(comp, noMedium, new IDCMedium());
+                return;
+            }
+
+            City noCache = FindNoBuild(comp, typeof(CacheServer));
+            if (noCache != null)
+            {
+                ConstructBuild(comp, noCache, new CacheServer());
+                return;
+            }
+
+            City noLarge = FindNoBuild(comp, typeof(IDCLarge));
+            if (noLarge != null)
+            {
+                ConstructBuild(comp, noLarge, new IDCLarge());
+                return;
+            }
             
+            Next(comp);
         }
 
         protected override int GetMaxStage()
