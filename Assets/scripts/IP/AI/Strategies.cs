@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using IP.Objective;
 using IP.Objective.Builds;
 using IP.Screen;
+using IP.UIFunc;
 
 namespace IP.AI
 {
@@ -114,6 +116,154 @@ namespace IP.AI
             if (rev >= 200_000) return new FiberCable();
             if (rev >= 50_000) return new UndergroundCoaxialCable();
             return new CoaxialCable();
+        }
+
+        protected City FindNoWire(Company comp)
+        {
+            foreach (City conn in comp.GetConnectedCities())
+            {
+                List<BuildBase> builds = comp.GetBuilds(conn);
+
+                bool hasWire = false;
+                foreach (BuildBase constructed in builds)
+                {
+                    if (constructed.IsWire())
+                    {
+                        hasWire = true;
+                        break;
+                    }
+                }
+
+                if (!hasWire) return conn;
+            }
+            
+            return null;
+        }
+
+        protected City FindNoOffice(Company comp)
+        {
+            City result = null;
+            
+            // 가장 적은 회사가 서비스되고 있는 도시와 연결
+            foreach (City city in comp.GetConnectedCities())
+            {
+                foreach (Connection conn in GameManager.Instance.GetConnections(city))
+                {
+                    if (comp.GetConnectedCities().Contains(conn.EndCity)) continue;
+
+                    if (result == null) result = conn.EndCity;
+                    else if (result.ServicingPlans.Count > conn.EndCity.ServicingPlans.Count) result = conn.EndCity;
+                }
+            }
+            return result;
+        }
+
+        protected City FindNoBuild(Company comp, Type build)
+        {
+            // 가장 적은 회사가 서비스되고 있는 도시와 연결
+            foreach (City city in comp.GetConnectedCities())
+            {
+                bool hasBuild = false;
+                foreach (BuildBase b in comp.GetBuilds(city))
+                {
+                    if (b.GetType() == build)
+                    {
+                        hasBuild = true;
+                        break;
+                    }
+                }
+                if (!hasBuild) return city;
+            }
+            return null;
+        }
+
+        protected City FindHasBuild(Company comp, Type cond)
+        {
+            foreach (City city in comp.GetConnectedCities())
+            {
+                foreach (BuildBase b in comp.GetBuilds(city))
+                {
+                    if (b.GetType() == cond)
+                    {
+                        return city;
+                    }
+                }
+            }
+            return null;
+        }
+
+        protected void ConstructWire(Company comp, City city)
+        {
+            Connection nearest = null;
+            float distance = float.MaxValue;
+            foreach (Connection conn in GameManager.Instance.GetConnections(city))
+            {
+                if (comp.GetConnectedCities().Contains(conn.EndCity) && conn.Distance < distance)
+                {
+                    nearest = conn;
+                }
+            }
+
+            BuildBase wire = GetRecommendWire(comp.CalcRevenue()).Clone();
+            float buildDate = wire.GetBuildDate() * nearest.Distance;
+            int[] nowDate = CalcEndDate((int) Math.Round(buildDate));
+
+            wire.OverrideValues(nowDate, (wire.GetBudget() * nearest.Distance) / buildDate);
+            comp.ConstructWire(nearest.EndCity, city, wire);
+        }
+
+        protected int GetBuildCount(Company comp, Type build)
+        {
+            int cnt = 0;
+            foreach (City city in comp.GetConnectedCities())
+            {
+                foreach (BuildBase buildBase in comp.GetBuilds(city))
+                {
+                    if (buildBase.GetType() == build)
+                    {
+                        cnt++;
+                        break;
+                    }
+                }
+            }
+
+            return cnt;
+        }
+
+        protected void Expand(Company comp)
+        {
+            // 1. 사무실이 건설된 도시 중 전선 연결이 안된 도시가 있다면 전선을 연결한다.
+            City buildTarget = FindNoWire(comp);
+            if (buildTarget != null)
+            {
+                ConstructWire(comp, buildTarget);
+                return;
+            }
+
+            // 2. 사무실이 있는 도시들이 모두 전선이 연결되어있다면, 새로운 사무실을 건설할 회사 개수가 적은 도시를 탐색한다.
+            City newOffice = FindNoOffice(comp);
+            if (newOffice != null)
+            {
+                ConstructBuild(comp, newOffice, new Office());
+            }
+        }
+
+        private bool CheckBuildMoney(Company comp, BuildBase build)
+        {
+            long revenue = comp.RecentRevenue(3);
+            long need = (long) ((build.GetMaintenance() + build.GetBudget() / build.GetBuildDate()) * 0.8d);
+            return revenue >= need;
+        }
+
+        protected bool ConstructBuild(Company comp, City city, BuildBase build)
+        {
+            BuildBase clone = build.Clone();
+            if (!CheckBuildMoney(comp, build)) return false;
+            
+            int[] nowDate = CalcEndDate((int) clone.GetBuildDate());
+            clone.OverrideValues(nowDate, clone.GetBudget());
+            comp.ConstructBuild(city, clone);
+            return true;
         }
     }
 }
