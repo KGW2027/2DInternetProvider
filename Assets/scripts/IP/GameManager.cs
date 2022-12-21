@@ -22,8 +22,8 @@ namespace IP
 
         public bool IsGameEnd { get; private set; }
 
-        private const int StartYear = 22;
-        private const int StartMonth = 11;
+        private const int StartYear = 1;
+        private const int StartMonth = 1;
         private const long StartMoney = 1000L;
 
         private WorldMapInteraction _wmi;
