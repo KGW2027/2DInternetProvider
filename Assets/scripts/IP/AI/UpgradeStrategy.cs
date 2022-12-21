@@ -53,7 +53,7 @@ namespace IP.AI
                 return;
             }
 
-            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall), typeof(IDCMedium));
             bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
             if(!succ && comp.GetConnectedCities().Count <= 30) Expand(comp);
         }
@@ -85,7 +85,7 @@ namespace IP.AI
                 return;
             }
 
-            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall), typeof(IDCMedium));
             bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
             if(!succ && comp.GetConnectedCities().Count <= 40) Expand(comp);
         }
@@ -99,7 +99,7 @@ namespace IP.AI
                 return;
             }
 
-            City noCache = FindHasBuild(comp, typeof(IDCMedium));
+            City noCache = FindHasBuild(comp, typeof(IDCMedium), typeof(CacheServer));
             bool succ = ConstructBuild(comp, noCache, new CacheServer());
             if(!succ && comp.GetConnectedCities().Count <= 40) Expand(comp);
         }
@@ -131,7 +131,7 @@ namespace IP.AI
                 return;
             }
 
-            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall), typeof(IDCMedium));
             bool succ = ConstructBuild(comp, noIDCMedium, new IDCMedium());
             if(!succ && comp.GetConnectedCities().Count <= 51) Expand(comp);
         }
@@ -145,7 +145,7 @@ namespace IP.AI
                 return;
             }
 
-            City noCache = FindHasBuild(comp, typeof(IDCMedium));
+            City noCache = FindHasBuild(comp, typeof(IDCMedium), typeof(CacheServer));
             bool succ = ConstructBuild(comp, noCache, new CacheServer());
             if(!succ && comp.GetConnectedCities().Count <= 51) Expand(comp);
         }

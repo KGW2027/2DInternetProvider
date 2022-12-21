@@ -177,17 +177,19 @@ namespace IP.AI
             return null;
         }
 
-        protected City FindHasBuild(Company comp, Type cond)
+        protected City FindHasBuild(Company comp, Type cond, Type not)
         {
             foreach (City city in comp.GetConnectedCities())
             {
+                bool has = false, exists = false;
                 foreach (BuildBase b in comp.GetBuilds(city))
                 {
-                    if (b.GetType() == cond)
-                    {
-                        return city;
-                    }
+                    if (b.GetType() == cond) has = true;
+                    if (b.GetType() == not) exists = true;
+                    if (exists) break;
                 }
+
+                if (has && !exists) return city;
             }
             return null;
         }

@@ -61,7 +61,7 @@ namespace IP.AI
                 return;
             }
 
-            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall), typeof(IDCMedium));
             bool buildSuccess = ConstructBuild(comp, noIDCMedium, new IDCMedium());
             if (!buildSuccess && comp.GetConnectedCities().Count <= 40) Expand(comp);
         }
@@ -81,7 +81,7 @@ namespace IP.AI
                 return;
             }
 
-            City cacheTarget = FindHasBuild(comp, typeof(IDCMedium));
+            City cacheTarget = FindHasBuild(comp, typeof(IDCMedium), typeof(CacheServer));
             if (cacheTarget != null)
             {
                 ConstructBuild(comp, cacheTarget, new CacheServer());
@@ -93,7 +93,7 @@ namespace IP.AI
 
         protected override void Stage9(Company comp)
         {
-            City noIDCLarge = FindHasBuild(comp, typeof(IDCMedium));
+            City noIDCLarge = FindHasBuild(comp, typeof(IDCMedium), typeof(IDCLarge));
             if (noIDCLarge != null)
             {
                 bool buildSuccess = ConstructBuild(comp, noIDCLarge, new IDCLarge());
@@ -123,7 +123,7 @@ namespace IP.AI
 
         protected override void Stage12(Company comp)
         {
-            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall));
+            City noIDCMedium = FindHasBuild(comp, typeof(IDCSmall), typeof(IDCMedium));
             if (noIDCMedium != null)
             {
                 ConstructBuild(comp, noIDCMedium, new IDCMedium());
@@ -134,7 +134,7 @@ namespace IP.AI
 
         protected override void Stage13(Company comp)
         {
-            City noCache = FindHasBuild(comp, typeof(IDCMedium));
+            City noCache = FindHasBuild(comp, typeof(IDCMedium), typeof(CacheServer));
             if (noCache != null)
             {
                 ConstructBuild(comp, noCache, new CacheServer());
@@ -145,7 +145,7 @@ namespace IP.AI
 
         protected override void Stage14(Company comp)
         {
-            City noLarge = FindHasBuild(comp, typeof(IDCMedium));
+            City noLarge = FindHasBuild(comp, typeof(IDCMedium), typeof(IDCLarge));
             if (noLarge != null)
             {
                 ConstructBuild(comp, noLarge, new IDCLarge());
