@@ -50,12 +50,12 @@ namespace IP
             _lotto = FindObjectOfType<LottoManager>();
             _wmi = FindObjectOfType<WorldMapInteraction>();
             _wmcc = FindObjectOfType<WorldMapCameraController>();
-
+            
             City startCity;
             do
             {
                 startCity = _wmi.Cities[Random.Range(0, _wmi.Cities.Count)];
-            } while (startCity.People > 300_000);
+            } while (startCity.People > 200_000 || startCity.People < 100_000);
 
             PaymentPlan plan = new PaymentPlan(Company);
             plan.Name = "Default plan";
