@@ -38,7 +38,7 @@ namespace IP.UIFunc.Builder
 
             cityBuilds.text = $"설치한 건물 : {GetMyBuildsText()}";
             cityTrafficAllows.text = $"허용 트래픽 : {StaticFunctions.Bytes.ToByteString(GameManager.Instance.Company.BandwidthAllowance)}";
-            citySpeedAllows.text = $"허용 대역 : {GameManager.Instance.Company.UpDownSpeed:N0}Mbps";
+            citySpeedAllows.text = $"허용 대역 : {GameManager.Instance.Company.UpDownSpeed*1000:N0}Mbps";
         }
 
         public Collider2D GetCloseButton()
