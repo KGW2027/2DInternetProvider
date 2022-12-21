@@ -42,6 +42,8 @@ namespace IP.AI
         };
 
         private Dictionary<Company, CompanyStrategy> _strategies;
+        private Dictionary<Company, List<double>> _shareLog;
+        private int _replanMonth;
 
         private const long WireOfficeLeast = 1000L;
         private const long SmallIDCLeast = 3000L;
@@ -56,6 +58,8 @@ namespace IP.AI
             // 회사 생성
             Companies = new List<Company>();
             _strategies = new Dictionary<Company, CompanyStrategy>();
+            _shareLog = new Dictionary<Company, List<double>>();
+            _replanMonth = 0;
             foreach (Country country in _wmi.Countries)
             {
                 byte cityCreated = 0, countrysideCreated = 0;
@@ -78,12 +82,18 @@ namespace IP.AI
 
         public void Earn()
         {
+            ++_replanMonth;
             foreach (Company company in Companies)
             {
                 long planRevenue = company.CalcRevenue() / 1000;
                 long used = company.GetUsingMoney();
-                company.Earn(planRevenue - used);
+                long change = planRevenue - used;
+                if(change > 0) company.Earn(change);
+                else company.Earn(2000);
+                Replan(company);
             }
+
+            if (_replanMonth == 3) _replanMonth = 0;
         }
 
         public void CheckTrust()
@@ -311,7 +321,7 @@ namespace IP.AI
             // 기본 플랜 생성
             // 전체 대역폭, 속도를 연결된 도시에 1/N한 균등 플랜을 만들어서 모든 도시에서 서비스한다.
             PaymentPlan plan = new PaymentPlan(company);
-            plan.Name = $"{company.Name}-Default Plan";
+            plan.Name = $"{company.Name}'s Plan";
             plan.Bandwidth = company.BandwidthAllowance / totalCitizen;
             plan.Upload = company.UpDownSpeed / connections.Count;
             plan.Download = company.UpDownSpeed / connections.Count;
@@ -323,6 +333,49 @@ namespace IP.AI
             _strategies[company] = randStrategy;
             
             return company;
+        }
+
+        public void Replan(Company comp)
+        {
+            if (!_shareLog.ContainsKey(comp)) _shareLog[comp] = new List<double>();
+            _shareLog[comp].Add((double) comp.GetTotalCustomers() / GameManager.Instance.GetTotalPeopleCount());
+
+            // 3달을 주기로 변화
+            if (_replanMonth < 3) return;
+            
+            // 상승 추세면 요금제 변화 X
+            if (_shareLog[comp][^3] < _shareLog[comp][^1]) return;
+                
+            PaymentPlan plan = comp.PlanList[0];
+            long totalCitizen = 0L;
+            plan.Cities.ForEach(city =>
+            {
+                totalCitizen += city.GetCustomer(plan);
+            });
+            
+            // 1. 대역폭 확장 ( 현 대역폭의 70% 까지 점유하게 만듬 )
+            long nowBandwidth = totalCitizen * plan.Bandwidth;
+            double bwShare = (double) nowBandwidth / comp.BandwidthAllowance;
+            if (bwShare <= 0.70)
+            {
+                plan.Bandwidth = (long) (comp.BandwidthAllowance * 0.7d);
+                return;
+            }
+            
+            // 2. 속도 확장 ( 최대치로 )
+            if (plan.Download < comp.UpDownSpeed)
+            {
+                plan.Upload = comp.UpDownSpeed;
+                plan.Download = comp.UpDownSpeed;
+                return;
+            }
+            
+            // 3. 가격 인하 ( 1$씩 )
+            long estimateNewEarn = totalCitizen * (plan.Budget - 1);
+            if (comp.GetUsingMoney() < estimateNewEarn)
+            {
+                plan.Budget -= 1;
+            }
         }
 
         private bool ChanceTest(float probability)
